@@ -1,0 +1,15 @@
+import 'package:flutter/material.dart';
+
+class AppColors {
+  // Light theme colors
+  static const Color primary = Color(0xFF4CAF50);
+  static const Color secondary = Color(0xFF009688);
+  static const Color background = Color(0xFFF5F5F5);
+  static const Color text = Color(0xFF212121);
+
+  // Dark theme colors
+  static const Color primaryDark = Color(0xFF388E3C);
+  static const Color secondaryDark = Color(0xFF00796B);
+  static const Color backgroundDark = Color(0xFF303030);
+  static const Color textDark = Color(0xFFFFFFFF);
+}
