@@ -2,7 +2,9 @@
   "hello": "Hello",
   "welcome": "Welcome Back",
   "login": "Login",
-  "username": "Username",
-  "password": "Password"
+  "username": "username",
+  "password": "password",
+  "enter_username" : "Please enter your username",
+  "enter_password" : "Please enter your password"
 
 }

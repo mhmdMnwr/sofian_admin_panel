@@ -118,14 +118,26 @@ abstract class AppLocalizations {
   /// No description provided for @username.
   ///
   /// In en, this message translates to:
-  /// **'Username'**
+  /// **'username'**
   String get username;
 
   /// No description provided for @password.
   ///
   /// In en, this message translates to:
-  /// **'Password'**
+  /// **'password'**
   String get password;
+
+  /// No description provided for @enter_username.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your username'**
+  String get enter_username;
+
+  /// No description provided for @enter_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
+  String get enter_password;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

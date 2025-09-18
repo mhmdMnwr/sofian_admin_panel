@@ -22,4 +22,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get password => 'كلمة المرور';
+
+  @override
+  String get enter_username => 'الرجاء إدخال اسم المستخدم';
+
+  @override
+  String get enter_password => 'الرجاء إدخال كلمة المرور';
 }

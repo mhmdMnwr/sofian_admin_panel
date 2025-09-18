@@ -10,7 +10,7 @@ class WelcomeBackMessage extends StatelessWidget {
     return Center(
       child: Text(
         AppLocalizations.of(context)!.welcome,
-        style: TextStyles.font36blackMedium,
+        style: TextStyles.font32blackMedium,
       ),
     );
   }

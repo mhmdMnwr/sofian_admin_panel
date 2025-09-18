@@ -2,6 +2,8 @@
   "hello": "Bonjour",
   "welcome": "Bienvenue",
   "login": "Connexion",
-  "username": "Nom d'utilisateur",
-  "password": "Mot de passe"
+  "username": "nom d'utilisateur",
+  "password": "mot de passe",
+  "enter_username" : "Veuillez entrer votre nom d'utilisateur",
+  "enter_password" : "Veuillez entrer votre mot de passe"
 }

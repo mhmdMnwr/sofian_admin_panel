@@ -18,8 +18,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get login => 'Connexion';
 
   @override
-  String get username => 'Nom d\'utilisateur';
+  String get username => 'nom d\'utilisateur';
 
   @override
-  String get password => 'Mot de passe';
+  String get password => 'mot de passe';
+
+  @override
+  String get enter_username => 'Veuillez entrer votre nom d\'utilisateur';
+
+  @override
+  String get enter_password => 'Veuillez entrer votre mot de passe';
 }

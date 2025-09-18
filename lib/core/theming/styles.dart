@@ -10,9 +10,15 @@ class TextStyles {
     fontWeight: FontWeightHelper.medium,
   );
 
-  static final font36blackMedium = TextStyle(
-    fontSize: 36.sp,
+  static final font32blackMedium = TextStyle(
+    fontSize: 32.sp,
     color: Colors.black,
     fontWeight: FontWeightHelper.medium,
+  );
+
+  static final hint = TextStyle(
+    fontSize: 20.sp,
+    color: Colors.black45,
+    fontWeight: FontWeightHelper.light,
   );
 }
