@@ -12,5 +12,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hello => 'Hello';
 
   @override
-  String get welcome => 'Welcome';
+  String get welcome => 'Welcome Back';
+
+  @override
+  String get login => 'Login';
+
+  @override
+  String get username => 'Username';
+
+  @override
+  String get password => 'Password';
 }

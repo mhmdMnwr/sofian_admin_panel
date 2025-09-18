@@ -1,4 +1,8 @@
 {
   "hello": "Hello",
-  "welcome": "Welcome"
+  "welcome": "Welcome Back",
+  "login": "Login",
+  "username": "Username",
+  "password": "Password"
+
 }

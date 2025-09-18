@@ -6,7 +6,7 @@ import 'package:sofian_admin_panel/features/login/ui/login_page.dart';
 import '../layout/main_shell.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/dashboard',
+  initialLocation: '/login',
   routes: [
     // Login route outside the ShellRoute
     GoRoute(path: '/login', builder: (context, state) => const LoginPage()),

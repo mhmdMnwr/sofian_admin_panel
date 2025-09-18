@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,9 +8,7 @@ import 'package:sofian_admin_panel/core/theming/cubit/theme_cubit.dart';
 import 'package:sofian_admin_panel/core/theming/cubit/theme_state.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
-
-
-void main(){
+void main() {
   runApp(AdminPanel());
 }
 
@@ -24,31 +20,30 @@ class AdminPanel extends StatelessWidget {
     return BlocProvider(
       create: (context) => ThemeCubit(),
       child: ScreenUtilInit(
-        designSize: Size(1440, 1024),
+        designSize: Size(1512, 982),
         minTextAdapt: true,
         child: BlocBuilder<ThemeCubit, ThemeState>(
-          builder: (context , themeState) {
+          builder: (context, themeState) {
             return MaterialApp.router(
               routerConfig: appRouter,
               title: 'Admin Panel',
-              theme: AppTheme.lightTheme,
-              darkTheme: AppTheme.darkTheme,
+              theme: ThemeManager.lightTheme,
+              darkTheme: ThemeManager.darkTheme,
               themeMode: themeState.isDark ? ThemeMode.dark : ThemeMode.light,
               debugShowCheckedModeBanner: false,
               supportedLocales: AppLocalizations.supportedLocales,
 
-           localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          locale: Locale('en'),
-          ) ;}
-           ,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              locale: Locale('en'),
+            );
+          },
         ),
       ),
     );
   }
 }
-
-

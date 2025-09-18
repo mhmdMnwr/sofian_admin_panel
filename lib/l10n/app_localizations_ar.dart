@@ -12,5 +12,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get hello => 'مرحبا';
 
   @override
-  String get welcome => 'أهلاً بك';
+  String get welcome => 'أهلا بك';
+
+  @override
+  String get login => 'تسجيل الدخول';
+
+  @override
+  String get username => 'اسم المستخدم';
+
+  @override
+  String get password => 'كلمة المرور';
 }

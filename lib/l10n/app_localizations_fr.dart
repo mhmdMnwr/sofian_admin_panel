@@ -13,4 +13,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get welcome => 'Bienvenue';
+
+  @override
+  String get login => 'Connexion';
+
+  @override
+  String get username => 'Nom d\'utilisateur';
+
+  @override
+  String get password => 'Mot de passe';
 }

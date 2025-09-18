@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sofian_admin_panel/features/login/ui/widget/login_button.dart';
 import 'package:sofian_admin_panel/features/login/ui/widget/login_form.dart';
@@ -13,8 +12,8 @@ class LoginContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: 803.h,
-        width: 563.w,
+        height: 820.h,
+        width: 500.w,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20.r),

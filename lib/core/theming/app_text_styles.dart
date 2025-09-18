@@ -11,8 +11,5 @@ class AppTextStyles {
     fontWeight: FontWeight.normal,
   );
 
-  static const TextStyle caption = TextStyle(
-    fontSize: 12,
-    color: Colors.grey,
-  );
+  static const TextStyle caption = TextStyle(fontSize: 12, color: Colors.grey);
 }
