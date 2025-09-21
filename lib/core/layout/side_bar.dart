@@ -1,92 +1,119 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sofian_admin_panel/core/routing/routes.dart';
-import 'package:sofian_admin_panel/core/theming/cubit/theme_cubit.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Sidebar extends StatefulWidget {
-  final String initialPage;
-  const Sidebar({super.key, this.initialPage =Routes.dashboard});
-
-  @override
-  State<Sidebar> createState() => _SidebarState();
+enum Permissions {
+  dashboard,
+  categories,
+  products,
+  marks,
+  reduction,
+  orders,
+  clients,
+  users,
+  banners,
 }
 
-class _SidebarState extends State<Sidebar> {
-  late String currentPage;
+class SideBarPages {
+  SideBarPages({
+    required this.title,
+    required this.icon,
+    required this.route,
+    required this.permission,
+    this.isActive = false,
+  });
+
+  late final String title;
+  late final IconData icon;
+  late final String route;
+  late final Permissions permission;
+  final bool isActive;
+
+  set isActive() => isActive = !this.isActive;
+}
+
+class SideBar extends StatefulWidget {
+  const SideBar({super.key});
 
   @override
-  void initState() {
-    super.initState();
-    currentPage = widget.initialPage;
-  }
+  State<SideBar> createState() => _SideBarState();
+}
 
-  void _navigate(String page) {
-    setState(() {
-      currentPage = page;
-    });
-    // Add navigation logic here, e.g. using Navigator or a callback
-  }
+class _SideBarState extends State<SideBar> {
+  final List<SideBarPages> pages = [
+    SideBarPages(
+      title: 'Dashboard',
+      icon: Icons.dashboard,
+      route: '/dashboard',
+      permission: Permissions.dashboard,
+    ),
+    SideBarPages(
+      title: 'Categories',
+      icon: Icons.category,
+      route: '/categories',
+      permission: Permissions.categories,
+    ),
+    SideBarPages(
+      title: 'Products',
+      icon: Icons.shopping_bag,
+      route: '/products',
+      permission: Permissions.products,
+    ),
+    SideBarPages(
+      title: 'Marks',
+      icon: Icons.branding_watermark,
+      route: '/marks',
+      permission: Permissions.marks,
+    ),
+    SideBarPages(
+      title: 'Reduction',
+      icon: Icons.discount,
+      route: '/reduction',
+      permission: Permissions.reduction,
+    ),
+    SideBarPages(
+      title: 'Orders',
+      icon: Icons.receipt_long,
+      route: '/orders',
+      permission: Permissions.orders,
+      isActive: true,
+    ),
+    SideBarPages(
+      title: 'Clients',
+      icon: Icons.people,
+      route: '/clients',
+      permission: Permissions.clients,
+    ),
+    // SideBarPages(
+    //   title: 'Users',
+    //   icon: Icons.person,
+    //   route: '/users',
+    //   permission: Permissions.users,
+    // ),
+    SideBarPages(
+      title: 'Banners',
+      icon: Icons.image,
+      route: '/banners',
+      permission: Permissions.banners,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    IconData changeThemeIcon = Theme.of(context).brightness == Brightness.dark
-      ? Icons.light_mode
-      : Icons.dark_mode;
-
     return Container(
-      width: 250,
-      color: theme.colorScheme.surface,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 100,
-            color: theme.colorScheme.primary,
-            child: Center(
-              child: Text(
-                'My App',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  color: theme.colorScheme.onPrimary,
-                ),
-              ),
-            ),
-          ),
-          _buildMenuItem(context, Icons.dashboard, 'Dashboard', 'dashboard'),
-          _buildMenuItem(context, Icons.shopping_cart, 'Products', 'products'),
-          const Spacer(),
-          const Divider(),
-          ListTile(
-            leading:  Icon(changeThemeIcon),
-            title: const Text('Toggle Theme'),
-            onTap: () {context.read<ThemeCubit>().toggleTheme(); 
-            setState(() {
-              
-            });
+      width: 260.w,
+      color: Theme.of(context).primaryColor,
+      child: ListView.builder(
+        itemCount: pages.length,
+        itemBuilder: (context, index) {
+          final page = pages[index];
+          return ListTile(
+            leading: Icon(page.icon, size: 24.sp , color: page.isActive ? ColorsManager.mainBlue : Theme.of(context).textTheme.labelLarge?.color),
+            title: Text(page.title , style: Theme.of(context).textTheme.labelLarge,),
+            onTap: () {
+              Navigator.pushNamed(context, page.route);
             },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMenuItem(BuildContext context, IconData icon, String title, String page) {
-    final theme = Theme.of(context);
-    final isActive = page == currentPage;
-
-    return InkWell(
-      onTap: () => _navigate(page),
-      child: Container(
-        color: isActive ? theme.colorScheme.primary.withOpacity(0.1) : Colors.transparent,
-        child: ListTile(
-          leading: Icon(icon, color: isActive ? theme.colorScheme.primary : theme.iconTheme.color),
-          title: Text(
-            title,
-            style: TextStyle(
-              color: isActive ? theme.colorScheme.primary : theme.colorScheme.onBackground,
-            ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

@@ -15,6 +15,23 @@ class TextStyles {
     color: Colors.black,
     fontWeight: FontWeightHelper.medium,
   );
+  
+  static final font20blackMedium = TextStyle(
+    fontSize: 20.sp,
+    color: Colors.black,
+    fontWeight: FontWeightHelper.medium,
+  );
+
+  static final font20whiteMedium = TextStyle(
+    fontSize: 20.sp,
+    color: Colors.white,
+    fontWeight: FontWeightHelper.medium,
+  );
+  static final font20mainBlueMedium = TextStyle(
+    fontSize: 20.sp,
+    color: ColorsManager.mainBlue,
+    fontWeight: FontWeightHelper.medium,
+  );
 
   static final hint = TextStyle(
     fontSize: 20.sp,
