@@ -10,17 +10,12 @@ class MainShell extends StatelessWidget {
     return Scaffold(
       body: Row(
         children: [
-          const SideBar(),
+          SideBar(),
           Expanded(
-            child: Container(
-              color: Colors.grey[100],
-              child: child,
-            ),
+            child: Container(color: Colors.grey[100], child: child),
           ),
         ],
       ),
     );
   }
-
-
 }

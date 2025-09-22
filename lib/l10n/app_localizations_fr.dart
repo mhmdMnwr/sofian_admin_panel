@@ -28,4 +28,31 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get enter_password => 'Veuillez entrer votre mot de passe';
+
+  @override
+  String get dashboard => 'Tableau de bord';
+
+  @override
+  String get categories => 'Catégories';
+
+  @override
+  String get products => 'Produits';
+
+  @override
+  String get orders => 'Commandes';
+
+  @override
+  String get banners => 'Bannières';
+
+  @override
+  String get users => 'Utilisateurs';
+
+  @override
+  String get clients => 'Clients';
+
+  @override
+  String get marks => 'Marques';
+
+  @override
+  String get discounts => 'Réductions';
 }

@@ -6,6 +6,5 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   void toggleTheme() {
     emit(state.isDark ? ThemeState.light() : ThemeState.dark());
-    print("the theme just changed from ${state.isDark ? "dark" : "light"} to ${state.isDark ? "light" : "dark"}");
   }
 }

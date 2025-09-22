@@ -5,5 +5,14 @@
   "username": "nom d'utilisateur",
   "password": "mot de passe",
   "enter_username" : "Veuillez entrer votre nom d'utilisateur",
-  "enter_password" : "Veuillez entrer votre mot de passe"
+  "enter_password" : "Veuillez entrer votre mot de passe",
+  "dashboard": "Tableau de bord",
+  "categories": "Catégories",
+  "products": "Produits",
+  "orders": "Commandes",
+  "banners": "Bannières",
+  "users": "Utilisateurs",
+  "clients": "Clients",
+  "marks": "Marques",
+  "discounts": "Réductions"
 }

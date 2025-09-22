@@ -28,4 +28,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enter_password => 'Please enter your password';
+
+  @override
+  String get dashboard => 'Dashboard';
+
+  @override
+  String get categories => 'Categories';
+
+  @override
+  String get products => 'Products';
+
+  @override
+  String get orders => 'Orders';
+
+  @override
+  String get banners => 'Banners';
+
+  @override
+  String get users => 'Users';
+
+  @override
+  String get clients => 'Clients';
+
+  @override
+  String get marks => 'Marks';
+
+  @override
+  String get discounts => 'Discounts';
 }

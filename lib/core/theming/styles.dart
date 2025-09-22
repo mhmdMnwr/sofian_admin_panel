@@ -5,35 +5,41 @@ import 'package:sofian_admin_panel/core/theming/font_weight.dart';
 
 class TextStyles {
   static final font20formblackMedium = TextStyle(
+    fontFamily: 'Inter',
     fontSize: 20.sp,
     color: ColorsManager.formBlack,
     fontWeight: FontWeightHelper.medium,
   );
 
   static final font32blackMedium = TextStyle(
+    fontFamily: 'Inter',
     fontSize: 32.sp,
     color: Colors.black,
     fontWeight: FontWeightHelper.medium,
   );
-  
-  static final font20blackMedium = TextStyle(
-    fontSize: 20.sp,
+
+  static final font26blackbold = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 26.sp,
     color: Colors.black,
-    fontWeight: FontWeightHelper.medium,
+    fontWeight: FontWeightHelper.bold,
   );
 
-  static final font20whiteMedium = TextStyle(
-    fontSize: 20.sp,
+  static final font26whitebold = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 26.sp,
     color: Colors.white,
-    fontWeight: FontWeightHelper.medium,
+    fontWeight: FontWeightHelper.bold,
   );
-  static final font20mainBlueMedium = TextStyle(
-    fontSize: 20.sp,
+  static final font26mainBlueBold = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 26.sp,
     color: ColorsManager.mainBlue,
-    fontWeight: FontWeightHelper.medium,
+    fontWeight: FontWeightHelper.extraBold,
   );
 
   static final hint = TextStyle(
+    fontFamily: 'Inter',
     fontSize: 20.sp,
     color: Colors.black45,
     fontWeight: FontWeightHelper.light,

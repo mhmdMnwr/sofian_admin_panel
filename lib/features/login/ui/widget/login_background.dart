@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class ColorfulBackground extends StatelessWidget {
   final Widget? child;
-  const ColorfulBackground({Key? key, this.child}) : super(key: key);
+  const ColorfulBackground({super.key, this.child});
 
   static Color c(String hex) => Color(int.parse(hex.replaceFirst('#', '0xFF')));
 
@@ -82,12 +82,11 @@ class _BlurredBlob extends StatelessWidget {
   final double opacity;
 
   const _BlurredBlob({
-    Key? key,
     required this.size,
     required this.colors,
     this.blur = 80,
     this.opacity = 1,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

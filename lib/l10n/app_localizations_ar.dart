@@ -28,4 +28,31 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get enter_password => 'الرجاء إدخال كلمة المرور';
+
+  @override
+  String get dashboard => 'لوحة التحكم';
+
+  @override
+  String get categories => 'الفئات';
+
+  @override
+  String get products => 'المنتجات';
+
+  @override
+  String get orders => 'الطلبات';
+
+  @override
+  String get banners => 'اللافتات';
+
+  @override
+  String get users => 'المستخدمون';
+
+  @override
+  String get clients => 'العملاء';
+
+  @override
+  String get marks => 'الماركات';
+
+  @override
+  String get discounts => 'الخصومات';
 }

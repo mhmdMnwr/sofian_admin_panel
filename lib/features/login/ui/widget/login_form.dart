@@ -39,12 +39,7 @@ class _LoginFormState extends State<LoginForm> {
               controller: _emailController,
               hintText: AppLocalizations.of(context)!.username,
 
-              prefixIcon: Image.asset(
-                IconsManager.person,
-                color: Colors.black,
-                width: 18.sp,
-                height: 18.sp,
-              ),
+              prefixIcon: _myImage(IconsManager.person),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return AppLocalizations.of(context)!.enter_username;
@@ -60,10 +55,7 @@ class _LoginFormState extends State<LoginForm> {
               hintText: AppLocalizations.of(context)!.password,
 
               isObscureText: _obscurePassword,
-              prefixIcon: Image.asset(
-                IconsManager.password,
-                color: Colors.black,
-              ),
+              prefixIcon: _myImage(IconsManager.password),
               suffixIcon: IconButton(
                 icon: Icon(
                   _obscurePassword ? Icons.visibility_off : Icons.visibility,
@@ -88,5 +80,9 @@ class _LoginFormState extends State<LoginForm> {
         ),
       ),
     );
+  }
+
+  Widget _myImage(String path) {
+    return Image.asset(path, width: 18.sp, height: 18.sp, fit: BoxFit.contain);
   }
 }

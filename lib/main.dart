@@ -28,6 +28,7 @@ class AdminPanel extends StatelessWidget {
               routerConfig: appRouter,
               title: 'Admin Panel',
               theme: ThemeManager.lightTheme,
+
               darkTheme: ThemeManager.darkTheme,
               themeMode: themeState.isDark ? ThemeMode.dark : ThemeMode.light,
               debugShowCheckedModeBanner: false,

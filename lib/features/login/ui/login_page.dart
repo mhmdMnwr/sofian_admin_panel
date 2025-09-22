@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sofian_admin_panel/features/login/ui/widget/login_container.dart';
-import 'package:sofian_admin_panel/features/login/ui/widget/login_packground.dart';
+import 'package:sofian_admin_panel/features/login/ui/modules/PC/widget/login_container.dart';
+import 'package:sofian_admin_panel/features/login/ui/modules/PC/widget/login_background.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

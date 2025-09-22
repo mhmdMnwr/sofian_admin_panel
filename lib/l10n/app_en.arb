@@ -5,6 +5,15 @@
   "username": "username",
   "password": "password",
   "enter_username" : "Please enter your username",
-  "enter_password" : "Please enter your password"
+  "enter_password" : "Please enter your password",
+  "dashboard": "Dashboard",
+  "categories": "Categories",
+  "products": "Products",
+  "orders": "Orders",
+  "banners": "Banners",
+  "users": "Users",
+  "clients": "Clients",
+  "marks": "Marks",
+  "discounts": "Discounts"
 
 }

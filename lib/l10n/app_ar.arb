@@ -5,5 +5,14 @@
   "username": "اسم المستخدم",
   "password": "كلمة المرور",
   "enter_username" : "الرجاء إدخال اسم المستخدم",
-  "enter_password" : "الرجاء إدخال كلمة المرور"
+  "enter_password" : "الرجاء إدخال كلمة المرور",
+  "dashboard": "لوحة التحكم",
+  "categories": "الفئات",
+  "products": "المنتجات",
+  "orders": "الطلبات",
+  "banners": "اللافتات",
+  "users": "المستخدمون",
+  "clients": "العملاء",
+  "marks": "الماركات",
+  "discounts": "الخصومات"
 }
