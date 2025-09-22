@@ -4,11 +4,25 @@ import 'package:sofian_admin_panel/core/theming/app_colors.dart';
 import 'package:sofian_admin_panel/core/theming/font_weight.dart';
 
 class TextStyles {
-  static final font20formblackMedium = TextStyle(
+  static final font20fromblackMedium = TextStyle(
     fontFamily: 'Inter',
     fontSize: 20.sp,
-    color: ColorsManager.formBlack,
+    color: ColorsManager.text,
     fontWeight: FontWeightHelper.medium,
+  );
+
+  static final font20blackBold = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 20.sp,
+    color: ColorsManager.text,
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static final font20whiteBold = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 20.sp,
+    color: ColorsManager.textDark,
+    fontWeight: FontWeightHelper.bold,
   );
 
   static final font32blackMedium = TextStyle(
@@ -31,9 +45,9 @@ class TextStyles {
     color: Colors.white,
     fontWeight: FontWeightHelper.bold,
   );
-  static final font26mainBlueBold = TextStyle(
+  static final font21mainBlueExtraBold = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 26.sp,
+    fontSize: 21.sp,
     color: ColorsManager.mainBlue,
     fontWeight: FontWeightHelper.extraBold,
   );

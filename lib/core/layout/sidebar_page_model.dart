@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sofian_admin_panel/core/theming/app_colors.dart';
+import 'package:sofian_admin_panel/core/theming/app_icons.dart';
+import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
-enum Permissions {
+enum PermissionsTypes {
   dashboard,
   categories,
   products,
   marks,
-  reduction,
   orders,
   clients,
+  discounts,
   users,
   banners,
 }
@@ -20,16 +22,14 @@ class SideBarPages {
     required this.icon,
     required this.route,
     required this.permission,
-    this.isActive = false,
   });
 
   final String title;
   final String icon;
   final String route;
-  final Permissions permission;
-  bool isActive;
+  final PermissionsTypes permission;
 
-  Widget getIconWidget(BuildContext context) {
+  Widget getIconWidget(BuildContext context, bool isActive) {
     return Image.asset(
       icon,
       width: 28.sp,
@@ -40,3 +40,61 @@ class SideBarPages {
     );
   }
 }
+
+List<SideBarPages> pages(BuildContext context) => [
+  SideBarPages(
+    title: AppLocalizations.of(context)!.dashboard,
+    icon: IconsManager.dashboard,
+    route: '/dashboard',
+    permission: PermissionsTypes.dashboard,
+  ),
+  SideBarPages(
+    title: AppLocalizations.of(context)!.categories,
+    icon: IconsManager.categories,
+    route: '/categories',
+    permission: PermissionsTypes.categories,
+  ),
+  SideBarPages(
+    title: AppLocalizations.of(context)!.products,
+    icon: IconsManager.products,
+    route: '/products',
+    permission: PermissionsTypes.products,
+  ),
+  SideBarPages(
+    title: AppLocalizations.of(context)!.marks,
+    icon: IconsManager.marks,
+    route: '/marks',
+    permission: PermissionsTypes.marks,
+  ),
+
+  SideBarPages(
+    title: 'Orders',
+    icon: IconsManager.orders,
+    route: '/orders',
+    permission: PermissionsTypes.orders,
+  ),
+  SideBarPages(
+    title: AppLocalizations.of(context)!.clients,
+    icon: IconsManager.clients,
+    route: '/clients',
+    permission: PermissionsTypes.clients,
+  ),
+  // SideBarPages(
+  //   title: 'Users',
+  //   icon: Icons.person,
+  //   route: '/users',
+  //   permission: PermissionsTypes.users,
+  // ),
+  SideBarPages(
+    title: AppLocalizations.of(context)!.discounts,
+    icon: IconsManager.discount,
+    route: '/discounts',
+    permission: PermissionsTypes.discounts,
+  ),
+  SideBarPages(
+    title: AppLocalizations.of(context)!.banners,
+    icon: IconsManager.banners,
+    route: '/banners',
+    permission: PermissionsTypes.banners,
+  ),
+];

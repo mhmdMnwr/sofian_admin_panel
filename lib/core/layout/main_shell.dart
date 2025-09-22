@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sofian_admin_panel/core/layout/side_bar.dart';
+import 'package:sofian_admin_panel/core/layout/sidebar_page_model.dart';
+import 'package:sofian_admin_panel/features/admin/data/model/admin_model.dart';
 
 class MainShell extends StatelessWidget {
   final Widget child;
@@ -10,7 +12,7 @@ class MainShell extends StatelessWidget {
     return Scaffold(
       body: Row(
         children: [
-          SideBar(),
+          SideBar(admin: superAdmin),
           Expanded(
             child: Container(color: Colors.grey[100], child: child),
           ),
@@ -19,3 +21,18 @@ class MainShell extends StatelessWidget {
     );
   }
 }
+
+final AdminModel superAdmin = AdminModel(
+  id: 'super_admin_001',
+  userName: 'superadmin',
+
+  role: Role.admin,
+  permissions: sommePermissions, // All permissions
+);
+
+List<PermissionsTypes> sommePermissions = [
+  PermissionsTypes.orders,
+  PermissionsTypes.clients,
+  PermissionsTypes.discounts,
+  PermissionsTypes.products,
+];

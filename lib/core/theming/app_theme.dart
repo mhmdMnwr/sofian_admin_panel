@@ -9,7 +9,7 @@ class ThemeManager {
     fontFamily: 'Inter',
     primaryColor: ColorsManager.sideBarBackgroundLight,
     scaffoldBackgroundColor: const Color(0xFFF5F5F5),
-    textTheme: TextTheme(bodyMedium: TextStyles.font20formblackMedium),
+    textTheme: TextTheme(bodyMedium: TextStyles.font20blackBold),
     iconTheme: const IconThemeData(color: Colors.black),
 
     colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -24,7 +24,7 @@ class ThemeManager {
     fontFamily: 'Inter',
     primaryColor: ColorsManager.sideBarBackgroundDark,
     scaffoldBackgroundColor: ColorsManager.backgroundDark,
-    textTheme: TextTheme(bodyMedium: TextStyles.font26whitebold),
+    textTheme: TextTheme(bodyMedium: TextStyles.font20whiteBold),
     iconTheme: const IconThemeData(color: Colors.white),
 
     colorScheme: ColorScheme.fromSwatch(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sofian_admin_panel/features/login/ui/widget/login_button.dart';
-import 'package:sofian_admin_panel/features/login/ui/widget/login_form.dart';
-import 'package:sofian_admin_panel/features/login/ui/widget/logo.dart';
-import 'package:sofian_admin_panel/features/login/ui/widget/welcomeback_message.dart';
+import 'package:sofian_admin_panel/features/login/ui/modules/PC/widget/login_button.dart';
+import 'package:sofian_admin_panel/features/login/ui/modules/PC/widget/login_form.dart';
+import 'package:sofian_admin_panel/features/login/ui/modules/PC/widget/logo.dart';
+import 'package:sofian_admin_panel/features/login/ui/modules/PC/widget/welcomeback_message.dart';
 
 class LoginContainer extends StatelessWidget {
   const LoginContainer({super.key});
