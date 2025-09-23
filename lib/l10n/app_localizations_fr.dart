@@ -55,4 +55,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get discounts => 'Réductions';
+
+  @override
+  String get dashboard_overview => 'Aperçu du tableau de bord';
 }

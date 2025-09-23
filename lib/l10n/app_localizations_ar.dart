@@ -55,4 +55,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get discounts => 'الخصومات';
+
+  @override
+  String get dashboard_overview => ' لوحة التحكم';
 }

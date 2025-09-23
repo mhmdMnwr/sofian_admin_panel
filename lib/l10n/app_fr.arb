@@ -14,5 +14,7 @@
   "users": "Utilisateurs",
   "clients": "Clients",
   "marks": "Marques",
-  "discounts": "Réductions"
+  "discounts": "Réductions",
+  "dashboard_overview": "Aperçu du tableau de bord"
+
 }

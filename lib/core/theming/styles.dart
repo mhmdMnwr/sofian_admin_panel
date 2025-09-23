@@ -51,6 +51,18 @@ class TextStyles {
     color: ColorsManager.mainBlue,
     fontWeight: FontWeightHelper.extraBold,
   );
+  static final font40blackExtraBold = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 40.sp,
+    color: Colors.black,
+    fontWeight: FontWeightHelper.extraBold,
+  );
+  static final font40whiteExtraBold = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 40.sp,
+    color: Colors.white,
+    fontWeight: FontWeightHelper.extraBold,
+  );
 
   static final hint = TextStyle(
     fontFamily: 'Inter',

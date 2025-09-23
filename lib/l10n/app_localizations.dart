@@ -192,6 +192,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Discounts'**
   String get discounts;
+
+  /// No description provided for @dashboard_overview.
+  ///
+  /// In en, this message translates to:
+  /// **'DashBoard Overview'**
+  String get dashboard_overview;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

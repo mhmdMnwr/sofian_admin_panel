@@ -55,4 +55,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get discounts => 'Discounts';
+
+  @override
+  String get dashboard_overview => 'DashBoard Overview';
 }
