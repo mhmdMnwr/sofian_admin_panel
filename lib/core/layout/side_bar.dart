@@ -6,7 +6,7 @@ import 'package:sofian_admin_panel/core/layout/sidebar_page_model.dart';
 import 'package:sofian_admin_panel/core/theming/app_colors.dart';
 import 'package:sofian_admin_panel/core/theming/styles.dart';
 import 'package:sofian_admin_panel/features/admin/data/model/admin_model.dart';
-import 'package:sofian_admin_panel/features/login/ui/modules/PC/widget/logo.dart';
+import 'package:sofian_admin_panel/features/login/ui/widget/logo.dart';
 
 class SideBar extends StatefulWidget {
   final AdminModel admin;

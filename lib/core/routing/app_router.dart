@@ -1,129 +1,107 @@
-// lib/core/routing/app_router.dart
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sofian_admin_panel/core/layout/sidebar_page_model.dart';
 import 'package:sofian_admin_panel/features/admin/data/model/admin_model.dart';
 import 'package:sofian_admin_panel/features/categories/ui/categories_page.dart';
 import 'package:sofian_admin_panel/features/dashboard/ui/dashboard_page.dart';
-import 'package:sofian_admin_panel/features/login/ui/responsive_login_page.dart';
+import 'package:sofian_admin_panel/features/login/ui/login_page.dart';
 import '../layout/main_shell.dart';
 
-/// SIMPLE, ROBUST ROUTER + DUMMY AUTH SERVICE
-/// - safe initialLocation ('/login')
-/// - centralized route -> permission map
-/// - redirect uses `state.subloc` and `startsWith` for nested routes
-/// - authService is a ChangeNotifier so GoRouter refreshes when auth changes
-///
-/// USAGE (during development with dummy data):
-///   authService.setCurrentAdmin(yourDummyAdminModel);
-///   runApp(MyApp());
-///
-/// Later, when you have real backend/cubit, replace authService.setCurrentAdmin
-/// with real login / fetch logic and notify listeners.
+// Helper function to check if user has permission for a specific route
+bool _hasPermissionForRoute(String route) {
+  // Get current admin (you can replace this with your state management solution)
+  final currentAdmin =
+      superAdmin; // Replace with your actual current admin logic from main_shell.dart
 
-/// Map each route to the permission key expected in AdminModel.permissions.
-/// Keep the keys consistent with what you'll store in DB / backend later.
-const Map<String, String> routePermissions = {
-  '/dashboard': 'dashboard',
-  '/categories': 'categories',
-  '/products': 'products',
-  '/marks': 'marks',
-  '/orders': 'orders',
-  '/clients': 'clients',
-  '/discounts': 'discounts',
-  '/users': 'users',
-  '/banners': 'banners',
-};
-
-/// Simple dummy auth service — replace with real service later.
-class DummyAuthService extends ChangeNotifier {
-  AdminModel? _currentAdmin;
-
-  AdminModel? get currentAdmin => _currentAdmin;
-
-  /// Set current admin and notify router to refresh redirects.
-  void setCurrentAdmin(AdminModel? admin) {
-    _currentAdmin = admin;
-    notifyListeners();
+  // SuperAdmin has access to everything
+  if (currentAdmin.role == Role.superAdmin) {
+    return true;
   }
 
-  bool hasPermissionForBaseRoute(String baseRoute) {
-    final admin = _currentAdmin;
-    if (admin == null) return false;
-    if (admin.role == Role.superAdmin) return true;
-    final required = routePermissions[baseRoute];
-    if (required == null) return false;
-    return admin.permissions?.contains(required) ?? false;
-  }
+  // Map routes to required permissions
+  final routePermissions = {
+    '/dashboard': PermissionsTypes.dashboard,
+    '/categories': PermissionsTypes.categories,
+    '/products': PermissionsTypes.products,
+    '/marks': PermissionsTypes.marks,
+    '/orders': PermissionsTypes.orders,
+    '/clients': PermissionsTypes.clients,
+    '/discounts': PermissionsTypes.discounts,
+    '/users': PermissionsTypes.users,
+    '/banners': PermissionsTypes.banners,
+  };
 
-  /// Return first permitted route or a fallback.
-  String firstPermittedRouteOrFallback() {
-    final admin = _currentAdmin;
-    if (admin == null) return '/login';
-    if (admin.role == Role.superAdmin) return '/dashboard';
-    for (final e in routePermissions.entries) {
-      if (admin.permissions?.contains(e.value) ?? false) return e.key;
-    }
-    // no permissions -> show access denied
-    return '/access-denied';
-  }
+  final requiredPermission = routePermissions[route];
+  if (requiredPermission == null) return false;
+
+  return currentAdmin.permissions?.contains(requiredPermission) ?? false;
 }
 
-final DummyAuthService authService = DummyAuthService();
+// Helper function to get the first permitted route for a user
+String _getFirstPermittedRoute() {
+  final currentAdmin =
+      superAdmin; // Replace with your actual current admin logic
 
-/// Build the GoRouter. We pass [authService] as refreshListenable so
-/// router will re-evaluate redirects when authService.notifyListeners() is called.
-final GoRouter appRouter = GoRouter(
-  initialLocation: '/login', // safe default
-  refreshListenable: authService,
-  redirect: (BuildContext context, GoRouterState state) {
-    final String requested = state.matchedLocation; // canonical location
+  final routePermissions = {
+    '/dashboard': PermissionsTypes.dashboard,
+    '/categories': PermissionsTypes.categories,
+    '/products': PermissionsTypes.products,
+    '/marks': PermissionsTypes.marks,
+    '/orders': PermissionsTypes.orders,
+    '/clients': PermissionsTypes.clients,
+    '/discounts': PermissionsTypes.discounts,
+    '/users': PermissionsTypes.users,
+    '/banners': PermissionsTypes.banners,
+  };
 
-    // Always allow login & access-denied pages
-    if (requested == '/login' || requested == '/access-denied') {
+  // SuperAdmin gets first route (dashboard)
+  if (currentAdmin.role == Role.superAdmin) {
+    return '/dashboard';
+  }
+
+  // Find first route user has permission for
+  for (final entry in routePermissions.entries) {
+    if (currentAdmin.permissions?.contains(entry.value) ?? false) {
+      return entry.key;
+    }
+  }
+
+  // No permissions found, redirect to login
+  return '/login';
+}
+
+final appRouter = GoRouter(
+  initialLocation: _getFirstPermittedRoute(),
+  redirect: (context, state) {
+    final requestedPath = state.uri.path;
+
+    // Allow login and access denied pages
+    if (requestedPath == '/login' || requestedPath == '/access-denied') {
       return null;
     }
 
-    final admin = authService.currentAdmin;
-
-    // Not logged in -> send to login
-    if (admin == null) return '/login';
-
-    // Super admin -> allow everything (redirect /login to dashboard)
-    if (admin.role == Role.superAdmin) {
-      if (requested == '/login') return '/dashboard';
-      return null;
-    }
-
-    // Find the base route key that matches requested path (supports nested, e.g. /orders/123)
-    final String baseRoute = routePermissions.keys.firstWhere(
-      (r) => requested == r || requested.startsWith('$r/'),
-      orElse: () => '',
-    );
-
-    // If route is not part of the permissions map, allow it (change to deny if desired)
-    if (baseRoute.isEmpty) return null;
-
-    // If the admin lacks permission for that base route, redirect
-    if (!authService.hasPermissionForBaseRoute(baseRoute)) {
-      // Option A: block and show access denied
+    // Check permission for requested route
+    if (!_hasPermissionForRoute(requestedPath)) {
+      // Option 1: Redirect to access denied page
       return '/access-denied';
 
-      // Option B: redirect to first permitted route instead:
-      // return authService.firstPermittedRouteOrFallback();
+      // Option 2: Redirect to first permitted page (uncomment line below and comment line above)
+      // return _getFirstPermittedRoute();
     }
 
-    // Allowed
-    return null;
+    return null; // Allow navigation
   },
-  routes: <RouteBase>[
-    // Public routes (no shell)
+  routes: [
+    // Login route outside the ShellRoute
     GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
+
+    // Access denied route outside the ShellRoute
     GoRoute(
       path: '/access-denied',
       builder: (context, state) => const AccessDeniedPage(),
     ),
 
-    // ShellRoute for pages that share the sidebar/layout
+    // Routes that need the sidebar
     ShellRoute(
       builder: (context, state, child) => MainShell(child: child),
       routes: [
@@ -146,7 +124,7 @@ final GoRouter appRouter = GoRouter(
         ),
         GoRoute(
           path: '/discounts',
-          builder: (context, state) => const DiscountsPage(),
+          builder: (context, state) => const Discounts(),
         ),
         GoRoute(
           path: '/clients',
@@ -162,65 +140,79 @@ final GoRouter appRouter = GoRouter(
   ],
 );
 
-/// ----- Placeholder page widgets (keep your real implementations instead) -----
+// Placeholder pages
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key});
+
   @override
-  Widget build(BuildContext context) =>
-      const Scaffold(body: Center(child: Text('Products')));
+  Widget build(BuildContext context) {
+    return const Scaffold(body: Center(child: Text('Products Page')));
+  }
 }
 
 class MarksPage extends StatelessWidget {
   const MarksPage({super.key});
+
   @override
-  Widget build(BuildContext context) =>
-      const Scaffold(body: Center(child: Text('Marks')));
+  Widget build(BuildContext context) {
+    return const Scaffold(body: Center(child: Text('Marks Page')));
+  }
 }
 
 class OrdersPage extends StatelessWidget {
   const OrdersPage({super.key});
+
   @override
-  Widget build(BuildContext context) =>
-      const Scaffold(body: Center(child: Text('Orders')));
+  Widget build(BuildContext context) {
+    return const Scaffold(body: Center(child: Text('Orders Page')));
+  }
 }
 
-class DiscountsPage extends StatelessWidget {
-  const DiscountsPage({super.key});
+class Discounts extends StatelessWidget {
+  const Discounts({super.key});
+
   @override
-  Widget build(BuildContext context) =>
-      const Scaffold(body: Center(child: Text('Discounts')));
+  Widget build(BuildContext context) {
+    return const Scaffold(body: Center(child: Text('Discounts Page')));
+  }
 }
 
 class ClientsPage extends StatelessWidget {
   const ClientsPage({super.key});
+
   @override
-  Widget build(BuildContext context) =>
-      const Scaffold(body: Center(child: Text('Clients')));
+  Widget build(BuildContext context) {
+    return const Scaffold(body: Center(child: Text('Clients Page')));
+  }
 }
 
 class UsersPage extends StatelessWidget {
   const UsersPage({super.key});
+
   @override
-  Widget build(BuildContext context) =>
-      const Scaffold(body: Center(child: Text('Users')));
+  Widget build(BuildContext context) {
+    return const Scaffold(body: Center(child: Text('Users Page')));
+  }
 }
 
 class BannersPage extends StatelessWidget {
   const BannersPage({super.key});
+
   @override
-  Widget build(BuildContext context) =>
-      const Scaffold(body: Center(child: Text('Banners')));
+  Widget build(BuildContext context) {
+    return const Scaffold(body: Center(child: Text('Banners Page')));
+  }
 }
 
-/// Simple Access Denied implementation
 class AccessDeniedPage extends StatelessWidget {
   const AccessDeniedPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.lock, size: 64, color: Colors.red),
             const SizedBox(height: 16),
@@ -232,8 +224,7 @@ class AccessDeniedPage extends StatelessWidget {
             const Text('You do not have permission to access this page.'),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () =>
-                  context.go(authService.firstPermittedRouteOrFallback()),
+              onPressed: () => context.go(_getFirstPermittedRoute()),
               child: const Text('Go to Home'),
             ),
           ],
