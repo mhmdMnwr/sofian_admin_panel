@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sofian_admin_panel/core/layout/sidebar_page_model.dart';
+import 'package:sofian_admin_panel/core/routing/routes.dart';
 import 'package:sofian_admin_panel/features/admin/data/model/admin_model.dart';
 import 'package:sofian_admin_panel/features/categories/ui/categories_page.dart';
 import 'package:sofian_admin_panel/features/dashboard/ui/dashboard_page.dart';
 import 'package:sofian_admin_panel/features/login/ui/login_page.dart';
 import '../layout/main_shell.dart';
+
+final routePermissions = {
+  Routes.dashboard: PermissionsTypes.dashboard,
+  Routes.categories: PermissionsTypes.categories,
+  Routes.products: PermissionsTypes.products,
+  Routes.marks: PermissionsTypes.marks,
+  Routes.orders: PermissionsTypes.orders,
+  Routes.clients: PermissionsTypes.clients,
+  Routes.discounts: PermissionsTypes.discounts,
+  Routes.users: PermissionsTypes.users,
+  Routes.banners: PermissionsTypes.banners,
+};
 
 // Helper function to check if user has permission for a specific route
 bool _hasPermissionForRoute(String route) {
@@ -19,17 +32,6 @@ bool _hasPermissionForRoute(String route) {
   }
 
   // Map routes to required permissions
-  final routePermissions = {
-    '/dashboard': PermissionsTypes.dashboard,
-    '/categories': PermissionsTypes.categories,
-    '/products': PermissionsTypes.products,
-    '/marks': PermissionsTypes.marks,
-    '/orders': PermissionsTypes.orders,
-    '/clients': PermissionsTypes.clients,
-    '/discounts': PermissionsTypes.discounts,
-    '/users': PermissionsTypes.users,
-    '/banners': PermissionsTypes.banners,
-  };
 
   final requiredPermission = routePermissions[route];
   if (requiredPermission == null) return false;
@@ -41,18 +43,6 @@ bool _hasPermissionForRoute(String route) {
 String _getFirstPermittedRoute() {
   final currentAdmin =
       superAdmin; // Replace with your actual current admin logic
-
-  final routePermissions = {
-    '/dashboard': PermissionsTypes.dashboard,
-    '/categories': PermissionsTypes.categories,
-    '/products': PermissionsTypes.products,
-    '/marks': PermissionsTypes.marks,
-    '/orders': PermissionsTypes.orders,
-    '/clients': PermissionsTypes.clients,
-    '/discounts': PermissionsTypes.discounts,
-    '/users': PermissionsTypes.users,
-    '/banners': PermissionsTypes.banners,
-  };
 
   // SuperAdmin gets first route (dashboard)
   if (currentAdmin.role == Role.superAdmin) {
@@ -76,14 +66,14 @@ final appRouter = GoRouter(
     final requestedPath = state.uri.path;
 
     // Allow login and access denied pages
-    if (requestedPath == '/login' || requestedPath == '/access-denied') {
+    if (requestedPath == Routes.login || requestedPath == Routes.accessDenied) {
       return null;
     }
 
     // Check permission for requested route
     if (!_hasPermissionForRoute(requestedPath)) {
       // Option 1: Redirect to access denied page
-      return '/access-denied';
+      return Routes.accessDenied;
 
       // Option 2: Redirect to first permitted page (uncomment line below and comment line above)
       // return _getFirstPermittedRoute();
@@ -93,11 +83,11 @@ final appRouter = GoRouter(
   },
   routes: [
     // Login route outside the ShellRoute
-    GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
+    GoRoute(path: Routes.login, builder: (context, state) => const LoginPage()),
 
     // Access denied route outside the ShellRoute
     GoRoute(
-      path: '/access-denied',
+      path: Routes.accessDenied,
       builder: (context, state) => const AccessDeniedPage(),
     ),
 
@@ -106,33 +96,39 @@ final appRouter = GoRouter(
       builder: (context, state, child) => MainShell(child: child),
       routes: [
         GoRoute(
-          path: '/dashboard',
+          path: Routes.dashboard,
           builder: (context, state) => const DashboardPage(),
         ),
         GoRoute(
-          path: '/categories',
+          path: Routes.categories,
           builder: (context, state) => const CategoriesPage(),
         ),
         GoRoute(
-          path: '/products',
+          path: Routes.products,
           builder: (context, state) => const ProductPage(),
         ),
-        GoRoute(path: '/marks', builder: (context, state) => const MarksPage()),
         GoRoute(
-          path: '/orders',
+          path: Routes.marks,
+          builder: (context, state) => const MarksPage(),
+        ),
+        GoRoute(
+          path: Routes.orders,
           builder: (context, state) => const OrdersPage(),
         ),
         GoRoute(
-          path: '/discounts',
+          path: Routes.discounts,
           builder: (context, state) => const Discounts(),
         ),
         GoRoute(
-          path: '/clients',
+          path: Routes.clients,
           builder: (context, state) => const ClientsPage(),
         ),
-        GoRoute(path: '/users', builder: (context, state) => const UsersPage()),
         GoRoute(
-          path: '/banners',
+          path: Routes.users,
+          builder: (context, state) => const UsersPage(),
+        ),
+        GoRoute(
+          path: Routes.banners,
           builder: (context, state) => const BannersPage(),
         ),
       ],

@@ -58,4 +58,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dashboard_overview => 'Aperçu du tableau de bord';
+
+  @override
+  String get cancel => 'Annuler';
+
+  @override
+  String get select_language => 'Sélectionner la langue';
+
+  @override
+  String get revenue => 'Revenus';
 }

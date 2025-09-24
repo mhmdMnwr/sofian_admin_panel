@@ -23,9 +23,6 @@ class _SideBarState extends State<SideBar> {
       widget.admin,
       pages(context),
     );
-    setState(() {
-      context.go(permittePages.first.route);
-    });
 
     return Container(
       width: 250.w,

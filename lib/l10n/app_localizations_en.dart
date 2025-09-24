@@ -58,4 +58,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dashboard_overview => 'DashBoard Overview';
+
+  @override
+  String get cancel => 'cancel';
+
+  @override
+  String get select_language => 'Select Language';
+
+  @override
+  String get revenue => 'Revenues';
 }

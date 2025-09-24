@@ -198,6 +198,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'DashBoard Overview'**
   String get dashboard_overview;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'cancel'**
+  String get cancel;
+
+  /// No description provided for @select_language.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Language'**
+  String get select_language;
+
+  /// No description provided for @revenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Revenues'**
+  String get revenue;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

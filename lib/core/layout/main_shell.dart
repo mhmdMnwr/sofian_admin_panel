@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sofian_admin_panel/core/layout/side_bar.dart';
 import 'package:sofian_admin_panel/core/layout/sidebar_page_model.dart';
 import 'package:sofian_admin_panel/features/admin/data/model/admin_model.dart';
@@ -26,7 +27,10 @@ class MainShell extends StatelessWidget {
                   children: [
                     SettingsRow(),
                     Expanded(
-                      child: Container(color: Colors.grey[100], child: child),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: Container(color: Colors.grey[100], child: child),
+                      ),
                     ),
                   ],
                 ),

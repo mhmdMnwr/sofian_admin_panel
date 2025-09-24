@@ -7,12 +7,16 @@ class ColorsManager {
   static const Color background = Color(0xFFF5F5F5);
   static const Color text = Color(0xFF212121);
   static const Color mainBlue = Color(0xFF4477AC);
+  static const Color secondaryBlue = Color(0xFF024CAA);
   static const Color sideBarBackgroundLight = Color(0xFFEDEDED);
+  static const Color growthGreen = Color(0xFF0CC546);
+  static const Color lossRed = Color(0xFFC62E2E);
 
   // Dark theme colors
-  static const Color primaryDark = Color(0xFF121212);
+  static const Color primaryDark = Color(0xFF181818);
   static const Color secondaryDark = Color(0xFF00796B);
   static const Color backgroundDark = Color(0xFF303030);
   static const Color textDark = Color(0xFFFFFFFF);
-  static const Color sideBarBackgroundDark = Color(0xFF181818);
+  static const Color sideBarBackgroundDark = Color(0xFF121212);
+  static const Color mainPurple = Color(0xFFAA02A6);
 }

@@ -17,4 +17,8 @@ class IconsManager {
   static const String changeLanguage = "${path}change_language.png";
   static const String darkMode = "${path}dark_mode.png";
   static const String lightMode = "${path}light_mode.png";
+  static const String completedOrders = "${path}completed_orders.png";
+  static const String revenue = "${path}revenue.png";
+  static const String growth = "${path}growth.png";
+  static const String loss = "${path}loss.png";
 }

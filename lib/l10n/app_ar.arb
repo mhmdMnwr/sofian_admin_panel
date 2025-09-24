@@ -15,5 +15,9 @@
   "clients": "العملاء",
   "marks": "الماركات",
   "discounts": "الخصومات",
-  "dashboard_overview": " لوحة التحكم"
+  "dashboard_overview": " لوحة التحكم",
+  "cancel" :"إلغاء",
+  "select_language":"إختر اللغة",
+  "revenue":"الإيرادات"
+  
 }

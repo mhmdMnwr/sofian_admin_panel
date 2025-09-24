@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sofian_admin_panel/core/helpers/spacing.dart';
 import 'package:sofian_admin_panel/core/theming/app_icons.dart';
 import 'package:sofian_admin_panel/core/theming/cubit/theme_cubit.dart';
+import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 import 'package:sofian_admin_panel/l10n/cubit/locale_cubit.dart';
 
 class SettingsRow extends StatelessWidget {
@@ -11,7 +12,7 @@ class SettingsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    change_theme_icon() {
+    changeThemeIcon() {
       final isDark = context.read<ThemeCubit>().state.isDark;
       if (isDark) {
         return IconsManager.lightMode;
@@ -24,7 +25,7 @@ class SettingsRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          _iconButton(change_theme_icon(), () {
+          _iconButton(changeThemeIcon(), () {
             context.read<ThemeCubit>().toggleTheme();
           }, context),
           horizontalSpace(10),
@@ -66,7 +67,7 @@ class SettingsRow extends StatelessWidget {
             return Directionality(
               textDirection: context.read<LocaleCubit>().textDirection,
               child: AlertDialog(
-                title: const Text('Select Language'),
+                title: Text(AppLocalizations.of(context)!.select_language),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: LocaleCubit.supportedLocales.map((locale) {
@@ -79,6 +80,7 @@ class SettingsRow extends StatelessWidget {
                     return ListTile(
                       title: Text(
                         displayName,
+                        style: Theme.of(context).textTheme.bodyMedium,
                         textAlign: locale.languageCode == 'ar'
                             ? TextAlign.right
                             : TextAlign.left,
@@ -86,7 +88,7 @@ class SettingsRow extends StatelessWidget {
                       trailing: isSelected
                           ? Icon(
                               Icons.check,
-                              color: Theme.of(context).primaryColor,
+                              color: Theme.of(context).iconTheme.color,
                             )
                           : null,
                       onTap: () {
@@ -99,7 +101,7 @@ class SettingsRow extends StatelessWidget {
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Cancel'),
+                    child: Text(AppLocalizations.of(context)!.cancel),
                   ),
                 ],
               ),

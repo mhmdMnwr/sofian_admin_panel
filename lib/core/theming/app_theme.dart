@@ -10,8 +10,9 @@ class ThemeManager {
     primaryColor: ColorsManager.sideBarBackgroundLight,
     scaffoldBackgroundColor: const Color(0xFFF5F5F5),
     textTheme: TextTheme(
-      bodyMedium: TextStyles.font20blackBold,
-      bodyLarge: TextStyles.font40blackExtraBold,
+      bodyMedium: TextStyles.font23blackBold,
+      bodyLarge: TextStyles.font30blackExtraBold,
+      headlineMedium: TextStyles.font21mainBlueExtraBold,
     ),
     iconTheme: const IconThemeData(color: Colors.black),
 
@@ -28,8 +29,9 @@ class ThemeManager {
     primaryColor: ColorsManager.sideBarBackgroundDark,
     scaffoldBackgroundColor: ColorsManager.backgroundDark,
     textTheme: TextTheme(
-      bodyMedium: TextStyles.font20whiteBold,
-      bodyLarge: TextStyles.font40whiteExtraBold,
+      bodyMedium: TextStyles.font23whiteBold,
+      bodyLarge: TextStyles.font30whiteExtraBold,
+      headlineMedium: TextStyles.font21mainPurpleExtraBold,
     ),
     iconTheme: const IconThemeData(color: Colors.white),
 

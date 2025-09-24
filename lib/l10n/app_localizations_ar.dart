@@ -58,4 +58,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get dashboard_overview => ' لوحة التحكم';
+
+  @override
+  String get cancel => 'إلغاء';
+
+  @override
+  String get select_language => 'إختر اللغة';
+
+  @override
+  String get revenue => 'الإيرادات';
 }

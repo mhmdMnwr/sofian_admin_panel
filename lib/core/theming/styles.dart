@@ -11,16 +11,16 @@ class TextStyles {
     fontWeight: FontWeightHelper.medium,
   );
 
-  static final font20blackBold = TextStyle(
+  static final font23blackBold = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 20.sp,
+    fontSize: 23.sp,
     color: ColorsManager.text,
     fontWeight: FontWeightHelper.bold,
   );
 
-  static final font20whiteBold = TextStyle(
+  static final font23whiteBold = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 20.sp,
+    fontSize: 23.sp,
     color: ColorsManager.textDark,
     fontWeight: FontWeightHelper.bold,
   );
@@ -51,16 +51,49 @@ class TextStyles {
     color: ColorsManager.mainBlue,
     fontWeight: FontWeightHelper.extraBold,
   );
-  static final font40blackExtraBold = TextStyle(
+  static final font21mainPurpleExtraBold = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 40.sp,
+    fontSize: 21.sp,
+    color: ColorsManager.mainPurple,
+    fontWeight: FontWeightHelper.extraBold,
+  );
+
+  static final font25mainBlueExtraBold = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 25.sp,
+    color: ColorsManager.mainBlue,
+    fontWeight: FontWeightHelper.extraBold,
+  );
+  static final font30blackExtraBold = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 30.sp,
     color: Colors.black,
     fontWeight: FontWeightHelper.extraBold,
   );
-  static final font40whiteExtraBold = TextStyle(
+  static final font30whiteExtraBold = TextStyle(
     fontFamily: 'Inter',
-    fontSize: 40.sp,
+    fontSize: 30.sp,
     color: Colors.white,
+    fontWeight: FontWeightHelper.extraBold,
+  );
+
+  static final font22blackMedium = TextStyle(
+    fontFamily: "Inter",
+    fontSize: 22.sp,
+    color: Colors.black,
+    fontWeight: FontWeightHelper.medium,
+  );
+
+  static final font16GreenExtraBold = TextStyle(
+    fontFamily: "Inter",
+    fontSize: 16.sp,
+    color: ColorsManager.growthGreen,
+    fontWeight: FontWeightHelper.extraBold,
+  );
+  static final font16RedExtraBold = TextStyle(
+    fontFamily: "Inter",
+    fontSize: 16.sp,
+    color: ColorsManager.lossRed,
     fontWeight: FontWeightHelper.extraBold,
   );
 

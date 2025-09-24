@@ -15,6 +15,9 @@
   "clients": "Clients",
   "marks": "Marques",
   "discounts": "Réductions",
-  "dashboard_overview": "Aperçu du tableau de bord"
+  "dashboard_overview": "Aperçu du tableau de bord",
+  "cancel": "Annuler",
+  "select_language": "Sélectionner la langue",
+  "revenue": "Revenus"
 
 }
