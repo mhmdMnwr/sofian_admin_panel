@@ -76,4 +76,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get last_12_months => 'Last 12 months';
+
+  @override
+  String get top_selling_products => 'Top Selling Products';
+
+  @override
+  String get sales_by_product_category => 'Sales by product category';
+
+  @override
+  String get product_details => 'Product Details';
+
+  @override
+  String get top => 'Top';
+
+  @override
+  String get units => 'units';
 }

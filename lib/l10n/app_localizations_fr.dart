@@ -76,4 +76,19 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get last_12_months => '12 derniers mois';
+
+  @override
+  String get top_selling_products => 'Produits les plus vendus';
+
+  @override
+  String get sales_by_product_category => 'Ventes par catégorie de produit';
+
+  @override
+  String get product_details => 'Détails du produit';
+
+  @override
+  String get top => 'Top';
+
+  @override
+  String get units => 'unités';
 }

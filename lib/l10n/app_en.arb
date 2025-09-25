@@ -22,5 +22,10 @@
   "revenue":"Revenues",
   "last_7_days": "Last 7 days",
   "this_year": "This year",
-  "last_12_months": "Last 12 months"
+  "last_12_months": "Last 12 months",
+  "top_selling_products": "Top Selling Products",
+  "sales_by_product_category": "Sales by product category",
+  "product_details": "Product Details",
+  "top": "Top",
+  "units": "units"
 }

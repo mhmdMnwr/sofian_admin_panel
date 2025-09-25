@@ -76,4 +76,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get last_12_months => 'آخر 12 شهر';
+
+  @override
+  String get top_selling_products => 'أفضل المنتجات مبيعا';
+
+  @override
+  String get sales_by_product_category => 'المبيعات حسب فئة المنتج';
+
+  @override
+  String get product_details => 'تفاصيل المنتج';
+
+  @override
+  String get top => 'أفضل';
+
+  @override
+  String get units => 'وحدة';
 }

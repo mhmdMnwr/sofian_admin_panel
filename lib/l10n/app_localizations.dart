@@ -234,6 +234,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last 12 months'**
   String get last_12_months;
+
+  /// No description provided for @top_selling_products.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Selling Products'**
+  String get top_selling_products;
+
+  /// No description provided for @sales_by_product_category.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales by product category'**
+  String get sales_by_product_category;
+
+  /// No description provided for @product_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Product Details'**
+  String get product_details;
+
+  /// No description provided for @top.
+  ///
+  /// In en, this message translates to:
+  /// **'Top'**
+  String get top;
+
+  /// No description provided for @units.
+  ///
+  /// In en, this message translates to:
+  /// **'units'**
+  String get units;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -22,6 +22,10 @@
   "revenue":"الإيرادات",
   "last_7_days": "آخر 7 أيام",
   "this_year": "هذا العام",
-  "last_12_months": "آخر 12 شهر"
-  
+  "last_12_months": "آخر 12 شهر",
+  "top_selling_products": "أفضل المنتجات مبيعا",
+  "sales_by_product_category": "المبيعات حسب فئة المنتج",
+  "product_details": "تفاصيل المنتج",
+  "top": "أفضل",
+  "units": "وحدة"
 }

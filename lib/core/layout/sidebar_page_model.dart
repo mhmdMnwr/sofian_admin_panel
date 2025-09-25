@@ -68,7 +68,7 @@ List<SideBarPages> pages(BuildContext context) => [
   ),
 
   SideBarPages(
-    title: 'Orders',
+    title: AppLocalizations.of(context)!.orders,
     icon: IconsManager.orders,
     route: '/orders',
     permission: PermissionsTypes.orders,

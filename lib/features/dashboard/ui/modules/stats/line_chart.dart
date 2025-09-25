@@ -146,10 +146,9 @@ class _LineChartWidgetState extends State<LineChartWidget> {
           gridData: FlGridData(
             show: true,
             drawVerticalLine: false,
+            drawHorizontalLine: true,
+
             horizontalInterval: _getGridInterval(),
-            getDrawingHorizontalLine: (value) {
-              return FlLine(color: Colors.grey.shade200, strokeWidth: 1);
-            },
           ),
           titlesData: FlTitlesData(
             show: true,
@@ -168,7 +167,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                     _formatYAxisValue(value),
                     style: TextStyle(
                       color: Colors.grey.shade600,
-                      fontSize: 10.sp,
+                      fontSize: 15.sp,
                     ),
                   );
                 },
@@ -203,14 +202,8 @@ class _LineChartWidgetState extends State<LineChartWidget> {
             LineChartBarData(
               spots: _getDataForSelectedChart(),
               isCurved: true,
-              gradient: const LinearGradient(
-                colors: [Color(0xff4477AC), Color(0xff024CAA)],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ),
               barWidth: 3,
               isStrokeCapRound: true,
-              dotData: const FlDotData(show: true),
               belowBarData: BarAreaData(
                 show: true,
                 gradient: LinearGradient(
