@@ -1,4 +1,5 @@
 {
+  "@@locale": "en",
   "hello": "Hello",
   "welcome": "Welcome Back",
   "login": "Login",
@@ -18,5 +19,8 @@
   "dashboard_overview": "DashBoard Overview",
   "cancel" : "cancel",
   "select_language":"Select Language",
-  "revenue":"Revenues"
+  "revenue":"Revenues",
+  "last_7_days": "Last 7 days",
+  "this_year": "This year",
+  "last_12_months": "Last 12 months"
 }

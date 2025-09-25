@@ -67,4 +67,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get revenue => 'Revenus';
+
+  @override
+  String get last_7_days => '7 derniers jours';
+
+  @override
+  String get this_year => 'Cette année';
+
+  @override
+  String get last_12_months => '12 derniers mois';
 }

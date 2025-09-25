@@ -67,4 +67,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get revenue => 'Revenues';
+
+  @override
+  String get last_7_days => 'Last 7 days';
+
+  @override
+  String get this_year => 'This year';
+
+  @override
+  String get last_12_months => 'Last 12 months';
 }

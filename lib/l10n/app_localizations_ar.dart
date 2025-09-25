@@ -67,4 +67,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get revenue => 'الإيرادات';
+
+  @override
+  String get last_7_days => 'آخر 7 أيام';
+
+  @override
+  String get this_year => 'هذا العام';
+
+  @override
+  String get last_12_months => 'آخر 12 شهر';
 }

@@ -1,4 +1,5 @@
 {
+  "@@locale": "ar",
   "hello": "مرحبا",
   "welcome": "أهلا بك",
   "login": "تسجيل الدخول",
@@ -18,6 +19,9 @@
   "dashboard_overview": " لوحة التحكم",
   "cancel" :"إلغاء",
   "select_language":"إختر اللغة",
-  "revenue":"الإيرادات"
+  "revenue":"الإيرادات",
+  "last_7_days": "آخر 7 أيام",
+  "this_year": "هذا العام",
+  "last_12_months": "آخر 12 شهر"
   
 }

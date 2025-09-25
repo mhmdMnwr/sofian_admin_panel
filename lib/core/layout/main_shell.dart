@@ -29,7 +29,7 @@ class MainShell extends StatelessWidget {
                     Expanded(
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        child: Container(color: Colors.grey[100], child: child),
+                        child: child,
                       ),
                     ),
                   ],

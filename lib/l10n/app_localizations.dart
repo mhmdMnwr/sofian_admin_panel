@@ -216,6 +216,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Revenues'**
   String get revenue;
+
+  /// No description provided for @last_7_days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get last_7_days;
+
+  /// No description provided for @this_year.
+  ///
+  /// In en, this message translates to:
+  /// **'This year'**
+  String get this_year;
+
+  /// No description provided for @last_12_months.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 12 months'**
+  String get last_12_months;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
