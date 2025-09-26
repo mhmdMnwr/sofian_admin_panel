@@ -91,4 +91,37 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get units => 'وحدة';
+
+  @override
+  String get pending => 'قيد الانتظار';
+
+  @override
+  String get delivered => 'تم التوصيل';
+
+  @override
+  String get canceled => 'ملغاة';
+
+  @override
+  String get shipped => 'تم الشحن';
+
+  @override
+  String get processing => 'قيد المعالجة';
+
+  @override
+  String get recent_orders => 'الطلبات الأخيرة';
+
+  @override
+  String get userName => 'اسم المستخدم';
+
+  @override
+  String get order_id => 'رقم الطلب';
+
+  @override
+  String get total_price => 'السعر الإجمالي';
+
+  @override
+  String get status => 'الحالة';
+
+  @override
+  String get action => 'الإجراء';
 }

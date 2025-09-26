@@ -12,6 +12,7 @@ class ThemeManager {
     textTheme: TextTheme(
       bodyMedium: TextStyles.font23blackBold,
       bodyLarge: TextStyles.font30blackExtraBold,
+      bodySmall: TextStyles.font16blackRegular,
       headlineMedium: TextStyles.font21mainBlueExtraBold,
     ),
     iconTheme: const IconThemeData(color: Colors.black),
@@ -31,6 +32,7 @@ class ThemeManager {
     textTheme: TextTheme(
       bodyMedium: TextStyles.font23whiteBold,
       bodyLarge: TextStyles.font30whiteExtraBold,
+      bodySmall: TextStyles.font16whiteRegular,
       headlineMedium: TextStyles.font21mainPurpleExtraBold,
     ),
     iconTheme: const IconThemeData(color: Colors.white),

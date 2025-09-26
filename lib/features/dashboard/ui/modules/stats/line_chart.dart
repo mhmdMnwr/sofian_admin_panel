@@ -227,8 +227,9 @@ class _LineChartWidgetState extends State<LineChartWidget> {
     final localizations = AppLocalizations.of(context)!;
     if (selectedTimePeriod == localizations.last_7_days) return 'Last 7 days';
     if (selectedTimePeriod == localizations.this_year) return 'This year';
-    if (selectedTimePeriod == localizations.last_12_months)
+    if (selectedTimePeriod == localizations.last_12_months) {
       return 'Last 12 months';
+    }
     return 'This year'; // fallback
   }
 

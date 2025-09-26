@@ -91,4 +91,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get units => 'units';
+
+  @override
+  String get pending => 'Pending';
+
+  @override
+  String get delivered => 'Delivered';
+
+  @override
+  String get canceled => 'Canceled';
+
+  @override
+  String get shipped => 'Shipped';
+
+  @override
+  String get processing => 'Processing';
+
+  @override
+  String get recent_orders => 'Recent Orders';
+
+  @override
+  String get userName => 'User Name';
+
+  @override
+  String get order_id => 'Order ID';
+
+  @override
+  String get total_price => 'Total Price';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get action => 'Action';
 }

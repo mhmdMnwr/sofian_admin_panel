@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:sofian_admin_panel/core/helpers/spacing.dart';
+import 'package:sofian_admin_panel/features/dashboard/ui/modules/orders%20&%20clients/orders/recent_orders.dart';
 
 class RecentOrdersAndActiveClients extends StatelessWidget {
   const RecentOrdersAndActiveClients({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Row(
+      children: [
+        Expanded(flex: 3, child: const RecentOrders()),
+        horizontalSpace(20),
+        Expanded(flex: 1, child: SizedBox()),
+      ],
+    );
   }
 }

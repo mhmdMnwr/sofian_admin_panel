@@ -11,6 +11,10 @@ class ColorsManager {
   static const Color sideBarBackgroundLight = Color(0xFFEDEDED);
   static const Color growthGreen = Color(0xFF0CC546);
   static const Color lossRed = Color(0xFFC62E2E);
+  static const Color processing = Color(0xFF98C3DC);
+  static const Color pending = Color(0xFFAFAFAF);
+  static const Color delivered = Color(0xFF00712D);
+  static const Color grey = Color(0xFFE5E5E5);
 
   // Dark theme colors
   static const Color primaryDark = Color(0xFF181818);

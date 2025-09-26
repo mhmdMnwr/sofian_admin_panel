@@ -21,4 +21,7 @@ class IconsManager {
   static const String revenue = "${path}revenue.png";
   static const String growth = "${path}growth.png";
   static const String loss = "${path}loss.png";
+  static const String edit = "${path}edit.png";
+  static const String delete = "${path}delete.png";
+  static const String preview = "${path}preview.png";
 }

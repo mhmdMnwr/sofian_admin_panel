@@ -91,4 +91,37 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get units => 'unités';
+
+  @override
+  String get pending => 'En attente';
+
+  @override
+  String get delivered => 'Livré';
+
+  @override
+  String get canceled => 'Annulé';
+
+  @override
+  String get shipped => 'Expédié';
+
+  @override
+  String get processing => 'En traitement';
+
+  @override
+  String get recent_orders => 'Commandes récentes';
+
+  @override
+  String get userName => 'Nom d\'utilisateur';
+
+  @override
+  String get order_id => 'ID de commande';
+
+  @override
+  String get total_price => 'Prix total';
+
+  @override
+  String get status => 'Statut';
+
+  @override
+  String get action => 'Action';
 }

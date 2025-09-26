@@ -27,5 +27,16 @@
   "sales_by_product_category": "Ventes par catégorie de produit",
   "product_details": "Détails du produit",
   "top": "Top",
-  "units": "unités"
+  "units": "unités",
+  "pending": "En attente",
+  "delivered": "Livré",
+  "canceled": "Annulé",
+  "shipped": "Expédié",
+  "processing": "En traitement",
+  "recent_orders": "Commandes récentes" ,
+  "userName": "Nom d'utilisateur",
+  "order_id": "ID de commande",
+  "total_price": "Prix total",
+  "status": "Statut",
+  "action": "Action"
 }

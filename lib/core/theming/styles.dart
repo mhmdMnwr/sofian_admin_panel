@@ -97,6 +97,19 @@ class TextStyles {
     fontWeight: FontWeightHelper.extraBold,
   );
 
+  static final font16whiteRegular = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 16.sp,
+    color: Colors.white,
+    fontWeight: FontWeightHelper.regular,
+  );
+  static final font16blackRegular = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 16.sp,
+    color: Colors.black,
+    fontWeight: FontWeightHelper.regular,
+  );
+
   static final hint = TextStyle(
     fontFamily: 'Inter',
     fontSize: 20.sp,

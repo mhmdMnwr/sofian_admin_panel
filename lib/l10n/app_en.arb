@@ -27,5 +27,18 @@
   "sales_by_product_category": "Sales by product category",
   "product_details": "Product Details",
   "top": "Top",
-  "units": "units"
+  "units": "units",
+  "pending": "Pending",
+  "delivered": "Delivered",
+  "canceled": "Canceled",
+  "shipped": "Shipped",
+  "processing": "Processing",
+  "recent_orders": "Recent Orders",
+  "userName": "User Name",
+  "order_id": "Order ID",
+  "total_price": "Total Price",
+  "status": "Status",
+  "action": "Action"
+
+  
 }

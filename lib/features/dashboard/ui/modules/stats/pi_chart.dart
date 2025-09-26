@@ -133,14 +133,14 @@ class _TopSellingProductsPieChartState
                   },
                 ),
                 borderData: FlBorderData(show: false),
-                sectionsSpace: 0,
-                centerSpaceRadius: 40,
+                sectionsSpace: 2,
+                centerSpaceRadius: 90.r,
                 sections: pieChartSections.asMap().entries.map((entry) {
                   final index = entry.key;
                   final section = entry.value;
                   final isTouched = index == touchedIndex;
                   final fontSize = isTouched ? 14.sp : 12.sp;
-                  final radius = isTouched ? 70.0 : 60.0;
+                  final radius = isTouched ? 70.0.r : 60.0.r;
 
                   return PieChartSectionData(
                     color: section.color,
@@ -171,7 +171,7 @@ class _TopSellingProductsPieChartState
       selectedProductCount,
     );
 
-    return Container(
+    return SizedBox(
       height: 300.h,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

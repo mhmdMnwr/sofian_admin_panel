@@ -27,5 +27,16 @@
   "sales_by_product_category": "المبيعات حسب فئة المنتج",
   "product_details": "تفاصيل المنتج",
   "top": "أفضل",
-  "units": "وحدة"
+  "units": "وحدة",
+  "pending": "قيد الانتظار",
+  "delivered": "تم التوصيل",
+  "canceled": "ملغاة",
+  "shipped": "تم الشحن",
+  "processing": "قيد المعالجة",
+  "recent_orders": "الطلبات الأخيرة",
+  "userName": "اسم المستخدم",
+  "order_id": "رقم الطلب",
+  "total_price": "السعر الإجمالي",
+  "status": "الحالة",
+  "action": "الإجراء"
 }
