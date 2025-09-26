@@ -85,7 +85,10 @@ class _TopSellingProductsPieChartState
             .map(
               (int value) => DropdownMenuItem<int>(
                 value: value,
-                child: Text('${AppLocalizations.of(context)!.top} $value', style: TextStyle(fontSize: 12.sp)),
+                child: Text(
+                  '${AppLocalizations.of(context)!.top} $value',
+                  style: TextStyle(fontSize: 12.sp),
+                ),
               ),
             )
             .toList(),
