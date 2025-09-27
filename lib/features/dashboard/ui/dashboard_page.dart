@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sofian_admin_panel/core/helpers/constants.dart';
 import 'package:sofian_admin_panel/core/widgets/page_title.dart';
 import 'package:sofian_admin_panel/features/dashboard/ui/modules/overview%20stats/overview_stats.dart';
 import 'package:sofian_admin_panel/features/dashboard/ui/modules/orders%20&%20clients/recent_orders_and_active_clients.dart';
@@ -13,6 +14,9 @@ class DashboardPage extends StatelessWidget {
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       child: ListView(
+        padding: EdgeInsets.symmetric(
+          horizontal: AppConstants.pageHorizontalPadding,
+        ),
         children: [
           PageTitle(pageName: AppLocalizations.of(context)!.dashboard_overview),
           OverviewStats(),

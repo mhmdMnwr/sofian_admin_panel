@@ -330,6 +330,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Action'**
   String get action;
+
+  /// No description provided for @active_client.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Clients'**
+  String get active_client;
+
+  /// No description provided for @last_month.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Month'**
+  String get last_month;
+
+  /// No description provided for @life_time.
+  ///
+  /// In en, this message translates to:
+  /// **'Lifetime'**
+  String get life_time;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -10,13 +10,6 @@ class HeaderRow extends StatelessWidget {
       DataColumn(
         label: Container(
           width: 200.w, // Fixed width matching data cells
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Text(
-            AppLocalizations.of(context)!.userName,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(fontSize: 15.sp),
-          ),
         ),
       ),
       DataColumn(
@@ -56,6 +49,77 @@ class HeaderRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(); // Not used for DataTable
+    return Container(
+      height: 60.h,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        border: Border(bottom: BorderSide(color: Colors.grey, width: 0.8)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 200.w,
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              AppLocalizations.of(context)!.userName,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+                fontSize: 15.sp,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                AppLocalizations.of(context)!.order_id,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15.sp,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                AppLocalizations.of(context)!.total_price,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15.sp,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                AppLocalizations.of(context)!.status,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15.sp,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                AppLocalizations.of(context)!.action,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15.sp,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

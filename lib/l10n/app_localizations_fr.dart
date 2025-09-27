@@ -124,4 +124,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get action => 'Action';
+
+  @override
+  String get active_client => 'Client actif';
+
+  @override
+  String get last_month => 'Le mois dernier';
+
+  @override
+  String get life_time => 'Durée de vie';
 }

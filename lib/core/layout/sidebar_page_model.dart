@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sofian_admin_panel/core/theming/app_colors.dart';
 import 'package:sofian_admin_panel/core/theming/app_icons.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
@@ -32,8 +31,8 @@ class SideBarPages {
   Widget getIconWidget(BuildContext context, bool isActive) {
     return Image.asset(
       icon,
-      width: 28.sp,
-      height: 28.sp,
+      width: 26,
+      height: 26,
       color: isActive
           ? ColorsManager.mainBlue
           : Theme.of(context).iconTheme.color,

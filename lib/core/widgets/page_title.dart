@@ -6,6 +6,9 @@ class PageTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(pageName, style: Theme.of(context).textTheme.bodyLarge);
+    return Text(
+      pageName,
+      style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 28),
+    );
   }
 }

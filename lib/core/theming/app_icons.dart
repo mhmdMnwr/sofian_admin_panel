@@ -24,4 +24,6 @@ class IconsManager {
   static const String edit = "${path}edit.png";
   static const String delete = "${path}delete.png";
   static const String preview = "${path}preview.png";
+  static const String cart = "${path}cart.png";
+  static const String profile = "${path}profile.png";
 }

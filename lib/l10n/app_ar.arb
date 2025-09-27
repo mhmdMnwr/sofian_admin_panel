@@ -38,5 +38,8 @@
   "order_id": "رقم الطلب",
   "total_price": "السعر الإجمالي",
   "status": "الحالة",
-  "action": "الإجراء"
+  "action": "الإجراء",
+  "active_client" : "العملاء النشطون",
+  "last_month" :"آخر شهر",
+  "life_time" :"مدى الحياة"
 }

@@ -188,10 +188,10 @@ class _TopSellingProductsPieChartState
                 final product = topProducts[index];
                 final percentage = (product.salesValue / totalSales) * 100;
                 final categoryColors = {
-                  'Dairy': const Color(0xFF4CAF50),
-                  'Drinks': const Color(0xFF2196F3),
-                  'Snacks': const Color(0xFFFF9800),
-                  'Frozen': const Color(0xFF9C27B0),
+                  'Dairy': const Color(0x012350),
+                  'Drinks': const Color(0xFF024CAA),
+                  'Snacks': const Color(0xFF27548A),
+                  'Frozen': const Color(0xFF00809D),
                 };
                 final color = categoryColors[product.category] ?? Colors.grey;
 

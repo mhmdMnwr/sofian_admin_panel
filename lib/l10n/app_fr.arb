@@ -38,5 +38,8 @@
   "order_id": "ID de commande",
   "total_price": "Prix total",
   "status": "Statut",
-  "action": "Action"
+  "action": "Action",
+  "active_client" : "Client actif",
+  "last_month" :"Le mois dernier",
+  "life_time" : "Durée de vie"
 }

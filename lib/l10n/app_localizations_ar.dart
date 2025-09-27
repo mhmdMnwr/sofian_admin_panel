@@ -124,4 +124,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get action => 'الإجراء';
+
+  @override
+  String get active_client => 'العملاء النشطون';
+
+  @override
+  String get last_month => 'آخر شهر';
+
+  @override
+  String get life_time => 'مدى الحياة';
 }

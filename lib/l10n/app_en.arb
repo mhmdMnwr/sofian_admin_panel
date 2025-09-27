@@ -38,7 +38,10 @@
   "order_id": "Order ID",
   "total_price": "Total Price",
   "status": "Status",
-  "action": "Action"
+  "action": "Action",
+  "active_client" : "Active Clients",
+  "last_month" :"Last Month",
+  "life_time" :"Lifetime"
 
   
 }

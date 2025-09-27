@@ -21,8 +21,8 @@ class Logo extends StatelessWidget {
       child: Center(
         child: Image.asset(
           IconsManager.logo,
-          width: 300,
-          height: 120.h,
+          width: 280,
+          height: 120,
           fit: BoxFit.contain,
         ),
       ),

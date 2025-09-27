@@ -334,10 +334,10 @@ class TopProductsTable {
 
     // Define colors for different grocery categories
     final categoryColors = {
-      'Dairy': const Color(0xFF4CAF50), // Green for dairy
-      'Drinks': const Color(0xFF2196F3), // Blue for drinks
-      'Snacks': const Color(0xFFFF9800), // Orange for snacks
-      'Frozen': const Color(0xFF9C27B0), // Purple for frozen
+      'Dairy': const Color(0xFF012350),
+      'Drinks': const Color(0xFF024CAA),
+      'Snacks': const Color(0xFF27548A),
+      'Frozen': const Color(0xFF00809D), // Purple for frozen
     };
 
     return products.asMap().entries.map((entry) {

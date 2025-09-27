@@ -33,7 +33,7 @@ class ThemeManager {
       bodyMedium: TextStyles.font23whiteBold,
       bodyLarge: TextStyles.font30whiteExtraBold,
       bodySmall: TextStyles.font16whiteRegular,
-      headlineMedium: TextStyles.font21mainPurpleExtraBold,
+      headlineMedium: TextStyles.font21mainBlueExtraBold,
     ),
     iconTheme: const IconThemeData(color: Colors.white),
 

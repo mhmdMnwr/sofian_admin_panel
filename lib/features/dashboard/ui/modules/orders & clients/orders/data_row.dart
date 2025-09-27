@@ -7,6 +7,13 @@ class OrdersDataRow extends StatelessWidget {
   const OrdersDataRow({super.key});
 
   static List<DataRow> getRows(BuildContext context) {
+    // Calculate the width for each expanded column
+    // Total available width minus the fixed first column (200.w) divided by 4 remaining columns
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double availableWidth =
+        screenWidth - 200.w - 40.w; // 40.w for padding/margins
+    final double expandedColumnWidth = availableWidth / 4;
+
     return testOrders
         .map(
           (order) => DataRow(
@@ -16,7 +23,7 @@ class OrdersDataRow extends StatelessWidget {
             cells: [
               DataCell(
                 Container(
-                  width: 200.w, // Fixed maximum width for name section
+                  width: 200.w, // Fixed width matching header
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Text(
                     order.clientName,
@@ -29,23 +36,43 @@ class OrdersDataRow extends StatelessWidget {
                 ),
               ),
               DataCell(
-                Text(
-                  order.orderId,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
+                Container(
+                  width: expandedColumnWidth,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    order.orderId,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
+                  ),
                 ),
               ),
               DataCell(
-                Text(
-                  '${order.totalPrice.toStringAsFixed(2)} DA',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
+                Container(
+                  width: expandedColumnWidth,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '${order.totalPrice.toStringAsFixed(2)} DA',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
+                  ),
                 ),
               ),
-              DataCell(order.buildStatusBadge(context)),
-              DataCell(_orderActions(context)),
+              DataCell(
+                Container(
+                  width: expandedColumnWidth,
+                  alignment: Alignment.centerLeft,
+                  child: order.buildStatusBadge(context),
+                ),
+              ),
+              DataCell(
+                Container(
+                  width: expandedColumnWidth,
+                  alignment: Alignment.centerLeft,
+                  child: _orderActions(context),
+                ),
+              ),
             ],
           ),
         )
@@ -76,8 +103,8 @@ class OrdersDataRow extends StatelessWidget {
         child: Image.asset(
           path,
           color: Theme.of(context).iconTheme.color,
-          width: 25.sp,
-          height: 25.sp,
+          width: 36.sp,
+          height: 36.sp,
         ),
       ),
     );

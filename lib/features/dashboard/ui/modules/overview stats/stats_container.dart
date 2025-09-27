@@ -12,6 +12,7 @@ class StatsContainer extends StatelessWidget {
   final String icon;
   final bool isLoss;
   final double pourcentage;
+  final double width;
 
   const StatsContainer({
     super.key,
@@ -20,12 +21,12 @@ class StatsContainer extends StatelessWidget {
     required this.icon,
     required this.isLoss,
     required this.pourcentage,
+    this.width = 360,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 360.w,
       padding: EdgeInsets.symmetric(vertical: 13.w, horizontal: 16.h),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
@@ -53,7 +54,7 @@ class StatsContainer extends StatelessWidget {
             _title(title, context),
             Image.asset(
               icon,
-              width: 60.w,
+              width: 60.h,
               height: 60.h,
               color: ColorsManager.secondaryBlue,
             ),
@@ -75,11 +76,14 @@ class StatsContainer extends StatelessWidget {
           Text(
             '$value'
             ' $da',
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium!.copyWith(fontSize: 22),
+            overflow: TextOverflow.fade,
+            maxLines: 2,
           ),
           horizontalSpace(12),
-
-          _buildGrowth(),
+          Flexible(fit: FlexFit.tight, child: _buildGrowth()),
         ],
       ),
     );
@@ -93,8 +97,8 @@ class StatsContainer extends StatelessWidget {
         Text(
           '${pourcentage.toString()}%',
           style: isLoss
-              ? TextStyles.font16RedExtraBold
-              : TextStyles.font16GreenExtraBold,
+              ? TextStyles.font16RedExtraBold.copyWith(fontSize: 14)
+              : TextStyles.font16GreenExtraBold.copyWith(fontSize: 14),
         ),
       ],
     );
@@ -104,8 +108,8 @@ class StatsContainer extends StatelessWidget {
     return Row(
       children: [
         Container(
-          height: 30.h,
-          width: 6.w,
+          height: 30,
+          width: 6,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(2),
 
@@ -113,7 +117,12 @@ class StatsContainer extends StatelessWidget {
           ),
         ),
         horizontalSpace(10),
-        Text(title, style: Theme.of(context).textTheme.headlineMedium),
+        Text(
+          title,
+          style: Theme.of(
+            context,
+          ).textTheme.headlineMedium!.copyWith(fontSize: 22),
+        ),
       ],
     );
   }

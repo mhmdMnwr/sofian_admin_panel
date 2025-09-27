@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sofian_admin_panel/core/data/chart_data_table.dart';
 import 'package:sofian_admin_panel/core/helpers/spacing.dart';
 import 'package:sofian_admin_panel/core/theming/app_colors.dart';
+import 'package:sofian_admin_panel/features/dashboard/ui/modules/stats/line%20chart/line_chart_header.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
 class LineChartWidget extends StatefulWidget {
@@ -41,61 +42,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [_buildHeader(context), verticalSpace(20), _buildChart()],
-      ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context) {
-    return Row(
-      children: [
-        _buildTabButton(
-          context,
-          ChartType.revenue,
-          AppLocalizations.of(context)!.revenue,
-        ),
-        horizontalSpace(8),
-        _buildTabButton(
-          context,
-          ChartType.orders,
-          AppLocalizations.of(context)!.orders,
-        ),
-        horizontalSpace(8),
-        _buildTabButton(
-          context,
-          ChartType.clients,
-          AppLocalizations.of(context)!.clients,
-        ),
-        const Spacer(),
-        _buildYearDropdown(),
-      ],
-    );
-  }
-
-  Widget _buildTabButton(BuildContext context, ChartType type, String title) {
-    final isSelected = selectedChart == type;
-
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedChart = type;
-        });
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-        decoration: BoxDecoration(
-          color: isSelected ? ColorsManager.mainBlue : Colors.transparent,
-          borderRadius: BorderRadius.circular(20.r),
-        ),
-        child: Text(
-          title,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: isSelected
-                ? Colors.white
-                : Theme.of(context).textTheme.bodyMedium?.color,
-            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-          ),
-        ),
+        children: [LineChartHeader(), verticalSpace(20), _buildChart()],
       ),
     );
   }
@@ -208,8 +155,8 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                 show: true,
                 gradient: LinearGradient(
                   colors: [
-                    const Color(0xff4477AC).withOpacity(0.3),
-                    const Color(0xff024CAA).withOpacity(0.1),
+                    const Color(0xFF4477AC),
+                    Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,

@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sofian_admin_panel/core/helpers/spacing.dart';
 import 'package:sofian_admin_panel/core/layout/sidebar_page_model.dart';
 import 'package:sofian_admin_panel/core/theming/app_colors.dart';
 import 'package:sofian_admin_panel/core/theming/styles.dart';
 import 'package:sofian_admin_panel/features/admin/data/model/admin_model.dart';
 import 'package:sofian_admin_panel/features/login/ui/widget/logo.dart';
 
-class SideBar extends StatefulWidget {
+class AppDrawer extends StatefulWidget {
   final AdminModel admin;
-  const SideBar({super.key, required this.admin});
+  const AppDrawer({super.key, required this.admin});
 
   @override
-  State<SideBar> createState() => _SideBarState();
+  State<AppDrawer> createState() => _AppDrawerState();
 }
 
-class _SideBarState extends State<SideBar> {
+class _AppDrawerState extends State<AppDrawer> {
   @override
   Widget build(BuildContext context) {
     final List<SideBarPages> permittePages = permittedPages(
@@ -24,13 +23,12 @@ class _SideBarState extends State<SideBar> {
       pages(context),
     );
 
-    return Container(
-      width: 250.w,
-      color: Theme.of(context).primaryColor,
+    return Drawer(
+      width: 230.w,
+      backgroundColor: Theme.of(context).primaryColor,
       child: Column(
         children: [
-          Logo(horizontalPadding: 10),
-          verticalSpace(30),
+          Logo(horizontalPadding: 40),
           Expanded(
             child: ListView.builder(
               itemCount: permittePages.length,
@@ -79,7 +77,8 @@ class _SideBarState extends State<SideBar> {
                       ).textTheme.bodyMedium!.copyWith(fontSize: 22),
               ),
               onTap: () {
-                context.go(page.route);
+                Navigator.of(context).pop(); // Close drawer first
+                context.go(page.route); // navigate to page route
               },
             ),
           ),

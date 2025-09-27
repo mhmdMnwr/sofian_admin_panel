@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sofian_admin_panel/features/dashboard/ui/modules/stats/line_chart.dart';
-import 'package:sofian_admin_panel/features/dashboard/ui/modules/stats/pi_chart.dart';
+import 'package:sofian_admin_panel/core/helpers/constants.dart';
+import 'package:sofian_admin_panel/features/dashboard/ui/modules/stats/line%20chart/line_chart.dart';
+import 'package:sofian_admin_panel/features/dashboard/ui/modules/stats/pie%20chart/pi_chart.dart';
 import 'package:sofian_admin_panel/core/helpers/spacing.dart';
 
 class StatsRow extends StatelessWidget {
@@ -8,13 +9,27 @@ class StatsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    bool isPhone = width < AppConstants.phoneBreakPoint;
+    return isPhone ? _buildStatsColumn(context) : _buildStatsColumn(context);
+  }
+
+  _buildStatsRow(BuildContext context) {
     return Row(
       children: [
-        // Line Chart
         Expanded(flex: 55, child: const LineChartWidget()),
         horizontalSpace(10),
         Expanded(flex: 45, child: const TopSellingProductsPieChart()),
-        // const TopSellingProductsPieChart(),
+      ],
+    );
+  }
+
+  _buildStatsColumn(BuildContext context) {
+    return Column(
+      children: [
+        LineChartWidget(),
+        verticalSpace(20),
+        TopSellingProductsPieChart(),
       ],
     );
   }

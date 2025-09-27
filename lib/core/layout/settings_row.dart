@@ -47,8 +47,8 @@ class SettingsRow extends StatelessWidget {
     return IconButton(
       icon: Image.asset(
         iconPath,
-        width: 30.sp,
-        height: 30.sp,
+        width: 55.h,
+        height: 55.h,
         color: Theme.of(context).iconTheme.color,
       ),
 
