@@ -10,19 +10,21 @@ class OrdersDataRow extends StatelessWidget {
     return testOrders
         .map(
           (order) => DataRow(
-            color: MaterialStateProperty.all(
+            color: WidgetStateProperty.all(
               Theme.of(context).scaffoldBackgroundColor,
             ),
             cells: [
               DataCell(
                 Container(
-                  width: double.infinity,
+                  width: 200.w, // Fixed maximum width for name section
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Text(
                     order.clientName,
                     style: Theme.of(
                       context,
                     ).textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
+                    overflow: TextOverflow.ellipsis, // Handle long names
+                    maxLines: 3,
                   ),
                 ),
               ),

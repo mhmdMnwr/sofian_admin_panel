@@ -8,66 +8,47 @@ class HeaderRow extends StatelessWidget {
   static List<DataColumn> getColumns(BuildContext context) {
     return [
       DataColumn(
-        label: Expanded(
-          flex: 3,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Text(
-              AppLocalizations.of(context)!.userName,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-                fontSize: 15.sp,
-              ),
-            ),
+        label: Container(
+          width: 200.w, // Fixed width matching data cells
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Text(
+            AppLocalizations.of(context)!.userName,
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontSize: 15.sp),
           ),
         ),
       ),
       DataColumn(
-        label: Expanded(
-          flex: 2,
-          child: Text(
-            AppLocalizations.of(context)!.order_id,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: 15.sp,
-            ),
-          ),
+        label: Text(
+          AppLocalizations.of(context)!.order_id,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontSize: 15.sp),
         ),
       ),
       DataColumn(
-        label: Expanded(
-          flex: 2,
-          child: Text(
-            AppLocalizations.of(context)!.total_price,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: 15.sp,
-            ),
-          ),
+        label: Text(
+          AppLocalizations.of(context)!.total_price,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontSize: 15.sp),
         ),
       ),
       DataColumn(
-        label: Expanded(
-          flex: 2,
-          child: Text(
-            AppLocalizations.of(context)!.status,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: 15.sp,
-            ),
-          ),
+        label: Text(
+          AppLocalizations.of(context)!.status,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontSize: 15.sp),
         ),
       ),
       DataColumn(
-        label: Expanded(
-          flex: 2,
-          child: Text(
-            AppLocalizations.of(context)!.action,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: 15.sp,
-            ),
-          ),
+        label: Text(
+          AppLocalizations.of(context)!.action,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontSize: 15.sp),
         ),
       ),
     ];

@@ -85,7 +85,8 @@ final List<OrderItem> testOrders = [
     status: Status.delivered,
   ),
   OrderItem(
-    clientName: 'Mike Johnson',
+    clientName:
+        'ameur mohammed menouer is trying to type a long text here to se how flutter behave in that case , thanks',
     orderId: 'ORD003',
     totalPrice: 89.99,
     status: Status.processing,

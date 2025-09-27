@@ -76,7 +76,7 @@ class RecentOrders extends StatelessWidget {
             horizontalMargin: 0,
             headingRowHeight: 60.h,
             dataRowHeight: 70.h,
-            headingRowColor: MaterialStateProperty.all(
+            headingRowColor: WidgetStateProperty.all(
               Theme.of(context).primaryColor,
             ),
             dividerThickness: 1,
