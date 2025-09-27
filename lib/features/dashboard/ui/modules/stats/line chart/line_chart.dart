@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sofian_admin_panel/core/data/chart_data_table.dart';
 import 'package:sofian_admin_panel/core/helpers/spacing.dart';
 import 'package:sofian_admin_panel/core/theming/app_colors.dart';
-import 'package:sofian_admin_panel/features/dashboard/ui/modules/stats/line%20chart/line_chart_header.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
 class LineChartWidget extends StatefulWidget {
@@ -27,6 +26,8 @@ class _LineChartWidgetState extends State<LineChartWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    bool showNumber = width >= 500;
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
@@ -42,7 +43,66 @@ class _LineChartWidgetState extends State<LineChartWidget> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [LineChartHeader(), verticalSpace(20), _buildChart()],
+        children: [
+          _buildHeader(context),
+          verticalSpace(45),
+          _buildChart(showNumber),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Row(
+      children: [
+        _buildTabButton(
+          context,
+          ChartType.revenue,
+          AppLocalizations.of(context)!.revenue,
+        ),
+        horizontalSpace(8),
+        _buildTabButton(
+          context,
+          ChartType.orders,
+          AppLocalizations.of(context)!.orders,
+        ),
+        horizontalSpace(8),
+        _buildTabButton(
+          context,
+          ChartType.clients,
+          AppLocalizations.of(context)!.clients,
+        ),
+        const Spacer(),
+        _buildYearDropdown(),
+      ],
+    );
+  }
+
+  Widget _buildTabButton(BuildContext context, ChartType type, String title) {
+    final isSelected = selectedChart == type;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedChart = type;
+        });
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        decoration: BoxDecoration(
+          color: isSelected ? ColorsManager.mainBlue : Colors.transparent,
+          borderRadius: BorderRadius.circular(20.r),
+        ),
+        child: Text(
+          title,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontSize: 18,
+            color: isSelected
+                ? Colors.white
+                : Theme.of(context).textTheme.bodyMedium?.color,
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+          ),
+        ),
       ),
     );
   }
@@ -58,7 +118,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
     ];
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 0.h),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade300),
         borderRadius: BorderRadius.circular(6.r),
@@ -70,7 +130,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
             .map(
               (String value) => DropdownMenuItem<String>(
                 value: value,
-                child: Text(value, style: TextStyle(fontSize: 12.sp)),
+                child: Text(value, style: TextStyle(fontSize: 12)),
               ),
             )
             .toList(),
@@ -85,7 +145,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
     );
   }
 
-  Widget _buildChart() {
+  Widget _buildChart(bool showNumber) {
     return SizedBox(
       height: 300.h,
       child: LineChart(
@@ -107,15 +167,12 @@ class _LineChartWidgetState extends State<LineChartWidget> {
             ),
             leftTitles: AxisTitles(
               sideTitles: SideTitles(
-                showTitles: true,
+                showTitles: showNumber,
                 reservedSize: 60.w,
                 getTitlesWidget: (value, meta) {
                   return Text(
                     _formatYAxisValue(value),
-                    style: TextStyle(
-                      color: Colors.grey.shade600,
-                      fontSize: 15.sp,
-                    ),
+                    style: TextStyle(color: Colors.grey, fontSize: 13),
                   );
                 },
               ),
@@ -131,10 +188,7 @@ class _LineChartWidgetState extends State<LineChartWidget> {
 
                   return Text(
                     _getBottomAxisLabel(value.toInt()),
-                    style: TextStyle(
-                      color: Colors.grey.shade600,
-                      fontSize: 10.sp,
-                    ),
+                    style: TextStyle(color: Colors.grey, fontSize: 11),
                   );
                 },
               ),
@@ -184,6 +238,8 @@ class _LineChartWidgetState extends State<LineChartWidget> {
     if (selectedChart == ChartType.revenue) {
       if (value >= 1000) {
         return '${(value / 1000).toInt()}k';
+      } else if (value >= 1000000) {
+        return '${(value / 1000000).toInt()}M';
       }
       return value.toInt().toString();
     } else {

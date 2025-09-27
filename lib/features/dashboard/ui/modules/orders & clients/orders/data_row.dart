@@ -1,82 +1,88 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sofian_admin_panel/core/helpers/spacing.dart';
 import 'package:sofian_admin_panel/core/theming/app_icons.dart';
 import 'package:sofian_admin_panel/features/dashboard/ui/modules/orders%20&%20clients/orders/order_class.dart';
 
 class OrdersDataRow extends StatelessWidget {
   const OrdersDataRow({super.key});
 
-  static List<DataRow> getRows(BuildContext context) {
-    // Calculate the width for each expanded column
-    // Total available width minus the fixed first column (200.w) divided by 4 remaining columns
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double availableWidth =
-        screenWidth - 200.w - 40.w; // 40.w for padding/margins
-    final double expandedColumnWidth = availableWidth / 4;
-
+  static List<Widget> buildDataRows(BuildContext context) {
     return testOrders
         .map(
-          (order) => DataRow(
-            color: WidgetStateProperty.all(
-              Theme.of(context).scaffoldBackgroundColor,
-            ),
-            cells: [
-              DataCell(
-                Container(
-                  width: 200.w, // Fixed width matching header
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Text(
-                    order.clientName,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
-                    overflow: TextOverflow.ellipsis, // Handle long names
-                    maxLines: 3,
-                  ),
-                ),
-              ),
-              DataCell(
-                Container(
-                  width: expandedColumnWidth,
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    order.orderId,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
-                  ),
-                ),
-              ),
-              DataCell(
-                Container(
-                  width: expandedColumnWidth,
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    '${order.totalPrice.toStringAsFixed(2)} DA',
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
-                  ),
-                ),
-              ),
-              DataCell(
-                Container(
-                  width: expandedColumnWidth,
-                  alignment: Alignment.centerLeft,
-                  child: order.buildStatusBadge(context),
-                ),
-              ),
-              DataCell(
-                Container(
-                  width: expandedColumnWidth,
-                  alignment: Alignment.centerLeft,
-                  child: _orderActions(context),
-                ),
-              ),
-            ],
-          ),
+          (order) => _buildDataRow(context, order, testOrders.indexOf(order)),
         )
         .toList();
+  }
+
+  static Widget _buildDataRow(BuildContext context, order, index) {
+    return Container(
+      height: 70.h,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: index.isEven
+            ? Theme.of(context).scaffoldBackgroundColor
+            : Theme.of(context).primaryColor,
+        border: Border(bottom: BorderSide(color: Colors.grey, width: 0.8)),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                order.clientName,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(fontSize: 13),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                order.orderId,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(fontSize: 13),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                '${order.totalPrice.toStringAsFixed(2)} DA',
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(fontSize: 13),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: order.buildStatusBadge(context),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: _orderActions(context),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   static Widget _orderActions(BuildContext context) {
@@ -84,9 +90,9 @@ class OrdersDataRow extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         _buildAction(IconsManager.preview, context),
-        SizedBox(width: 4.w),
+        verticalSpace(4),
         _buildAction(IconsManager.edit, context),
-        SizedBox(width: 4.w),
+        verticalSpace(4),
         _buildAction(IconsManager.delete, context),
       ],
     );
@@ -98,13 +104,13 @@ class OrdersDataRow extends StatelessWidget {
         // Handle action
       },
       child: Container(
-        padding: EdgeInsets.all(6.w),
+        padding: EdgeInsets.all(4.w), // Reduced padding to make buttons smaller
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(4.r)),
         child: Image.asset(
           path,
           color: Theme.of(context).iconTheme.color,
-          width: 36.sp,
-          height: 36.sp,
+          width: 25, // Reduced size
+          height: 25, // Reduced size
         ),
       ),
     );
@@ -112,6 +118,6 @@ class OrdersDataRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(); // Not used for DataTable
+    return SizedBox.shrink();
   }
 }

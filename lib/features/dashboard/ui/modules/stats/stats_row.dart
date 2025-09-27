@@ -11,13 +11,13 @@ class StatsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     bool isPhone = width < AppConstants.phoneBreakPoint;
-    return isPhone ? _buildStatsColumn(context) : _buildStatsColumn(context);
+    return isPhone ? _buildStatsColumn(context) : _buildStatsRow(context);
   }
 
   _buildStatsRow(BuildContext context) {
     return Row(
       children: [
-        Expanded(flex: 55, child: const LineChartWidget()),
+        Expanded(flex: 55, child: LineChartWidget()),
         horizontalSpace(10),
         Expanded(flex: 45, child: const TopSellingProductsPieChart()),
       ],

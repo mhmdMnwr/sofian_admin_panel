@@ -12,70 +12,80 @@ import 'package:sofian_admin_panel/l10n/cubit/locale_cubit.dart';
 class MainShell extends StatelessWidget {
   final Widget child;
   final AdminModel? admin;
+
   const MainShell({super.key, required this.child, this.admin});
 
   @override
   Widget build(BuildContext context) {
-    final isRTL = context.read<LocaleCubit>().isRTL;
     final currentAdmin = admin ?? superAdmin;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final isTablet = width < AppConstants.tabletBreakPoint;
+    return BlocBuilder<LocaleCubit, LocaleState>(
+      builder: (context, localeState) {
+        final isRTL = context.read<LocaleCubit>().isRTL;
 
-        return Directionality(
-          textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
-          child: Scaffold(
-            drawer: isTablet
-                ? Drawer(child: AppDrawer(admin: currentAdmin))
-                : null,
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final width = constraints.maxWidth;
+            final isTablet = width < AppConstants.tabletBreakPoint;
 
-            body: SafeArea(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (!isTablet)
-                    SizedBox(
-                      width: 260.w,
-                      child: SideBar(admin: currentAdmin),
-                    ),
-
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Row(
+            return Directionality(
+              textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
+              child: Scaffold(
+                drawer: isTablet
+                    ? Drawer(child: AppDrawer(admin: currentAdmin))
+                    : null,
+                body: SafeArea(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (!isTablet)
+                        SizedBox(
+                          width: 260.w,
+                          child: SideBar(admin: currentAdmin),
+                        ),
+                      Expanded(
+                        child: Column(
                           children: [
-                            if (isTablet) _buildDrawerIcon(),
-
-                            Spacer(),
-                            const SettingsRow(),
+                            Row(
+                              children: [
+                                if (isTablet) _buildDrawerIcon(),
+                                const Spacer(),
+                                const SettingsRow(),
+                              ],
+                            ),
+                            Expanded(child: child),
                           ],
                         ),
-                        Expanded(child: child),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );
   }
 
-  _buildDrawerIcon() {
+  Widget _buildDrawerIcon() {
     return Builder(
       builder: (ctx) {
         return IconButton(
           onPressed: () => Scaffold.of(ctx).openDrawer(),
-          icon: Icon(Icons.menu, size: 30),
+          icon: const Icon(Icons.menu, size: 30),
         );
       },
     );
   }
 }
+
+final List<PermissionsTypes> sommePermissions = [
+  PermissionsTypes.orders,
+  PermissionsTypes.clients,
+  PermissionsTypes.discounts,
+  PermissionsTypes.products,
+];
 
 final AdminModel superAdmin = AdminModel(
   id: 'super_admin_001',
@@ -83,10 +93,3 @@ final AdminModel superAdmin = AdminModel(
   role: Role.superAdmin,
   permissions: sommePermissions,
 );
-
-List<PermissionsTypes> sommePermissions = [
-  PermissionsTypes.orders,
-  PermissionsTypes.clients,
-  PermissionsTypes.discounts,
-  PermissionsTypes.products,
-];

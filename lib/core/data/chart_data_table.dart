@@ -143,7 +143,7 @@ class TopProductsTable {
       productName: 'Coca-Cola (2L)',
       salesValue: 7800,
       unitsSold: 2600,
-      category: 'Drinks',
+      category: 'chips',
     ),
     ProductSalesData(
       productName: 'Lay\'s Potato Chips',
@@ -155,7 +155,7 @@ class TopProductsTable {
       productName: 'Organic Milk (1L)',
       salesValue: 6200,
       unitsSold: 1550,
-      category: 'Dairy',
+      category: 'Frozen',
     ),
     ProductSalesData(
       productName: 'Energy Drink (Red Bull)',
@@ -335,6 +335,7 @@ class TopProductsTable {
     // Define colors for different grocery categories
     final categoryColors = {
       'Dairy': const Color(0xFF012350),
+      'chips': const Color(0xFF00B4D8),
       'Drinks': const Color(0xFF024CAA),
       'Snacks': const Color(0xFF27548A),
       'Frozen': const Color(0xFF00809D), // Purple for frozen

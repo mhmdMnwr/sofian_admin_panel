@@ -54,12 +54,12 @@ class _TopSellingProductsPieChartState
             children: [
               Text(
                 AppLocalizations.of(context)!.top_selling_products,
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               verticalSpace(4),
               Text(
                 AppLocalizations.of(context)!.sales_by_product_category,
-                style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+                style: TextStyle(fontSize: 11, color: Colors.grey),
               ),
             ],
           ),
@@ -87,7 +87,7 @@ class _TopSellingProductsPieChartState
                 value: value,
                 child: Text(
                   '${AppLocalizations.of(context)!.top} $value',
-                  style: TextStyle(fontSize: 12.sp),
+                  style: TextStyle(fontSize: 11),
                 ),
               ),
             )
@@ -110,7 +110,7 @@ class _TopSellingProductsPieChartState
     );
 
     return SizedBox(
-      height: 280.h,
+      height: 300.h,
       child: Row(
         children: [
           // Pie Chart
@@ -134,13 +134,13 @@ class _TopSellingProductsPieChartState
                 ),
                 borderData: FlBorderData(show: false),
                 sectionsSpace: 2,
-                centerSpaceRadius: 90.r,
+                centerSpaceRadius: 60,
                 sections: pieChartSections.asMap().entries.map((entry) {
                   final index = entry.key;
                   final section = entry.value;
                   final isTouched = index == touchedIndex;
-                  final fontSize = isTouched ? 14.sp : 12.sp;
-                  final radius = isTouched ? 70.0.r : 60.0.r;
+                  final fontSize = isTouched ? 13.0 : 11.0;
+                  final radius = isTouched ? 50.0 : 40.0;
 
                   return PieChartSectionData(
                     color: section.color,
@@ -178,7 +178,7 @@ class _TopSellingProductsPieChartState
         children: [
           Text(
             AppLocalizations.of(context)!.product_details,
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
           ),
           verticalSpace(12),
           Expanded(
@@ -188,7 +188,7 @@ class _TopSellingProductsPieChartState
                 final product = topProducts[index];
                 final percentage = (product.salesValue / totalSales) * 100;
                 final categoryColors = {
-                  'Dairy': const Color(0x012350),
+                  'Dairy': const Color(0xFF012350),
                   'Drinks': const Color(0xFF024CAA),
                   'Snacks': const Color(0xFF27548A),
                   'Frozen': const Color(0xFF00809D),
@@ -211,8 +211,8 @@ class _TopSellingProductsPieChartState
                   child: Row(
                     children: [
                       Container(
-                        width: 12.w,
-                        height: 12.h,
+                        width: 11,
+                        height: 11,
                         decoration: BoxDecoration(
                           color: color,
                           shape: BoxShape.circle,
@@ -226,7 +226,7 @@ class _TopSellingProductsPieChartState
                             Text(
                               product.productName,
                               style: TextStyle(
-                                fontSize: 11.sp,
+                                fontSize: 10,
                                 fontWeight: FontWeight.w600,
                               ),
                               maxLines: 1,
@@ -235,7 +235,7 @@ class _TopSellingProductsPieChartState
                             Text(
                               '${product.unitsSold} ${AppLocalizations.of(context)!.units} • \$${product.salesValue.toStringAsFixed(0)}',
                               style: TextStyle(
-                                fontSize: 9.sp,
+                                fontSize: 9,
                                 color: Colors.grey.shade600,
                               ),
                             ),
@@ -245,7 +245,7 @@ class _TopSellingProductsPieChartState
                       Text(
                         '${percentage.toStringAsFixed(1)}%',
                         style: TextStyle(
-                          fontSize: 10.sp,
+                          fontSize: 10,
                           fontWeight: FontWeight.bold,
                           color: color,
                         ),
