@@ -41,5 +41,10 @@
   "action": "الإجراء",
   "active_client" : "العملاء النشطون",
   "last_month" :"آخر شهر",
-  "life_time" :"مدى الحياة"
+  "life_time" :"مدى الحياة",
+  "search_for_categories": "البحث عن الفئات...",
+  "categories_management": "إدارة الفئات",
+  "add_category": "إضافة فئة جديدة",
+  "name" : "الإسم",
+  "icon" : "الأيقونة"
 }

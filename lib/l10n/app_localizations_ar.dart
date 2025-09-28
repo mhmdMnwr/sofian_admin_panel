@@ -133,4 +133,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get life_time => 'مدى الحياة';
+
+  @override
+  String get search_for_categories => 'البحث عن الفئات...';
+
+  @override
+  String get categories_management => 'إدارة الفئات';
+
+  @override
+  String get add_category => 'إضافة فئة جديدة';
+
+  @override
+  String get name => 'الإسم';
+
+  @override
+  String get icon => 'الأيقونة';
 }

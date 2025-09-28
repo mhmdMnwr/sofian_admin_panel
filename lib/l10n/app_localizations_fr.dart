@@ -133,4 +133,19 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get life_time => 'Durée de vie';
+
+  @override
+  String get search_for_categories => 'Rechercher des catégories...';
+
+  @override
+  String get categories_management => 'Gestion des catégories';
+
+  @override
+  String get add_category => 'Ajouter des catégories';
+
+  @override
+  String get name => 'Nom';
+
+  @override
+  String get icon => 'Icône';
 }

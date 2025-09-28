@@ -41,7 +41,12 @@
   "action": "Action",
   "active_client" : "Active Clients",
   "last_month" :"Last Month",
-  "life_time" :"Lifetime"
+  "life_time" :"Lifetime",
+  "search_for_categories": "Search for categories...",
+  "categories_management" : "Categories Management",
+  "add_category" : "Add Category",
+  "name" : "Name",
+  "icon" : "Icon"
 
   
 }

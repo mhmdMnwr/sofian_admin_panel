@@ -18,14 +18,7 @@ class Logo extends StatelessWidget {
         horizontal: horizontalPadding.w,
         vertical: verticalPadding.h,
       ),
-      child: Center(
-        child: Image.asset(
-          IconsManager.logo,
-          width: 280,
-          height: 120,
-          fit: BoxFit.contain,
-        ),
-      ),
+      child: Center(child: Image.asset(IconsManager.logo)),
     );
   }
 }

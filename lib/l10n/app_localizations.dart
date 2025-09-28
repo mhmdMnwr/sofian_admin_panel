@@ -348,6 +348,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Lifetime'**
   String get life_time;
+
+  /// No description provided for @search_for_categories.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for categories...'**
+  String get search_for_categories;
+
+  /// No description provided for @categories_management.
+  ///
+  /// In en, this message translates to:
+  /// **'Categories Management'**
+  String get categories_management;
+
+  /// No description provided for @add_category.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Category'**
+  String get add_category;
+
+  /// No description provided for @name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
+
+  /// No description provided for @icon.
+  ///
+  /// In en, this message translates to:
+  /// **'Icon'**
+  String get icon;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

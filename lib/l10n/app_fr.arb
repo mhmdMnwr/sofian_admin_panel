@@ -41,5 +41,10 @@
   "action": "Action",
   "active_client" : "Client actif",
   "last_month" :"Le mois dernier",
-  "life_time" : "Durée de vie"
+  "life_time" : "Durée de vie",
+  "search_for_categories": "Rechercher des catégories...",
+  "categories_management": "Gestion des catégories",
+  "add_category" : "Ajouter des catégories",
+  "name" : "Nom",
+  "icon" : "Icône"
 }
