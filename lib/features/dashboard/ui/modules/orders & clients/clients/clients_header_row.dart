@@ -16,26 +16,30 @@ class ClientsHeaderRow extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Container(
-            width: 200.w,
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              AppLocalizations.of(context)!.userName,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-                fontSize: 15.sp,
+          Expanded(
+            flex: 2,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                AppLocalizations.of(context)!.userName,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
               ),
             ),
           ),
+          Spacer(),
           Expanded(
+            flex: 1,
             child: Container(
               alignment: Alignment.centerLeft,
               child: Text(
                 AppLocalizations.of(context)!.orders,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w500,
-                  fontSize: 15.sp,
+                  fontSize: 14,
                 ),
               ),
             ),

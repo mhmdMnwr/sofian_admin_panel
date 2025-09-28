@@ -56,7 +56,7 @@ class _ActiveClientsState extends State<ActiveClients> {
             AppLocalizations.of(context)!.active_client,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.bold,
-              fontSize: 20.sp,
+              fontSize: 18,
             ),
           ),
           Container(
@@ -75,7 +75,7 @@ class _ActiveClientsState extends State<ActiveClients> {
                     period.getDisplayText(context),
                     style: Theme.of(
                       context,
-                    ).textTheme.bodySmall?.copyWith(fontSize: 12.sp),
+                    ).textTheme.bodySmall?.copyWith(fontSize: 11),
                   ),
                 );
               }).toList(),

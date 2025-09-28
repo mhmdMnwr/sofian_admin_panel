@@ -16,28 +16,26 @@ class ClientsDataRow extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Container(
-            width: 200.w,
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            alignment: Alignment.centerLeft,
-            child: Row(
-              children: [
-                Image.asset(IconsManager.profile, width: 60.w, height: 60.h),
-                horizontalSpace(12),
-                Expanded(
-                  child: Text(
-                    client.clientName,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              alignment: Alignment.centerLeft,
+              child: Expanded(
+                child: Text(
+                  client.clientName,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(fontSize: 13),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
-              ],
+              ),
             ),
           ),
+          Spacer(),
           Expanded(
+            flex: 1,
             child: Container(
               alignment: Alignment.centerLeft,
               child: Row(
@@ -46,10 +44,10 @@ class ClientsDataRow extends StatelessWidget {
                     client.totalOrders.toString(),
                     style: Theme.of(
                       context,
-                    ).textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
+                    ).textTheme.bodyMedium?.copyWith(fontSize: 13),
                   ),
                   horizontalSpace(8.w),
-                  Image.asset(IconsManager.cart, width: 30.w),
+                  Image.asset(IconsManager.cart, width: 30, height: 30),
                 ],
               ),
             ),
