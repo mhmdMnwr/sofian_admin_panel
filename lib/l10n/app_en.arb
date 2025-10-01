@@ -46,7 +46,8 @@
   "categories_management" : "Categories Management",
   "add_category" : "Add Category",
   "name" : "Name",
-  "icon" : "Icon"
+  "icon" : "Icon",
+  "no_data" : "No Data"
 
   
 }

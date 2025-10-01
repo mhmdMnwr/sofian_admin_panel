@@ -47,7 +47,7 @@ class OrderItem {
 
   Widget buildStatusBadge(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 26.w, vertical: 16.h),
+      padding: EdgeInsets.symmetric(vertical: 16.h),
 
       child: Container(
         decoration: BoxDecoration(
@@ -60,7 +60,7 @@ class OrderItem {
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
-              fontSize: 16.sp,
+              fontSize: 14,
             ),
           ),
         ),
@@ -194,3 +194,16 @@ final List<OrderItem> testOrders = [
     status: Status.pending,
   ),
 ];
+
+List<List<dynamic>> getTestOrdersList(context) {
+  return testOrders
+      .map(
+        (order) => [
+          order.clientName,
+          order.orderId,
+          order.totalPrice.toString(),
+          order.buildStatusBadge(context),
+        ],
+      )
+      .toList();
+}

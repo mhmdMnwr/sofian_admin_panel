@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sofian_admin_panel/core/widgets/generic_table.dart';
 import 'package:sofian_admin_panel/features/categories/data/models/category_model.dart';
 import 'package:sofian_admin_panel/core/widgets/search_bar.dart';
@@ -12,6 +13,14 @@ class CategorieList extends StatefulWidget {
 }
 
 class _CategorieListState extends State<CategorieList> {
+  late final List<List<dynamic>> categories;
+
+  @override
+  void initState() {
+    super.initState();
+    categories = getCategories();
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isRtl = Directionality.of(context) == TextDirection.rtl;
@@ -22,11 +31,11 @@ class _CategorieListState extends State<CategorieList> {
         AppLocalizations.of(context)!.icon,
       ],
       flexValues: [1, 1, 1],
-      data: getCategories(),
+      data: categories,
       onDelete: (index) {},
       onEdit: (index) {},
       child: Padding(
-        padding: EdgeInsets.only(top: 20, left: 20),
+        padding: EdgeInsets.only(top: 20.h, left: 20.w),
         child: Align(
           alignment: isRtl ? Alignment.centerRight : Alignment.centerLeft,
           child: AppSearchBar(

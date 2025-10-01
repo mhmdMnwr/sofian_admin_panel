@@ -378,6 +378,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Icon'**
   String get icon;
+
+  /// No description provided for @no_data.
+  ///
+  /// In en, this message translates to:
+  /// **'No Data'**
+  String get no_data;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

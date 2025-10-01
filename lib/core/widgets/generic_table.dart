@@ -78,13 +78,11 @@ class GenericTable extends StatelessWidget {
   Widget _buildTableBody(BuildContext context, List<int> finalFlexValues) {
     // Calculate heights
     double screenHeight = MediaQuery.of(context).size.height;
-    double headerHeight = 60.h;
     double rowHeight = 70.h;
     double totalRowsHeight = data.length * rowHeight;
     double paddingAndOtherElements =
         200.h; // Reserve space for padding, app bar, etc.
-    double maxAvailableHeight =
-        screenHeight - headerHeight - paddingAndOtherElements;
+    double maxAvailableHeight = screenHeight - paddingAndOtherElements;
 
     if (totalRowsHeight <= maxAvailableHeight) {
       // Content fits within available space - no scrolling needed
@@ -122,7 +120,6 @@ class GenericTable extends StatelessWidget {
     bool isRTL = Directionality.of(context) == TextDirection.rtl;
 
     return Container(
-      height: 60.h,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
@@ -188,7 +185,7 @@ class GenericTable extends StatelessWidget {
           return Expanded(
             flex: finalFlexValues[cellIndex],
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              padding: EdgeInsets.only(left: 20.w, right: 5.w),
               alignment: isRTL ? Alignment.centerRight : Alignment.centerLeft,
               child: DefaultTextStyle(
                 style: Theme.of(

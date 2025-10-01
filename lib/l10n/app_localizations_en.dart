@@ -148,4 +148,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get icon => 'Icon';
+
+  @override
+  String get no_data => 'No Data';
 }

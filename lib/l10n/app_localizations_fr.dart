@@ -148,4 +148,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get icon => 'Icône';
+
+  @override
+  String get no_data => 'Pas de données';
 }

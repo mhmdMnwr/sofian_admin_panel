@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sofian_admin_panel/core/helpers/spacing.dart';
-import 'package:sofian_admin_panel/features/dashboard/ui/modules/orders%20&%20clients/orders/data_row.dart';
-import 'package:sofian_admin_panel/features/dashboard/ui/modules/orders%20&%20clients/orders/header_row.dart';
+import 'package:sofian_admin_panel/core/widgets/generic_table.dart';
+import 'package:sofian_admin_panel/features/dashboard/ui/modules/orders%20&%20clients/orders/order_class.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
 class RecentOrders extends StatelessWidget {
@@ -10,77 +9,34 @@ class RecentOrders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 30.h, bottom: 30.h),
-      child: Container(
-        constraints: BoxConstraints(maxHeight: 800.h, minHeight: 300.h),
-
-        padding: EdgeInsets.only(top: 26.h),
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.circular(8.r),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildTitle(context),
-            verticalSpace(24),
-
-            Expanded(child: _buildOrdersTable(context)),
-          ],
-        ),
-      ),
+    bool isRtl = Directionality.of(context) == TextDirection.rtl;
+    return GenericTable(
+      headers: [
+        AppLocalizations.of(context)!.userName,
+        AppLocalizations.of(context)!.order_id,
+        AppLocalizations.of(context)!.total_price,
+        AppLocalizations.of(context)!.status,
+      ],
+      flexValues: [2, 1, 1, 1],
+      data: getTestOrdersList(context),
+      onDelete: (int index) {},
+      onEdit: (int index) {},
+      onView: (int index) {},
+      child: _buildTitle(context, isRtl),
     );
   }
 
-  Widget _buildTitle(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 20.w),
-      child: Text(
-        AppLocalizations.of(context)!.recent_orders,
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildOrdersTable(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+  Widget _buildTitle(BuildContext context, bool isRtl) {
+    return Align(
+      alignment: isRtl ? Alignment.centerRight : Alignment.centerLeft,
+      child: Padding(
+        padding: EdgeInsets.only(left: 20.w),
+        child: Text(
+          AppLocalizations.of(context)!.recent_orders,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12.r),
-        child: Column(
-          children: [
-            // Fixed Header Row
-            const HeaderRow(),
-            // Scrollable Data Rows
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(children: OrdersDataRow.buildDataRows(context)),
-              ),
-            ),
-          ],
         ),
       ),
     );
