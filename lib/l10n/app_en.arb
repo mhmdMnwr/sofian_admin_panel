@@ -47,7 +47,21 @@
   "add_category" : "Add Category",
   "name" : "Name",
   "icon" : "Icon",
-  "no_data" : "No Data"
+  "no_data" : "No Data",
+  "add_product": "Add Product",
+  "products_management": "Products Management",
+  "product_id": "Product ID",
+  "image": "Image",
+  "categorie": "Categorie",
+  "brand": "Brand",
+  "price": "Price",
+  "stat": "Stat",
+  "search_for_products": "Search for products...",
+  "available": "Available",
+  "unavailable": "Unavailable",
+  "product": "Product",
+  "product_name": "Product Name",
+  "product_status": "Product Status"
 
   
 }

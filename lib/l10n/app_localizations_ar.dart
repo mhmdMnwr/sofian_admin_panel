@@ -151,4 +151,46 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get no_data => 'لا توجد بيانات';
+
+  @override
+  String get add_product => 'إضافة منتج';
+
+  @override
+  String get products_management => 'إدارة المنتجات';
+
+  @override
+  String get product_id => 'رقم المنتج';
+
+  @override
+  String get image => 'الصورة';
+
+  @override
+  String get categorie => 'الفئة';
+
+  @override
+  String get brand => 'الماركة';
+
+  @override
+  String get price => 'السعر';
+
+  @override
+  String get stat => 'الحالة';
+
+  @override
+  String get search_for_products => 'البحث عن المنتجات...';
+
+  @override
+  String get available => 'متوفر';
+
+  @override
+  String get unavailable => 'غير متوفر';
+
+  @override
+  String get product => 'المنتج';
+
+  @override
+  String get product_name => 'اسم المنتج';
+
+  @override
+  String get product_status => 'حالة المنتج';
 }

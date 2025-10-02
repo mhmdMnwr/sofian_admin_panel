@@ -151,4 +151,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get no_data => 'No Data';
+
+  @override
+  String get add_product => 'Add Product';
+
+  @override
+  String get products_management => 'Products Management';
+
+  @override
+  String get product_id => 'Product ID';
+
+  @override
+  String get image => 'Image';
+
+  @override
+  String get categorie => 'Categorie';
+
+  @override
+  String get brand => 'Brand';
+
+  @override
+  String get price => 'Price';
+
+  @override
+  String get stat => 'Stat';
+
+  @override
+  String get search_for_products => 'Search for products...';
+
+  @override
+  String get available => 'Available';
+
+  @override
+  String get unavailable => 'Unavailable';
+
+  @override
+  String get product => 'Product';
+
+  @override
+  String get product_name => 'Product Name';
+
+  @override
+  String get product_status => 'Product Status';
 }

@@ -47,5 +47,20 @@
   "add_category" : "Ajouter des catégories",
   "name" : "Nom",
   "icon" : "Icône",
-  "no_data" : "Pas de données"
+  "no_data" : "Pas de données",
+  "add_product": "Ajouter un produit",
+  "products_management": "Gestion des produits",
+  "product_id": "ID du produit",
+  "image": "Image",
+  "categorie": "Catégorie",
+  "brand": "Marque",
+  "price": "Prix",
+  "stat": "Statut",
+  "search_for_products": "Rechercher des produits...",
+  "available": "Disponible",
+  "unavailable": "Indisponible",
+  "product": "Produit",
+  "product_name": "Nom du produit",
+  "product_status": "Statut du produit"
+
 }

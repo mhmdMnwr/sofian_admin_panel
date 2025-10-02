@@ -384,6 +384,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Data'**
   String get no_data;
+
+  /// No description provided for @add_product.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Product'**
+  String get add_product;
+
+  /// No description provided for @products_management.
+  ///
+  /// In en, this message translates to:
+  /// **'Products Management'**
+  String get products_management;
+
+  /// No description provided for @product_id.
+  ///
+  /// In en, this message translates to:
+  /// **'Product ID'**
+  String get product_id;
+
+  /// No description provided for @image.
+  ///
+  /// In en, this message translates to:
+  /// **'Image'**
+  String get image;
+
+  /// No description provided for @categorie.
+  ///
+  /// In en, this message translates to:
+  /// **'Categorie'**
+  String get categorie;
+
+  /// No description provided for @brand.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get brand;
+
+  /// No description provided for @price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
+
+  /// No description provided for @stat.
+  ///
+  /// In en, this message translates to:
+  /// **'Stat'**
+  String get stat;
+
+  /// No description provided for @search_for_products.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for products...'**
+  String get search_for_products;
+
+  /// No description provided for @available.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get available;
+
+  /// No description provided for @unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get unavailable;
+
+  /// No description provided for @product.
+  ///
+  /// In en, this message translates to:
+  /// **'Product'**
+  String get product;
+
+  /// No description provided for @product_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Product Name'**
+  String get product_name;
+
+  /// No description provided for @product_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Product Status'**
+  String get product_status;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -6,6 +6,7 @@ import 'package:sofian_admin_panel/features/admin/data/model/admin_model.dart';
 import 'package:sofian_admin_panel/features/categories/ui/categories_page.dart';
 import 'package:sofian_admin_panel/features/dashboard/ui/dashboard_page.dart';
 import 'package:sofian_admin_panel/features/login/ui/login_page.dart';
+import 'package:sofian_admin_panel/features/products/ui/products_page.dart';
 import '../layout/main_shell.dart';
 
 final routePermissions = {
@@ -105,7 +106,7 @@ final appRouter = GoRouter(
         ),
         GoRoute(
           path: Routes.products,
-          builder: (context, state) => const ProductPage(),
+          builder: (context, state) => const ProductsPage(),
         ),
         GoRoute(
           path: Routes.marks,
@@ -137,14 +138,6 @@ final appRouter = GoRouter(
 );
 
 // Placeholder pages
-class ProductPage extends StatelessWidget {
-  const ProductPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Products Page')));
-  }
-}
 
 class MarksPage extends StatelessWidget {
   const MarksPage({super.key});

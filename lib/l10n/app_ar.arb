@@ -47,5 +47,20 @@
   "add_category": "إضافة فئة جديدة",
   "name" : "الإسم",
   "icon" : "الأيقونة",
-  "no_data" : "لا توجد بيانات"
+  "no_data" : "لا توجد بيانات" ,
+  "add_product": "إضافة منتج",
+  "products_management": "إدارة المنتجات",
+  "product_id": "معرف المنتج",
+  "image": "صورة",
+  "categorie": "الفئة",
+  "brand": "الماركة",
+  "price": "السعر",
+  "stat": "الحالة",
+  "search_for_products": "البحث عن المنتجات...",
+  "available": "متوفر",
+  "unavailable": "غير متوفر",
+  "product": "المنتج",
+  "product_name": "اسم المنتج",
+  "product_status": "حالة المنتج"
+
 }

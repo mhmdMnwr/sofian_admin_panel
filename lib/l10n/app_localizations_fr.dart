@@ -151,4 +151,46 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get no_data => 'Pas de données';
+
+  @override
+  String get add_product => 'Ajouter un produit';
+
+  @override
+  String get products_management => 'Gestion des produits';
+
+  @override
+  String get product_id => 'ID du produit';
+
+  @override
+  String get image => 'Image';
+
+  @override
+  String get categorie => 'Catégorie';
+
+  @override
+  String get brand => 'Marque';
+
+  @override
+  String get price => 'Prix';
+
+  @override
+  String get stat => 'Statut';
+
+  @override
+  String get search_for_products => 'Rechercher des produits...';
+
+  @override
+  String get available => 'Disponible';
+
+  @override
+  String get unavailable => 'Indisponible';
+
+  @override
+  String get product => 'Produit';
+
+  @override
+  String get product_name => 'Nom du produit';
+
+  @override
+  String get product_status => 'Statut du produit';
 }

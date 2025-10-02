@@ -65,6 +65,7 @@ class GenericTable extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               child,
+              verticalSpace(30),
               _buildHeader(context, finalHeaders, finalFlexValues),
               // Calculate if we need scrolling
               _buildTableBody(context, finalFlexValues),
