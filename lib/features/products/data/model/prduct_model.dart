@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sofian_admin_panel/core/theming/app_colors.dart';
+import 'package:sofian_admin_panel/core/theming/font_weight.dart';
 
 class ProductModel {
   final String? id;
@@ -20,19 +21,18 @@ class ProductModel {
     this.productState,
   });
 
-  String getProductState(BuildContext context) {
+  Widget getProductState(BuildContext context) {
     bool isAvailable = productState == ProductState.available;
-    return isAvailable ? 'Available' : 'Unavailable';
-    // Text(
-    //   isAvailable ? 'Available' : 'Unavailable',
-    //   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-    //     color: isAvailable
-    //         ? ColorsManager.delivered.withValues(alpha: 0.1)
-    //         : ColorsManager.lossRed.withValues(alpha: 0.1),
-    //     fontWeight: FontWeight.w500,
-    //     fontSize: 12,
-    //   ),
-    // );
+    return Container(
+      child: Text(
+        isAvailable ? 'Available' : 'Unavailable',
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: isAvailable ? ColorsManager.delivered : ColorsManager.lossRed,
+          fontWeight: FontWeightHelper.extraBold,
+          fontSize: 14,
+        ),
+      ),
+    );
   }
 }
 
