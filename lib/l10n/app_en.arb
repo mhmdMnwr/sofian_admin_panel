@@ -66,6 +66,12 @@
   "delete": "Delete",
   "view": "View",
   "brands_management": "Brands Management",
-  "add_brand": "Add Brand"
+  "add_brand": "Add Brand",
+  "time": "Time",
+  "date": "Date",
+  "search_for_brands": "Search for brands...",
+  "search_for_orders": "Search for orders...",
+  "add_order": "Add Order",
+  "order_management": "Order Management"
 
 }

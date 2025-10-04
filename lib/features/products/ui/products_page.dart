@@ -13,45 +13,53 @@ class ProductsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final isWideScreen =
-                  MediaQuery.of(context).size.width >=
-                  AppConstants.phoneBreakPoint;
+      child: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(
+          horizontal: AppConstants.pageHorizontalPadding,
+        ),
+        child: Column(
+          children: [
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final isWideScreen =
+                    MediaQuery.of(context).size.width >=
+                    AppConstants.phoneBreakPoint;
 
-              if (isWideScreen) {
-                return Row(
-                  children: [
-                    PageTitle(
-                      pageName: AppLocalizations.of(
-                        context,
-                      )!.products_management,
-                    ),
-                    Spacer(),
-                    AddButton(text: AppLocalizations.of(context)!.add_product),
-                  ],
-                );
-              } else {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PageTitle(
-                      pageName: AppLocalizations.of(
-                        context,
-                      )!.products_management,
-                    ),
-                    verticalSpace(16),
-                    AddButton(text: AppLocalizations.of(context)!.add_product),
-                  ],
-                );
-              }
-            },
-          ),
-          ProductList(),
-        ],
+                if (isWideScreen) {
+                  return Row(
+                    children: [
+                      PageTitle(
+                        pageName: AppLocalizations.of(
+                          context,
+                        )!.products_management,
+                      ),
+                      Spacer(),
+                      AddButton(
+                        text: AppLocalizations.of(context)!.add_product,
+                      ),
+                    ],
+                  );
+                } else {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PageTitle(
+                        pageName: AppLocalizations.of(
+                          context,
+                        )!.products_management,
+                      ),
+                      verticalSpace(16),
+                      AddButton(
+                        text: AppLocalizations.of(context)!.add_product,
+                      ),
+                    ],
+                  );
+                }
+              },
+            ),
+            ProductList(),
+          ],
+        ),
       ),
     );
   }

@@ -498,6 +498,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add Brand'**
   String get add_brand;
+
+  /// No description provided for @time.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get time;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// No description provided for @search_for_brands.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for brands...'**
+  String get search_for_brands;
+
+  /// No description provided for @search_for_orders.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for orders...'**
+  String get search_for_orders;
+
+  /// No description provided for @add_order.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Order'**
+  String get add_order;
+
+  /// No description provided for @order_management.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Management'**
+  String get order_management;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

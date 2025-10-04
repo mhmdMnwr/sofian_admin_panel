@@ -208,4 +208,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get add_brand => 'Add Brand';
+
+  @override
+  String get time => 'Time';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get search_for_brands => 'Search for brands...';
+
+  @override
+  String get search_for_orders => 'Search for orders...';
+
+  @override
+  String get add_order => 'Add Order';
+
+  @override
+  String get order_management => 'Order Management';
 }

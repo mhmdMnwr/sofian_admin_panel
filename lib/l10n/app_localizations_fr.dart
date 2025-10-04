@@ -208,4 +208,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get add_brand => 'Ajouter une marque';
+
+  @override
+  String get time => 'Heure';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get search_for_brands => 'Rechercher des marques...';
+
+  @override
+  String get search_for_orders => 'Rechercher des commandes...';
+
+  @override
+  String get add_order => 'Ajouter une commande';
+
+  @override
+  String get order_management => 'Gestion des commandes';
 }

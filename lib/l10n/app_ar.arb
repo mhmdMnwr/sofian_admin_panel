@@ -66,6 +66,12 @@
   "delete": "حذف",
   "view": "عرض",
   "brands_management": "إدارة الماركات",
-  "add_brand": "إضافة ماركة جديدة"
+  "add_brand": "إضافة ماركة جديدة",
+  "time": "الوقت",
+  "date": "التاريخ",
+  "search_for_brands": "البحث عن الماركات...",
+  "search_for_orders": "البحث عن الطلبات...",
+  "add_order": "إضافة طلب",
+  "order_management": "إدارة الطلبات"
 
 }

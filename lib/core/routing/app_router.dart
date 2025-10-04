@@ -7,6 +7,7 @@ import 'package:sofian_admin_panel/features/brands/ui/brands_page.dart';
 import 'package:sofian_admin_panel/features/categories/ui/categories_page.dart';
 import 'package:sofian_admin_panel/features/dashboard/ui/dashboard_page.dart';
 import 'package:sofian_admin_panel/features/login/ui/login_page.dart';
+import 'package:sofian_admin_panel/features/orders/ui/orders_page.dart';
 import 'package:sofian_admin_panel/features/products/ui/products_page.dart';
 import '../layout/main_shell.dart';
 
@@ -139,15 +140,6 @@ final appRouter = GoRouter(
 );
 
 // Placeholder pages
-
-class OrdersPage extends StatelessWidget {
-  const OrdersPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Orders Page')));
-  }
-}
 
 class Discounts extends StatelessWidget {
   const Discounts({super.key});

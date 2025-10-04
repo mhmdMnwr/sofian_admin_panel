@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sofian_admin_panel/core/widgets/generic_table.dart';
-import 'package:sofian_admin_panel/features/dashboard/ui/modules/orders%20&%20clients/orders/order_class.dart';
+import 'package:sofian_admin_panel/features/orders/data/models/order_model.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
 class RecentOrders extends StatelessWidget {

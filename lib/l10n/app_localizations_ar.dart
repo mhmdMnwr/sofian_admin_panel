@@ -208,4 +208,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get add_brand => 'إضافة ماركة جديدة';
+
+  @override
+  String get time => 'الوقت';
+
+  @override
+  String get date => 'التاريخ';
+
+  @override
+  String get search_for_brands => 'البحث عن الماركات...';
+
+  @override
+  String get search_for_orders => 'البحث عن الطلبات...';
+
+  @override
+  String get add_order => 'إضافة طلب';
+
+  @override
+  String get order_management => 'إدارة الطلبات';
 }

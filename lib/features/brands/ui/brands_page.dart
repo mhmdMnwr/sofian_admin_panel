@@ -47,12 +47,10 @@ class BrandsPage extends StatelessWidget {
                       PageTitle(
                         pageName: AppLocalizations.of(
                           context,
-                        )!.categories_management,
+                        )!.brands_management,
                       ),
                       verticalSpace(16),
-                      AddButton(
-                        text: AppLocalizations.of(context)!.add_category,
-                      ),
+                      AddButton(text: AppLocalizations.of(context)!.add_brand),
                     ],
                   );
                 }
