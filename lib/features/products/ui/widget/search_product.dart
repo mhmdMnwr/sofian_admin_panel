@@ -81,12 +81,13 @@ class _SearchProductState extends State<SearchProduct> {
   }) {
     // Remove duplicates from items list to prevent the assertion error
     final uniqueItems = items.toSet().toList();
-    
+
     // Add "All" option at the beginning to reset the dropdown
     final itemsWithAll = ['All', ...uniqueItems];
 
     // Ensure the value is null if it's not in the items list or if it's "All"
-    final validValue = value != null && itemsWithAll.contains(value) && value != 'All'
+    final validValue =
+        value != null && itemsWithAll.contains(value) && value != 'All'
         ? value
         : null;
 
