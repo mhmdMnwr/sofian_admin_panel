@@ -61,6 +61,9 @@
   "unavailable": "غير متوفر",
   "product": "المنتج",
   "product_name": "اسم المنتج",
-  "product_status": "حالة المنتج"
+  "product_status": "حالة المنتج",
+  "edit": "تعديل",
+  "delete": "حذف",
+  "view": "عرض"
 
 }

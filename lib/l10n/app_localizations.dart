@@ -468,6 +468,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Product Status'**
   String get product_status;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @view.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get view;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

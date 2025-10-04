@@ -36,7 +36,6 @@ class _ProductListState extends State<ProductList> {
         AppLocalizations.of(context)!.price,
         AppLocalizations.of(context)!.status,
       ],
-      flexValues: [1, 1, 1, 1, 1, 1, 1],
       data: getProductsData(context),
       onDelete: (index) {},
       onEdit: (index) {},

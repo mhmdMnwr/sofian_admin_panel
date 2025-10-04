@@ -61,6 +61,9 @@
   "unavailable": "Indisponible",
   "product": "Produit",
   "product_name": "Nom du produit",
-  "product_status": "Statut du produit"
+  "product_status": "Statut du produit",
+  "edit": "Éditer",
+  "delete": "Supprimer",
+  "view": "Voir"
 
 }

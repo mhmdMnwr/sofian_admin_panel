@@ -47,7 +47,7 @@ class OrderItem {
 
   Widget buildStatusBadge(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.h),
+      padding: EdgeInsets.symmetric(vertical: 14.h),
 
       child: Container(
         decoration: BoxDecoration(

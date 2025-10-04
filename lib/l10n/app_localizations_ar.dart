@@ -159,10 +159,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get products_management => 'إدارة المنتجات';
 
   @override
-  String get product_id => 'رقم المنتج';
+  String get product_id => 'معرف المنتج';
 
   @override
-  String get image => 'الصورة';
+  String get image => 'صورة';
 
   @override
   String get categorie => 'الفئة';
@@ -193,4 +193,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get product_status => 'حالة المنتج';
+
+  @override
+  String get edit => 'تعديل';
+
+  @override
+  String get delete => 'حذف';
+
+  @override
+  String get view => 'عرض';
 }

@@ -30,7 +30,7 @@ class _CategorieListState extends State<CategorieList> {
         AppLocalizations.of(context)!.name,
         AppLocalizations.of(context)!.icon,
       ],
-      flexValues: [1, 1, 1],
+      columnWidths: [520.w, 520.w],
       data: categories,
       onDelete: (index) {},
       onEdit: (index) {},

@@ -17,7 +17,6 @@ class RecentOrders extends StatelessWidget {
         AppLocalizations.of(context)!.total_price,
         AppLocalizations.of(context)!.status,
       ],
-      flexValues: [2, 1, 1, 1],
       data: getTestOrdersList(context),
       onDelete: (int index) {},
       onEdit: (int index) {},

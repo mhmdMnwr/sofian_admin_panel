@@ -21,7 +21,7 @@ class _ActiveClientsState extends State<ActiveClients> {
     return Padding(
       padding: EdgeInsets.only(top: 30.h, bottom: 30.h),
       child: Container(
-        constraints: BoxConstraints(maxHeight: 800.h, minHeight: 300.h),
+        constraints: BoxConstraints(maxHeight: 700.h, minHeight: 300.h),
         padding: EdgeInsets.only(top: 26.h),
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,

@@ -193,4 +193,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get product_status => 'Product Status';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get view => 'View';
 }

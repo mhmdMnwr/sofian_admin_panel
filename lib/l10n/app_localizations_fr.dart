@@ -193,4 +193,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get product_status => 'Statut du produit';
+
+  @override
+  String get edit => 'Éditer';
+
+  @override
+  String get delete => 'Supprimer';
+
+  @override
+  String get view => 'Voir';
 }
