@@ -10,4 +10,5 @@ class Routes {
   static const String users = '/users';
   static const String discounts = '/discounts';
   static const String banners = '/banners';
+  static const String admins = '/admins';
 }

@@ -259,4 +259,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get address => 'Address';
+
+  @override
+  String get edit_product => 'Edit Product';
+
+  @override
+  String get select_category => 'Select category';
+
+  @override
+  String get select_brand => 'Select Brand';
+
+  @override
+  String get select_state => 'State';
+
+  @override
+  String get images => 'Images';
+
+  @override
+  String get choose_image => 'Choose image';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get admins => 'Admins';
+
+  @override
+  String get admin => 'Admin';
+
+  @override
+  String get edit_admin => 'Edit Admin';
+
+  @override
+  String get admins_management => 'Admins Management';
+
+  @override
+  String get add_admin => 'Add Admin';
+
+  @override
+  String get permissions => 'Permissions';
 }

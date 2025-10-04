@@ -259,4 +259,46 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get address => 'Adresse';
+
+  @override
+  String get edit_product => 'Modifier le produit';
+
+  @override
+  String get select_category => 'Sélectionner une catégorie';
+
+  @override
+  String get select_brand => 'Sélectionner une marque';
+
+  @override
+  String get select_state => 'État';
+
+  @override
+  String get images => 'Images';
+
+  @override
+  String get choose_image => 'Choisir une image';
+
+  @override
+  String get save => 'Enregistrer';
+
+  @override
+  String get add => 'Ajouter';
+
+  @override
+  String get admins => 'Administrateurs';
+
+  @override
+  String get admin => 'Administrateur';
+
+  @override
+  String get edit_admin => 'Modifier l\'administrateur';
+
+  @override
+  String get admins_management => 'Gestion des administrateurs';
+
+  @override
+  String get add_admin => 'Ajouter un administrateur';
+
+  @override
+  String get permissions => 'Permissions';
 }

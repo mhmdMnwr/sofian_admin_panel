@@ -259,4 +259,46 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get address => 'العنوان';
+
+  @override
+  String get edit_product => 'تعديل المنتج';
+
+  @override
+  String get select_category => 'اختر الفئة';
+
+  @override
+  String get select_brand => 'اختر العلامة التجارية';
+
+  @override
+  String get select_state => 'الحالة';
+
+  @override
+  String get images => 'الصور';
+
+  @override
+  String get choose_image => 'اختر صورة';
+
+  @override
+  String get save => 'حفظ';
+
+  @override
+  String get add => 'إضافة';
+
+  @override
+  String get admins => 'المسؤولون';
+
+  @override
+  String get admin => 'مسؤول';
+
+  @override
+  String get edit_admin => 'تعديل المسؤول';
+
+  @override
+  String get admins_management => 'إدارة المسؤولين';
+
+  @override
+  String get add_admin => 'إضافة مسؤول';
+
+  @override
+  String get permissions => 'الأذونات';
 }

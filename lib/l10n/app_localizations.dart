@@ -600,6 +600,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Address'**
   String get address;
+
+  /// No description provided for @edit_product.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Product'**
+  String get edit_product;
+
+  /// No description provided for @select_category.
+  ///
+  /// In en, this message translates to:
+  /// **'Select category'**
+  String get select_category;
+
+  /// No description provided for @select_brand.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Brand'**
+  String get select_brand;
+
+  /// No description provided for @select_state.
+  ///
+  /// In en, this message translates to:
+  /// **'State'**
+  String get select_state;
+
+  /// No description provided for @images.
+  ///
+  /// In en, this message translates to:
+  /// **'Images'**
+  String get images;
+
+  /// No description provided for @choose_image.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose image'**
+  String get choose_image;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// No description provided for @admins.
+  ///
+  /// In en, this message translates to:
+  /// **'Admins'**
+  String get admins;
+
+  /// No description provided for @admin.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get admin;
+
+  /// No description provided for @edit_admin.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Admin'**
+  String get edit_admin;
+
+  /// No description provided for @admins_management.
+  ///
+  /// In en, this message translates to:
+  /// **'Admins Management'**
+  String get admins_management;
+
+  /// No description provided for @add_admin.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Admin'**
+  String get add_admin;
+
+  /// No description provided for @permissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get permissions;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -83,6 +83,21 @@
   "clients_management": "Clients Management",
   "phone_number": "Phone Number",
   "email": "Email",
-  "address": "Address"
+  "address": "Address",
+  "edit_product": "Edit Product",
+  "select_category": "Select category",
+  "select_brand": "Select Brand",
+  "select_state": "State",
+  "images": "Images",
+  "choose_image": "Choose image",
+  "save": "Save",
+  "add": "Add",
+  "admins": "Admins",
+  "admin": "Admin",
+  "edit_admin": "Edit Admin",
+  "admins_management": "Admins Management",
+  "add_admin": "Add Admin",
+  "permissions": "Permissions"
+
 
 }

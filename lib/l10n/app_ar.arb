@@ -83,6 +83,20 @@
   "clients_management": "إدارة العملاء",
   "phone_number": "رقم الهاتف",
   "email": "البريد الإلكتروني",
-  "address": "العنوان"
+  "address": "العنوان",
+  "edit_product": "تعديل المنتج",
+  "select_category": "اختر الفئة",
+  "select_brand": "اختر العلامة التجارية",
+  "select_state": "الحالة",
+  "images": "الصور",
+  "choose_image": "اختر صورة",
+  "save": "حفظ",
+  "add": "إضافة",
+  "admins": "المسؤولون",
+  "admin": "مسؤول",
+  "edit_admin": "تعديل المسؤول",
+  "admins_management": "إدارة المسؤولين",
+  "add_admin": "إضافة مسؤول",
+  "permissions": "الأذونات"
 
 }

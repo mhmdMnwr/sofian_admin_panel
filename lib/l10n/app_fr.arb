@@ -76,7 +76,6 @@
   "client_name": "Nom du client",
   "contact_infot": "Informations de contact",
   "joined_date": "Date d'inscription",
-  "total_orders": "Total des commandes",
   "total_spent": "Total dépensé",
   "orders_count": "Nombre de commandes",
   "last_order_date": "Date de la dernière commande",
@@ -84,6 +83,22 @@
   "clients_management": "Gestion des clients",
   "phone_number": "Numéro de téléphone",
   "email": "Email",
-  "address": "Adresse"
+  "address": "Adresse",
+  "edit_product": "Modifier le produit",
+  "select_category": "Sélectionner une catégorie",
+  "select_brand": "Sélectionner une marque",
+  "select_state": "État",
+  "images": "Images",
+  "choose_image": "Choisir une image",
+  "save": "Enregistrer",
+  "add": "Ajouter",
+  "admins": "Administrateurs",
+  "admin": "Administrateur",
+  "edit_admin": "Modifier l'administrateur",
+  "admins_management": "Gestion des administrateurs",
+  "add_admin": "Ajouter un administrateur",
+  "permissions": "Permissions"
+
+
 
 }

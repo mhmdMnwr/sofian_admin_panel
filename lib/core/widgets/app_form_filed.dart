@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppFormField extends StatefulWidget {
   final Function(String)? onSearchChanged;
   final String? hintText;
   final double? width;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   const AppFormField({
     super.key,
     this.onSearchChanged,
     this.hintText,
     this.width,
+    this.keyboardType,
+    this.inputFormatters,
   });
 
   @override
@@ -50,10 +55,12 @@ class _AppFormFieldState extends State<AppFormField> {
           ),
           child: TextField(
             controller: _searchController,
+            keyboardType: widget.keyboardType,
+            inputFormatters: widget.inputFormatters,
             decoration: InputDecoration(
               hintText: widget.hintText ?? 'Search for a product ...',
               hintStyle: TextStyle(
-                color: Colors.grey,
+                color: Colors.grey.shade600,
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
               ),

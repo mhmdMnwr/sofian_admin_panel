@@ -13,6 +13,7 @@ enum PermissionsTypes {
   discounts,
   users,
   banners,
+  admins,
 }
 
 class SideBarPages {
@@ -95,5 +96,11 @@ List<SideBarPages> pages(BuildContext context) => [
     icon: IconsManager.banners,
     route: '/banners',
     permission: PermissionsTypes.banners,
+  ),
+  SideBarPages(
+    title: AppLocalizations.of(context)!.admins,
+    icon: IconsManager.banners,
+    route: '/admins',
+    permission: PermissionsTypes.admins,
   ),
 ];

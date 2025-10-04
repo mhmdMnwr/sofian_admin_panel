@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sofian_admin_panel/core/layout/sidebar_page_model.dart';
 import 'package:sofian_admin_panel/core/routing/routes.dart';
 import 'package:sofian_admin_panel/features/admin/data/model/admin_model.dart';
+import 'package:sofian_admin_panel/features/admin/ui/admins_page.dart';
 import 'package:sofian_admin_panel/features/brands/ui/brands_page.dart';
 import 'package:sofian_admin_panel/features/categories/ui/categories_page.dart';
 import 'package:sofian_admin_panel/features/clients/ui/clinets_page.dart';
@@ -128,8 +129,8 @@ final appRouter = GoRouter(
           builder: (context, state) => const ClientsPage(),
         ),
         GoRoute(
-          path: Routes.users,
-          builder: (context, state) => const UsersPage(),
+          path: Routes.admins,
+          builder: (context, state) => const AdminsPage(),
         ),
         GoRoute(
           path: Routes.banners,
@@ -148,15 +149,6 @@ class Discounts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(body: Center(child: Text('Discounts Page')));
-  }
-}
-
-class UsersPage extends StatelessWidget {
-  const UsersPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Users Page')));
   }
 }
 

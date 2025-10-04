@@ -90,6 +90,10 @@ final List<PermissionsTypes> sommePermissions = [
 final AdminModel superAdmin = AdminModel(
   id: 'super_admin_001',
   userName: 'superadmin',
+  name: 'Super Admin',
+  phoneNumber: '0550000000',
+  address: 'Main Office',
+  joinDate: '1 January 2025',
   role: Role.superAdmin,
   permissions: sommePermissions,
 );

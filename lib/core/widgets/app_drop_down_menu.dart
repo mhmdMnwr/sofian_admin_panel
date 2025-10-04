@@ -87,7 +87,7 @@ class AppDropDownMenu<T> extends StatelessWidget {
           borderSide: BorderSide(color: ColorsManager.pending, width: 5.sp),
         ),
         hintText: hintText,
-        hintStyle: hintStyle ?? TextStyles.hint,
+        hintStyle: TextStyles.hint,
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,
         fillColor: backgroundColor ?? Colors.white,
