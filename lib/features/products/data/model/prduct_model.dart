@@ -263,9 +263,9 @@ List<List<dynamic>> getProductsData(context) {
         (product) => [
           product.name,
           product.imageUrl,
-          product.price?.toStringAsFixed(2),
           product.id,
           product.category,
+          product.price?.toStringAsFixed(2),
           product.brand,
           product.getProductState(context),
         ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sofian_admin_panel/core/helpers/constants.dart';
 import 'package:sofian_admin_panel/core/widgets/page_title.dart';
-import 'package:sofian_admin_panel/features/clients/ui/clients_list.dart';
+import 'package:sofian_admin_panel/features/clients/ui/widget/clients_list.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
 class ClientsPage extends StatelessWidget {

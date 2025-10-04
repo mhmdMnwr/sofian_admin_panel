@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sofian_admin_panel/core/helpers/spacing.dart';
 import 'package:sofian_admin_panel/core/theming/app_icons.dart';
-import 'package:sofian_admin_panel/core/widgets/app_text_form_field.dart';
+import 'package:sofian_admin_panel/core/widgets/login_text_form_field.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
 class LoginForm extends StatefulWidget {
@@ -35,7 +35,7 @@ class _LoginFormState extends State<LoginForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Username Field
-            AppTextFormField(
+            LoginTextFormField(
               controller: _emailController,
               hintText: AppLocalizations.of(context)!.username,
 
@@ -50,7 +50,7 @@ class _LoginFormState extends State<LoginForm> {
             verticalSpace(60),
 
             // Password Field
-            AppTextFormField(
+            LoginTextFormField(
               controller: _passwordController,
               hintText: AppLocalizations.of(context)!.password,
 

@@ -18,6 +18,7 @@ class ProductsPage extends StatelessWidget {
           horizontal: AppConstants.pageHorizontalPadding,
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             LayoutBuilder(
               builder: (context, constraints) {

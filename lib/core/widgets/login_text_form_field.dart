@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sofian_admin_panel/core/theming/app_colors.dart';
 import 'package:sofian_admin_panel/core/theming/styles.dart';
 
-class AppTextFormField extends StatelessWidget {
+class LoginTextFormField extends StatelessWidget {
   final EdgeInsetsGeometry? contentPadding;
   final bool digitOnly;
   final InputBorder? focusedBorder;
@@ -17,7 +17,7 @@ class AppTextFormField extends StatelessWidget {
   final Color? backgroundColor;
   final TextEditingController? controller;
   final Function(String?) validator;
-  const AppTextFormField({
+  const LoginTextFormField({
     super.key,
     this.contentPadding,
     this.digitOnly = false,
