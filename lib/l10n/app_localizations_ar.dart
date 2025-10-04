@@ -51,7 +51,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get clients => 'العملاء';
 
   @override
-  String get marks => 'الماركات';
+  String get brands => 'الماركات';
 
   @override
   String get discounts => 'الخصومات';
@@ -202,4 +202,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get view => 'عرض';
+
+  @override
+  String get brands_management => 'إدارة الماركات';
+
+  @override
+  String get add_brand => 'إضافة ماركة جديدة';
 }

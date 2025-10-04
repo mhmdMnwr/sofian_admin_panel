@@ -4,7 +4,7 @@ class Routes {
   static const String dashboard = '/dashboard';
   static const String categories = '/categories';
   static const String products = '/products';
-  static const String marks = '/marks';
+  static const String brands = '/brands';
   static const String orders = '/orders';
   static const String clients = '/clients';
   static const String users = '/users';

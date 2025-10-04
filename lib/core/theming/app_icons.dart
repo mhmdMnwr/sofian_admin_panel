@@ -7,7 +7,7 @@ class IconsManager {
   static const String dashboard = "${path}dashboard.png";
   static const String categories = "${path}categories.png";
   static const String products = "${path}products.png";
-  static const String marks = "${path}marks.png";
+  static const String brands = "${path}brands.png";
   static const String discount = "${path}discount.png";
   static const String orders = "${path}orders.png";
   static const String clients = "${path}clients.png";

@@ -14,7 +14,7 @@
   "banners": "اللافتات",
   "users": "المستخدمون",
   "clients": "العملاء",
-  "marks": "الماركات",
+  "brands": "الماركات",
   "discounts": "الخصومات",
   "dashboard_overview": " لوحة التحكم",
   "cancel" :"إلغاء",
@@ -64,6 +64,8 @@
   "product_status": "حالة المنتج",
   "edit": "تعديل",
   "delete": "حذف",
-  "view": "عرض"
+  "view": "عرض",
+  "brands_management": "إدارة الماركات",
+  "add_brand": "إضافة ماركة جديدة"
 
 }

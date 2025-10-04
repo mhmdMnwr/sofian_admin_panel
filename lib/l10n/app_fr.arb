@@ -14,7 +14,7 @@
   "banners": "Bannières",
   "users": "Utilisateurs",
   "clients": "Clients",
-  "marks": "Marques",
+  "brands": "Marques",
   "discounts": "Réductions",
   "dashboard_overview": "Aperçu du tableau de bord",
   "cancel": "Annuler",
@@ -64,6 +64,8 @@
   "product_status": "Statut du produit",
   "edit": "Éditer",
   "delete": "Supprimer",
-  "view": "Voir"
+  "view": "Voir",
+  "brands_management": "Gestion des marques",
+  "add_brand": "Ajouter une marque"
 
 }

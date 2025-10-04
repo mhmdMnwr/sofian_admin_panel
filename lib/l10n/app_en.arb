@@ -14,7 +14,7 @@
   "banners": "Banners",
   "users": "Users",
   "clients": "Clients",
-  "marks": "Marks",
+  "brands": "Brands",
   "discounts": "Discounts",
   "dashboard_overview": "DashBoard Overview",
   "cancel" : "cancel",
@@ -64,6 +64,8 @@
   "product_status": "Product Status",
   "edit": "Edit",
   "delete": "Delete",
-  "view": "View"
+  "view": "View",
+  "brands_management": "Brands Management",
+  "add_brand": "Add Brand"
 
 }

@@ -51,7 +51,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get clients => 'Clients';
 
   @override
-  String get marks => 'Marques';
+  String get brands => 'Marques';
 
   @override
   String get discounts => 'Réductions';
@@ -202,4 +202,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get view => 'Voir';
+
+  @override
+  String get brands_management => 'Gestion des marques';
+
+  @override
+  String get add_brand => 'Ajouter une marque';
 }

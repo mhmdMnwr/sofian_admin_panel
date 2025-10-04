@@ -3,11 +3,11 @@ import 'package:sofian_admin_panel/core/helpers/constants.dart';
 import 'package:sofian_admin_panel/core/helpers/spacing.dart';
 import 'package:sofian_admin_panel/core/widgets/add_button.dart';
 import 'package:sofian_admin_panel/core/widgets/page_title.dart';
-import 'package:sofian_admin_panel/features/categories/ui/widget/categorie_list.dart';
+import 'package:sofian_admin_panel/features/brands/ui/widget/brand_list.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
-class CategoriesPage extends StatelessWidget {
-  const CategoriesPage({super.key});
+class BrandsPage extends StatelessWidget {
+  const BrandsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +33,10 @@ class CategoriesPage extends StatelessWidget {
                       PageTitle(
                         pageName: AppLocalizations.of(
                           context,
-                        )!.categories_management,
+                        )!.brands_management,
                       ),
                       Spacer(),
-                      AddButton(
-                        text: AppLocalizations.of(context)!.add_category,
-                      ),
+                      AddButton(text: AppLocalizations.of(context)!.add_brand),
                     ],
                   );
                 } else {
@@ -60,7 +58,7 @@ class CategoriesPage extends StatelessWidget {
                 }
               },
             ),
-            CategorieList(),
+            BrandsList(),
           ],
         ),
       ),

@@ -7,7 +7,7 @@ enum PermissionsTypes {
   dashboard,
   categories,
   products,
-  marks,
+  brands,
   orders,
   clients,
   discounts,
@@ -60,10 +60,10 @@ List<SideBarPages> pages(BuildContext context) => [
     permission: PermissionsTypes.products,
   ),
   SideBarPages(
-    title: AppLocalizations.of(context)!.marks,
-    icon: IconsManager.marks,
-    route: '/marks',
-    permission: PermissionsTypes.marks,
+    title: AppLocalizations.of(context)!.brands,
+    icon: IconsManager.brands,
+    route: '/brands',
+    permission: PermissionsTypes.brands,
   ),
 
   SideBarPages(

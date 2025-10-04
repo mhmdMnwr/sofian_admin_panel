@@ -51,7 +51,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get clients => 'Clients';
 
   @override
-  String get marks => 'Marks';
+  String get brands => 'Brands';
 
   @override
   String get discounts => 'Discounts';
@@ -202,4 +202,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get view => 'View';
+
+  @override
+  String get brands_management => 'Brands Management';
+
+  @override
+  String get add_brand => 'Add Brand';
 }

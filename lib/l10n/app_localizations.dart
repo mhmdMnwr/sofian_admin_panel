@@ -181,11 +181,11 @@ abstract class AppLocalizations {
   /// **'Clients'**
   String get clients;
 
-  /// No description provided for @marks.
+  /// No description provided for @brands.
   ///
   /// In en, this message translates to:
-  /// **'Marks'**
-  String get marks;
+  /// **'Brands'**
+  String get brands;
 
   /// No description provided for @discounts.
   ///
@@ -486,6 +486,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View'**
   String get view;
+
+  /// No description provided for @brands_management.
+  ///
+  /// In en, this message translates to:
+  /// **'Brands Management'**
+  String get brands_management;
+
+  /// No description provided for @add_brand.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Brand'**
+  String get add_brand;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

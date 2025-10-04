@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sofian_admin_panel/core/layout/sidebar_page_model.dart';
 import 'package:sofian_admin_panel/core/routing/routes.dart';
 import 'package:sofian_admin_panel/features/admin/data/model/admin_model.dart';
+import 'package:sofian_admin_panel/features/brands/ui/brands_page.dart';
 import 'package:sofian_admin_panel/features/categories/ui/categories_page.dart';
 import 'package:sofian_admin_panel/features/dashboard/ui/dashboard_page.dart';
 import 'package:sofian_admin_panel/features/login/ui/login_page.dart';
@@ -13,7 +14,7 @@ final routePermissions = {
   Routes.dashboard: PermissionsTypes.dashboard,
   Routes.categories: PermissionsTypes.categories,
   Routes.products: PermissionsTypes.products,
-  Routes.marks: PermissionsTypes.marks,
+  Routes.brands: PermissionsTypes.brands,
   Routes.orders: PermissionsTypes.orders,
   Routes.clients: PermissionsTypes.clients,
   Routes.discounts: PermissionsTypes.discounts,
@@ -109,8 +110,8 @@ final appRouter = GoRouter(
           builder: (context, state) => const ProductsPage(),
         ),
         GoRoute(
-          path: Routes.marks,
-          builder: (context, state) => const MarksPage(),
+          path: Routes.brands,
+          builder: (context, state) => const BrandsPage(),
         ),
         GoRoute(
           path: Routes.orders,
@@ -138,15 +139,6 @@ final appRouter = GoRouter(
 );
 
 // Placeholder pages
-
-class MarksPage extends StatelessWidget {
-  const MarksPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Marks Page')));
-  }
-}
 
 class OrdersPage extends StatelessWidget {
   const OrdersPage({super.key});
