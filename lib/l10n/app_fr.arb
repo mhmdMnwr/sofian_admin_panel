@@ -72,6 +72,18 @@
   "search_for_brands": "Rechercher des marques...",
   "search_for_orders": "Rechercher des commandes...",
   "add_order": "Ajouter une commande",
-  "order_management": "Gestion des commandes"
+  "order_management": "Gestion des commandes",
+  "client_name": "Nom du client",
+  "contact_infot": "Informations de contact",
+  "joined_date": "Date d'inscription",
+  "total_orders": "Total des commandes",
+  "total_spent": "Total dépensé",
+  "orders_count": "Nombre de commandes",
+  "last_order_date": "Date de la dernière commande",
+  "search_for_clients": "Rechercher des clients...",
+  "clients_management": "Gestion des clients",
+  "phone_number": "Numéro de téléphone",
+  "email": "Email",
+  "address": "Adresse"
 
 }

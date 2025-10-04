@@ -226,4 +226,37 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get order_management => 'إدارة الطلبات';
+
+  @override
+  String get client_name => 'اسم العميل';
+
+  @override
+  String get contact_info => 'معلومات الاتصال';
+
+  @override
+  String get join_date => 'تاريخ انضمام ';
+
+  @override
+  String get total_spent => 'إجمالي إنفاق ';
+
+  @override
+  String get orders_count => 'عدد طلبات ';
+
+  @override
+  String get last_order_date => 'تاريخ آخر طلب';
+
+  @override
+  String get search_for_clients => 'البحث عن العملاء...';
+
+  @override
+  String get clients_management => 'إدارة العملاء';
+
+  @override
+  String get phone_number => 'رقم الهاتف';
+
+  @override
+  String get email => 'البريد الإلكتروني';
+
+  @override
+  String get address => 'العنوان';
 }

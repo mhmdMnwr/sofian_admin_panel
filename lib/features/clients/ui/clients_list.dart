@@ -2,32 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sofian_admin_panel/core/widgets/generic_table.dart';
 import 'package:sofian_admin_panel/core/widgets/search_bar.dart';
-import 'package:sofian_admin_panel/features/orders/data/models/order_model.dart';
+import 'package:sofian_admin_panel/features/clients/data/model/clinet_model.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
-class OrdersList extends StatefulWidget {
-  const OrdersList({super.key});
+class ClientsList extends StatefulWidget {
+  const ClientsList({super.key});
 
   @override
-  State<OrdersList> createState() => _OrdersListState();
+  State<ClientsList> createState() => _ClientsListState();
 }
 
-class _OrdersListState extends State<OrdersList> {
+class _ClientsListState extends State<ClientsList> {
   @override
   Widget build(BuildContext context) {
     bool isRtl = Directionality.of(context) == TextDirection.rtl;
 
     return GenericTable(
       headers: [
-        AppLocalizations.of(context)!.userName,
-        AppLocalizations.of(context)!.order_id,
-        AppLocalizations.of(context)!.time,
-        AppLocalizations.of(context)!.date,
-        AppLocalizations.of(context)!.total_price,
-        AppLocalizations.of(context)!.status,
+        AppLocalizations.of(context)!.client_name,
+        AppLocalizations.of(context)!.phone_number,
+        AppLocalizations.of(context)!.join_date,
+        AppLocalizations.of(context)!.total_spent,
+        AppLocalizations.of(context)!.orders_count,
+        AppLocalizations.of(context)!.last_order_date,
+        AppLocalizations.of(context)!.email,
+        AppLocalizations.of(context)!.address,
       ],
-
-      data: getFullOrdersList(context),
+      data: getTestClinet(context),
       onDelete: (index) {},
       onEdit: (index) {},
       child: Padding(
@@ -36,7 +37,7 @@ class _OrdersListState extends State<OrdersList> {
           alignment: isRtl ? Alignment.centerRight : Alignment.centerLeft,
           child: AppSearchBar(
             width: 400,
-            hintText: AppLocalizations.of(context)!.search_for_orders,
+            hintText: AppLocalizations.of(context)!.search_for_clients,
           ),
         ),
       ),

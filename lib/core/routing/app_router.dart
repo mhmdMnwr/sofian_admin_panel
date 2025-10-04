@@ -5,6 +5,7 @@ import 'package:sofian_admin_panel/core/routing/routes.dart';
 import 'package:sofian_admin_panel/features/admin/data/model/admin_model.dart';
 import 'package:sofian_admin_panel/features/brands/ui/brands_page.dart';
 import 'package:sofian_admin_panel/features/categories/ui/categories_page.dart';
+import 'package:sofian_admin_panel/features/clients/ui/clinets_page.dart';
 import 'package:sofian_admin_panel/features/dashboard/ui/dashboard_page.dart';
 import 'package:sofian_admin_panel/features/login/ui/login_page.dart';
 import 'package:sofian_admin_panel/features/orders/ui/orders_page.dart';
@@ -147,15 +148,6 @@ class Discounts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(body: Center(child: Text('Discounts Page')));
-  }
-}
-
-class ClientsPage extends StatelessWidget {
-  const ClientsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Clients Page')));
   }
 }
 

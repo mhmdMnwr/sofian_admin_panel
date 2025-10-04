@@ -226,4 +226,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get order_management => 'Order Management';
+
+  @override
+  String get client_name => 'Client Name';
+
+  @override
+  String get contact_info => 'Contact Info';
+
+  @override
+  String get join_date => 'Join Date';
+
+  @override
+  String get total_spent => 'Total Spent';
+
+  @override
+  String get orders_count => 'Orders Count';
+
+  @override
+  String get last_order_date => 'Last Order Date';
+
+  @override
+  String get search_for_clients => 'Search for clients...';
+
+  @override
+  String get clients_management => 'Clients Management';
+
+  @override
+  String get phone_number => 'Phone Number';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get address => 'Address';
 }

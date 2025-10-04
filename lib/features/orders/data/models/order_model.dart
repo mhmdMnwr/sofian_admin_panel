@@ -245,8 +245,6 @@ List<List<dynamic>> getTestOrdersList(context) {
         (order) => [
           order.clientName,
           order.orderId,
-          order.time,
-          order.date,
           order.totalPrice.toString(),
           order.buildStatusBadge(context),
         ],

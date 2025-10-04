@@ -72,6 +72,17 @@
   "search_for_brands": "Search for brands...",
   "search_for_orders": "Search for orders...",
   "add_order": "Add Order",
-  "order_management": "Order Management"
+  "order_management": "Order Management",
+  "client_name": "Client Name",
+  "contact_info": "Contact Info",
+  "join_date": "Join Date",
+  "total_spent": "Total Spent",
+  "orders_count": "Orders Count",
+  "last_order_date": "Last Order Date",
+  "search_for_clients": "Search for clients...",
+  "clients_management": "Clients Management",
+  "phone_number": "Phone Number",
+  "email": "Email",
+  "address": "Address"
 
 }

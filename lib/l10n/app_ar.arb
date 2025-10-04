@@ -72,6 +72,17 @@
   "search_for_brands": "البحث عن الماركات...",
   "search_for_orders": "البحث عن الطلبات...",
   "add_order": "إضافة طلب",
-  "order_management": "إدارة الطلبات"
+  "order_management": "إدارة الطلبات",
+  "client_name": "اسم العميل",
+  "contact_info": "معلومات الاتصال",
+  "join_date": "تاريخ انضمام ",
+  "total_spent": "إجمالي إنفاق ",
+  "orders_count": "عدد طلبات ",
+  "last_order_date": "تاريخ آخر طلب",
+  "search_for_clients": "البحث عن العملاء...",
+  "clients_management": "إدارة العملاء",
+  "phone_number": "رقم الهاتف",
+  "email": "البريد الإلكتروني",
+  "address": "العنوان"
 
 }

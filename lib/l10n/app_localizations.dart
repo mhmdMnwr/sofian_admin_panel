@@ -534,6 +534,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Order Management'**
   String get order_management;
+
+  /// No description provided for @client_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Client Name'**
+  String get client_name;
+
+  /// No description provided for @contact_info.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Info'**
+  String get contact_info;
+
+  /// No description provided for @join_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Join Date'**
+  String get join_date;
+
+  /// No description provided for @total_spent.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Spent'**
+  String get total_spent;
+
+  /// No description provided for @orders_count.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders Count'**
+  String get orders_count;
+
+  /// No description provided for @last_order_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Order Date'**
+  String get last_order_date;
+
+  /// No description provided for @search_for_clients.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for clients...'**
+  String get search_for_clients;
+
+  /// No description provided for @clients_management.
+  ///
+  /// In en, this message translates to:
+  /// **'Clients Management'**
+  String get clients_management;
+
+  /// No description provided for @phone_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get phone_number;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get address;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
