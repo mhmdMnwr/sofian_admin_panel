@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sofian_admin_panel/core/helpers/spacing.dart';
 
 // Todo this is made by ai and i didnt test it yet
 
@@ -71,18 +72,6 @@ class AppAlertDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 // Primary button (e.g., Delete, Confirm)
-                _buildButton(
-                  context: context,
-                  text: primaryButtonText,
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    onPrimaryButtonTap();
-                  },
-                  backgroundColor:
-                      primaryButtonColor ?? const Color(0xFF5B9BD5),
-                ),
-
-                SizedBox(width: 12.w),
 
                 // Secondary button (e.g., Cancel)
                 _buildButton(
@@ -94,6 +83,19 @@ class AppAlertDialog extends StatelessWidget {
                   },
                   backgroundColor:
                       secondaryButtonColor ?? const Color(0xFF5B9BD5),
+                ),
+
+                horizontalSpace(12),
+
+                _buildButton(
+                  context: context,
+                  text: primaryButtonText,
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    onPrimaryButtonTap();
+                  },
+                  backgroundColor:
+                      primaryButtonColor ?? const Color(0xFF5B9BD5),
                 ),
               ],
             ),

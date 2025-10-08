@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sofian_admin_panel/core/helpers/extensions.dart';
+import 'package:sofian_admin_panel/core/widgets/alert_dialog.dart';
 import 'package:sofian_admin_panel/core/widgets/generic_table.dart';
 import 'package:sofian_admin_panel/core/widgets/search_bar.dart';
 import 'package:sofian_admin_panel/features/orders/data/models/order_model.dart';
@@ -28,8 +30,12 @@ class _OrdersListState extends State<OrdersList> {
       ],
 
       data: getFullOrdersList(context),
-      onDelete: (index) {},
-      onEdit: (index) {},
+      onDelete: (index) {
+        _deleteOrder();
+      },
+      onEdit: (index) {
+        _deleteOrder();
+      },
       child: Padding(
         padding: EdgeInsets.only(top: 20.h, left: 20.w),
         child: Align(
@@ -40,6 +46,24 @@ class _OrdersListState extends State<OrdersList> {
           ),
         ),
       ),
+    );
+  }
+
+  _deleteOrder() {
+    return showAppAlertDialog(
+      context: context,
+      title: AppLocalizations.of(context)!.delete_order,
+      content: AppLocalizations.of(
+        context,
+      )!.are_you_sure_you_want_to_delete_this_order,
+      primaryButtonText: AppLocalizations.of(context)!.delete,
+      secondaryButtonText: AppLocalizations.of(context)!.cancel,
+      onPrimaryButtonTap: () {
+        context.pop();
+      },
+      onSecondaryButtonTap: () {
+        context.pop();
+      },
     );
   }
 }

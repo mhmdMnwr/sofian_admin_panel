@@ -301,4 +301,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get permissions => 'Permissions';
+
+  @override
+  String get delete_order => 'Delete Order';
+
+  @override
+  String get are_you_sure_you_want_to_delete_this_order => 'Are you sure you want to delete this order?';
 }

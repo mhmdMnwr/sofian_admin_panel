@@ -301,4 +301,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get permissions => 'Permissions';
+
+  @override
+  String get delete_order => 'Supprimer la commande';
+
+  @override
+  String get are_you_sure_you_want_to_delete_this_order => 'Êtes-vous sûr de vouloir supprimer cette commande?';
 }

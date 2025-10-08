@@ -373,7 +373,7 @@ class _GenericTableState extends State<GenericTable> {
     final displayItems = isRTL ? items.reversed.toList() : items;
 
     // Popup menu content builder
-    List<PopupMenuEntry<int>> _buildPopupItems(BuildContext context) {
+    List<PopupMenuEntry<int>> buildPopupItems(BuildContext context) {
       final List<PopupMenuEntry<int>> list = [];
       for (int i = 0; i < items.length; i++) {
         final it = items[i];
@@ -399,7 +399,7 @@ class _GenericTableState extends State<GenericTable> {
                   items[value].onTap?.call();
                 }
               },
-              itemBuilder: (c) => _buildPopupItems(c),
+              itemBuilder: (c) => buildPopupItems(c),
             ),
           );
         } else {

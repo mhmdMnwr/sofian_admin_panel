@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sofian_admin_panel/core/helpers/extensions.dart';
+import 'package:sofian_admin_panel/core/widgets/alert_dialog.dart';
 import 'package:sofian_admin_panel/core/widgets/generic_table.dart';
 import 'package:sofian_admin_panel/features/orders/data/models/order_model.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
@@ -18,7 +20,9 @@ class RecentOrders extends StatelessWidget {
         AppLocalizations.of(context)!.status,
       ],
       data: getTestOrdersList(context),
-      onDelete: (int index) {},
+      onDelete: (int index) {
+        _deleteOrder(context);
+      },
       onEdit: (int index) {},
       onView: (int index) {},
       child: _buildTitle(context, isRtl),
@@ -38,6 +42,24 @@ class RecentOrders extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  _deleteOrder(BuildContext context) {
+    return showAppAlertDialog(
+      context: context,
+      title: AppLocalizations.of(context)!.delete_order,
+      content: AppLocalizations.of(
+        context,
+      )!.are_you_sure_you_want_to_delete_this_order,
+      primaryButtonText: AppLocalizations.of(context)!.delete,
+      secondaryButtonText: AppLocalizations.of(context)!.cancel,
+      onPrimaryButtonTap: () {
+        context.pop();
+      },
+      onSecondaryButtonTap: () {
+        context.pop();
+      },
     );
   }
 }

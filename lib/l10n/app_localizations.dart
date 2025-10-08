@@ -684,6 +684,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Permissions'**
   String get permissions;
+
+  /// No description provided for @delete_order.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Order'**
+  String get delete_order;
+
+  /// No description provided for @are_you_sure_you_want_to_delete_this_order.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this order?'**
+  String get are_you_sure_you_want_to_delete_this_order;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

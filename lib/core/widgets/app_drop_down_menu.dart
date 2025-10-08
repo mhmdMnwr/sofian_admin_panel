@@ -49,7 +49,7 @@ class AppDropDownMenu<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<T>(
       focusNode: focusNode,
-      value: value,
+      initialValue: value,
       items: items,
       onChanged: enabled ? onChanged : null,
       validator: validator,
