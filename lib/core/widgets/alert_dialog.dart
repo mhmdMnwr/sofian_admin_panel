@@ -31,8 +31,8 @@ class AppAlertDialog extends StatelessWidget {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: Container(
-        constraints: BoxConstraints(maxWidth: 400.w),
-        padding: EdgeInsets.all(20.w),
+        constraints: BoxConstraints(maxWidth: 500),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,8 +43,8 @@ class AppAlertDialog extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
-                    fontSize: 18.sp,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -57,15 +57,15 @@ class AppAlertDialog extends StatelessWidget {
               ],
             ),
 
-            SizedBox(height: 16.h),
+            verticalSpace(20),
 
             // Content text
             Text(
               content,
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
 
-            SizedBox(height: 24.h),
+            verticalSpace(22),
 
             // Action buttons
             Row(
@@ -122,7 +122,7 @@ class AppAlertDialog extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
       ),
     );
   }

@@ -8,7 +8,7 @@ class PageTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       pageName,
-      style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 28),
+      style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 24),
     );
   }
 }

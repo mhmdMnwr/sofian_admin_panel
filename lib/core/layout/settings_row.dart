@@ -80,7 +80,9 @@ class SettingsRow extends StatelessWidget {
                     return ListTile(
                       title: Text(
                         displayName,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodyMedium?.copyWith(fontSize: 16),
                         textAlign: locale.languageCode == 'ar'
                             ? TextAlign.right
                             : TextAlign.left,

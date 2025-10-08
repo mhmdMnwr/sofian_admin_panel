@@ -54,8 +54,8 @@ class StatsContainer extends StatelessWidget {
             _title(title, context),
             Image.asset(
               icon,
-              width: 60.h,
-              height: 60.h,
+              width: 40,
+              height: 40,
               color: ColorsManager.secondaryBlue,
             ),
           ],
@@ -78,7 +78,7 @@ class StatsContainer extends StatelessWidget {
             ' $da',
             style: Theme.of(
               context,
-            ).textTheme.bodyMedium!.copyWith(fontSize: 22),
+            ).textTheme.bodyMedium!.copyWith(fontSize: 18),
             overflow: TextOverflow.fade,
             maxLines: 2,
           ),
