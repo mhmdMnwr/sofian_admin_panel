@@ -5,6 +5,7 @@ import 'package:sofian_admin_panel/core/widgets/add_button.dart';
 import 'package:sofian_admin_panel/core/widgets/page_title.dart';
 import 'package:sofian_admin_panel/features/admin/data/model/admin_model.dart';
 import 'package:sofian_admin_panel/features/admin/ui/widget/admin_grid.dart';
+import 'package:sofian_admin_panel/features/admin/ui/widget/create_admin.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
 class AdminsPage extends StatelessWidget {
@@ -45,7 +46,15 @@ class AdminsPage extends StatelessWidget {
                     children: [
                       PageTitle(pageName: localizations.admins_management),
                       verticalSpace(16),
-                      AddButton(text: localizations.add_admin),
+                      AddButton(
+                        text: localizations.add_admin,
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => const CreateAdmin(),
+                          );
+                        },
+                      ),
                     ],
                   );
                 }

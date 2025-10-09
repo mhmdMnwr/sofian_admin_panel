@@ -99,7 +99,9 @@
   "add_admin": "Ajouter un administrateur",
   "permissions": "Permissions",
   "delete_order": "Supprimer la commande",
-  "are_you_sure_you_want_to_delete_this_order": "Êtes-vous sûr de vouloir supprimer cette commande?"
+  "are_you_sure_you_want_to_delete_this_order": "Êtes-vous sûr de vouloir supprimer cette commande?",
+  "create_admin" : "Créer un administrateur",
+  "select_asigned_permissions" : "Sélectionner les permissions attribuées"
 
 
 

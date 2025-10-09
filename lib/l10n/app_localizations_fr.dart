@@ -307,4 +307,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get are_you_sure_you_want_to_delete_this_order => 'Êtes-vous sûr de vouloir supprimer cette commande?';
+
+  @override
+  String get create_admin => 'Créer un administrateur';
+
+  @override
+  String get select_asigned_permissions => 'Sélectionner les permissions attribuées';
 }

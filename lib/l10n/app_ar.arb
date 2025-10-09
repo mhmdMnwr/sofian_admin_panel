@@ -99,6 +99,8 @@
   "add_admin": "إضافة مسؤول",
   "permissions": "الأذونات",
   "delete_order": "حذف الطلب",
-  "are_you_sure_you_want_to_delete_this_order": "هل أنت متأكد أنك تريد حذف هذا الطلب؟"
+  "are_you_sure_you_want_to_delete_this_order": "هل أنت متأكد أنك تريد حذف هذا الطلب؟",
+  "create_admin" : "إنشاء مسؤول",
+  "select_asigned_permissions" : "تحديد الأذونات"
 
 }

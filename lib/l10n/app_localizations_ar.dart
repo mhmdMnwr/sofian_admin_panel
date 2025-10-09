@@ -307,4 +307,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get are_you_sure_you_want_to_delete_this_order => 'هل أنت متأكد أنك تريد حذف هذا الطلب؟';
+
+  @override
+  String get create_admin => 'إنشاء مسؤول';
+
+  @override
+  String get select_asigned_permissions => 'تحديد الأذونات';
 }

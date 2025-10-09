@@ -696,6 +696,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to delete this order?'**
   String get are_you_sure_you_want_to_delete_this_order;
+
+  /// No description provided for @create_admin.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Admin'**
+  String get create_admin;
+
+  /// No description provided for @select_asigned_permissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Asigned Permissions'**
+  String get select_asigned_permissions;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
