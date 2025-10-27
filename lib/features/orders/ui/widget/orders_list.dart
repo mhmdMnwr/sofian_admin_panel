@@ -4,7 +4,9 @@ import 'package:sofian_admin_panel/core/helpers/extensions.dart';
 import 'package:sofian_admin_panel/core/widgets/alert_dialog.dart';
 import 'package:sofian_admin_panel/core/widgets/generic_table.dart';
 import 'package:sofian_admin_panel/core/widgets/search_bar.dart';
+import 'package:sofian_admin_panel/features/orders/data/models/order_details_model.dart';
 import 'package:sofian_admin_panel/features/orders/data/models/order_model.dart';
+import 'package:sofian_admin_panel/features/orders/ui/widget/order_details.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
 class OrdersList extends StatefulWidget {
@@ -34,7 +36,7 @@ class _OrdersListState extends State<OrdersList> {
         _deleteOrder();
       },
       onEdit: (index) {
-        _deleteOrder();
+        showOrderDetailsDialog(context, order: testOrderDetails);
       },
       child: Padding(
         padding: EdgeInsets.only(top: 20.h, left: 20.w),

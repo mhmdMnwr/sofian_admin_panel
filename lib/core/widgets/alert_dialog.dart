@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sofian_admin_panel/core/helpers/spacing.dart';
 
-// Todo this is made by ai and i didnt test it yet
-
-class AppAlertDialog extends StatelessWidget {
+class AppAlertDialog extends StatefulWidget {
   final String title;
   final String content;
   final String primaryButtonText;
@@ -48,63 +46,72 @@ class AppAlertDialog extends StatelessWidget {
   }
 
   @override
+  State<AppAlertDialog> createState() => _AppAlertDialogState();
+}
+
+class _AppAlertDialogState extends State<AppAlertDialog> {
+  @override
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-      child: Container(
-        constraints: BoxConstraints(maxWidth: 500),
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Title with close button
-            dialogHeader(context, title: title),
-
-            verticalSpace(20),
-
-            // Content text
-            Text(
-              content,
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-            ),
-
-            verticalSpace(22),
-
-            // Action buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+      child: Builder(
+        builder: (dialogContext) {
+          return Container(
+            constraints: BoxConstraints(maxWidth: 500),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Primary button (e.g., Delete, Confirm)
+                // Title with close button
+                AppAlertDialog.dialogHeader(dialogContext, title: widget.title),
 
-                // Secondary button (e.g., Cancel)
-                _buildButton(
-                  context: context,
-                  text: secondaryButtonText,
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    onSecondaryButtonTap();
-                  },
-                  backgroundColor:
-                      secondaryButtonColor ?? const Color(0xFF5B9BD5),
+                verticalSpace(20),
+
+                // Content text
+                Text(
+                  widget.content,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                 ),
 
-                horizontalSpace(12),
+                verticalSpace(22),
 
-                _buildButton(
-                  context: context,
-                  text: primaryButtonText,
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    onPrimaryButtonTap();
-                  },
-                  backgroundColor:
-                      primaryButtonColor ?? const Color(0xFF5B9BD5),
+                // Action buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    // Secondary button (e.g., Cancel)
+                    _buildButton(
+                      context: dialogContext,
+                      text: widget.secondaryButtonText,
+                      onTap: () {
+                        Navigator.of(dialogContext).pop();
+                        widget.onSecondaryButtonTap();
+                      },
+                      backgroundColor:
+                          widget.secondaryButtonColor ??
+                          const Color(0xFF5B9BD5),
+                    ),
+
+                    horizontalSpace(12),
+
+                    // Primary button (e.g., Delete, Confirm)
+                    _buildButton(
+                      context: dialogContext,
+                      text: widget.primaryButtonText,
+                      onTap: () {
+                        Navigator.of(dialogContext).pop();
+                        widget.onPrimaryButtonTap();
+                      },
+                      backgroundColor:
+                          widget.primaryButtonColor ?? const Color(0xFF5B9BD5),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -132,7 +139,6 @@ class AppAlertDialog extends StatelessWidget {
   }
 }
 
-/// Helper function to show the alert dialog
 Future<void> showAppAlertDialog({
   required BuildContext context,
   required String title,

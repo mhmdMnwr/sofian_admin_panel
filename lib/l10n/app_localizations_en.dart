@@ -313,4 +313,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get select_asigned_permissions => 'Select Asigned Permissions';
+
+  @override
+  String get quantity => 'Quantity';
+
+  @override
+  String get unit_price => 'Unit Price';
+
+  @override
+  String get order_info => 'Order Info';
+
+  @override
+  String get update_state => 'Update State';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get order_details => 'Order Details';
+
+  @override
+  String get customer_info => 'Customer Info';
 }

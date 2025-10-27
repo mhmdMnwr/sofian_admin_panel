@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sofian_admin_panel/core/helpers/functions.dart';
 import 'package:sofian_admin_panel/core/theming/app_colors.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
@@ -18,21 +19,6 @@ class OrderItem {
     required this.orderId,
     required this.status,
   });
-
-  String statusText(BuildContext context) {
-    switch (status) {
-      case Status.pending:
-        return AppLocalizations.of(context)!.pending;
-      case Status.delivered:
-        return AppLocalizations.of(context)!.delivered;
-      case Status.canceled:
-        return AppLocalizations.of(context)!.canceled;
-      case Status.processing:
-        return AppLocalizations.of(context)!.processing;
-      case Status.shipped:
-        return AppLocalizations.of(context)!.shipped;
-    }
-  }
 
   get statusColor {
     switch (status) {
@@ -60,7 +46,7 @@ class OrderItem {
         ),
         child: Center(
           child: Text(
-            statusText(context),
+            statusText(context, status),
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,

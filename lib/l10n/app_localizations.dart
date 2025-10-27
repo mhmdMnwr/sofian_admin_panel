@@ -708,6 +708,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select Asigned Permissions'**
   String get select_asigned_permissions;
+
+  /// No description provided for @quantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get quantity;
+
+  /// No description provided for @unit_price.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit Price'**
+  String get unit_price;
+
+  /// No description provided for @order_info.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Info'**
+  String get order_info;
+
+  /// No description provided for @update_state.
+  ///
+  /// In en, this message translates to:
+  /// **'Update State'**
+  String get update_state;
+
+  /// No description provided for @total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get total;
+
+  /// No description provided for @order_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Details'**
+  String get order_details;
+
+  /// No description provided for @customer_info.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Info'**
+  String get customer_info;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

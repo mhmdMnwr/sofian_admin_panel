@@ -101,7 +101,14 @@
   "delete_order": "Supprimer la commande",
   "are_you_sure_you_want_to_delete_this_order": "Êtes-vous sûr de vouloir supprimer cette commande?",
   "create_admin" : "Créer un administrateur",
-  "select_asigned_permissions" : "Sélectionner les permissions attribuées"
+  "select_asigned_permissions" : "Sélectionner les permissions attribuées",
+  "quantity": "Quantité",
+  "unit_price": "Prix unitaire",
+  "order_info": "Info de commande",
+  "update_state": "Mettre à jour l'état",
+  "total": "Total",
+  "order_details": "Détails de la commande",
+  "customer_info": "Informations client"
 
 
 

@@ -313,4 +313,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get select_asigned_permissions => 'تحديد الأذونات';
+
+  @override
+  String get quantity => 'الكمية';
+
+  @override
+  String get unit_price => 'سعر الوحدة';
+
+  @override
+  String get order_info => 'معلومات الطلب';
+
+  @override
+  String get update_state => 'تحديث الحالة';
+
+  @override
+  String get total => 'المجموع';
+
+  @override
+  String get order_details => 'تفاصيل الطلب';
+
+  @override
+  String get customer_info => 'معلومات العميل';
 }
