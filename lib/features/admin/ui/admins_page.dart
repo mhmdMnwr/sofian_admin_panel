@@ -36,7 +36,10 @@ class AdminsPage extends StatelessWidget {
                     children: [
                       PageTitle(pageName: localizations.admins_management),
                       Spacer(),
-                      AddButton(text: localizations.add_admin),
+                      AddButton(
+                        text: localizations.add_admin,
+                        onTap: () => showCreateAdminDialog(context),
+                      ),
                     ],
                   );
                 } else {
@@ -48,12 +51,7 @@ class AdminsPage extends StatelessWidget {
                       verticalSpace(16),
                       AddButton(
                         text: localizations.add_admin,
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => const CreateAdmin(),
-                          );
-                        },
+                        onTap: () => showCreateAdminDialog(context),
                       ),
                     ],
                   );

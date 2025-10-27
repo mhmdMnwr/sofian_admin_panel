@@ -1,223 +1,163 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sofian_admin_panel/core/helpers/spacing.dart';
-import 'package:sofian_admin_panel/core/layout/sidebar_page_model.dart';
-import 'package:sofian_admin_panel/core/widgets/alert_dialog.dart';
 import 'package:sofian_admin_panel/core/widgets/app_form_filed.dart';
-import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
-class CreateAdmin extends StatefulWidget {
-  const CreateAdmin({super.key});
+//TODO this ui is not centered and i should use the appbutton and the permissions list  and the applocalizations for language and icons for the persmissions and the password field
+class AddSubAdminDialog extends StatefulWidget {
+  const AddSubAdminDialog({super.key});
 
   @override
-  State<CreateAdmin> createState() => _CreateAdminState();
+  State<AddSubAdminDialog> createState() => _AddSubAdminDialogState();
 }
 
-class _CreateAdminState extends State<CreateAdmin> {
-  final Set<PermissionsTypes> _selectedPermissions = {};
+class _AddSubAdminDialogState extends State<AddSubAdminDialog> {
+  final List<String> sections = [
+    'Categories',
+    'Products',
+    'Brands',
+    'Orders',
+    'Banners',
+    'Promotions',
+  ];
+
+  final Map<String, bool> selectedSections = {};
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    final localization = AppLocalizations.of(context)!;
-    return Dialog(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-        child: Column(
-          children: [
-            AppAlertDialog.dialogHeader(
-              context,
-              title: localization.create_admin,
-            ),
-            verticalSpace(20),
-            AppFormField(hintText: localization.name),
-            verticalSpace(10),
-            AppFormField(hintText: localization.phone_number),
-            verticalSpace(10),
-            AppFormField(hintText: localization.address),
-            verticalSpace(10),
-            AppFormField(hintText: localization.password),
-            verticalSpace(10),
-            _buildPermissionSection(context, localization),
-          ],
-        ),
-      ),
-    );
+  void initState() {
+    super.initState();
+    for (var section in sections) {
+      selectedSections[section] = false;
+    }
   }
 
-  _buildPermissionSection(BuildContext context, localization) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          localization.select_asigned_permissions,
-          style: Theme.of(
-            context,
-          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
-        verticalSpace(15),
-        _PermissionsRadioWidget(
-          selectedPermissions: _selectedPermissions,
-          onPermissionChanged: (permission, isSelected) {
-            setState(() {
-              if (isSelected) {
-                _selectedPermissions.add(permission);
-              } else {
-                _selectedPermissions.remove(permission);
-              }
-            });
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class _PermissionsRadioWidget extends StatelessWidget {
-  final Set<PermissionsTypes> selectedPermissions;
-  final Function(PermissionsTypes permission, bool isSelected)
-  onPermissionChanged;
-
-  const _PermissionsRadioWidget({
-    required this.selectedPermissions,
-    required this.onPermissionChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final localization = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
-
-    // Get all available permissions except admins (usually restricted)
-    final availablePermissions = PermissionsTypes.values
-        .where((p) => p != PermissionsTypes.admins)
+  void _submit() {
+    // Example submission logic
+    final selected = selectedSections.entries
+        .where((e) => e.value)
+        .map((e) => e.key)
         .toList();
 
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: theme.dividerColor),
-        borderRadius: BorderRadius.circular(8.r),
-      ),
-      child: Column(
-        children: availablePermissions.map((permission) {
-          final isSelected = selectedPermissions.contains(permission);
-          return _buildPermissionRadioTile(
-            context,
-            permission,
-            isSelected,
-            localization,
-            theme,
-          );
-        }).toList(),
-      ),
-    );
+    // TODO: send to backend / cubit / repository
+    debugPrint('Name: ${nameController.text}');
+    debugPrint('Phone: ${phoneController.text}');
+    debugPrint('Address: ${addressController.text}');
+    debugPrint('Selected Sections: $selected');
+
+    Navigator.pop(context);
   }
 
-  Widget _buildPermissionRadioTile(
-    BuildContext context,
-    PermissionsTypes permission,
-    bool isSelected,
-    AppLocalizations localization,
-    ThemeData theme,
-  ) {
-    return InkWell(
-      onTap: () => onPermissionChanged(permission, !isSelected),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: theme.dividerColor.withOpacity(0.3),
-              width: 0.5,
-            ),
-          ),
-        ),
-        child: Row(
-          children: [
-            Icon(
-              _getPermissionIcon(permission),
-              size: 24,
-              color: isSelected
-                  ? theme.primaryColor
-                  : theme.iconTheme.color?.withOpacity(0.6),
-            ),
-            horizontalSpace(12),
-            Expanded(
-              child: Text(
-                _getPermissionDisplayName(localization, permission),
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                  color: isSelected
-                      ? theme.primaryColor
-                      : theme.textTheme.bodyMedium?.color,
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+      insetPadding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+      child: Padding(
+        padding: EdgeInsets.all(20.w),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// Header Row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Add a Sub - Admin',
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16.h),
+
+              /// Form Fields
+              AppFormField(
+                hintText: 'Name',
+                onSearchChanged: (v) => nameController.text = v,
+              ),
+              SizedBox(height: 12.h),
+              AppFormField(
+                hintText: 'Phone Number',
+                keyboardType: TextInputType.phone,
+                onSearchChanged: (v) => phoneController.text = v,
+              ),
+              SizedBox(height: 12.h),
+              AppFormField(
+                hintText: 'Address',
+                onSearchChanged: (v) => addressController.text = v,
+              ),
+              SizedBox(height: 20.h),
+
+              /// Section Selector
+              Text(
+                'Select assigned sections',
+                style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500),
+              ),
+              SizedBox(height: 10.h),
+
+              Wrap(
+                spacing: 40.w,
+                runSpacing: 8.h,
+                children: sections.map((section) {
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Checkbox(
+                        value: selectedSections[section],
+                        onChanged: (value) {
+                          setState(() {
+                            selectedSections[section] = value ?? false;
+                          });
+                        },
+                      ),
+                      Text(section, style: TextStyle(fontSize: 14.sp)),
+                    ],
+                  );
+                }).toList(),
+              ),
+
+              SizedBox(height: 24.h),
+
+              /// Add Button
+              Center(
+                child: SizedBox(
+                  width: 180.w,
+                  height: 42.h,
+                  child: FilledButton(
+                    onPressed: _submit,
+                    style: FilledButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                    ),
+                    child: const Text('Add'),
+                  ),
                 ),
               ),
-            ),
-            Radio<bool>(
-              value: true,
-              groupValue: isSelected,
-              onChanged: (value) {
-                if (value != null) {
-                  onPermissionChanged(permission, value);
-                }
-              },
-              activeColor: theme.primaryColor,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
+}
 
-  String _getPermissionDisplayName(
-    AppLocalizations localization,
-    PermissionsTypes permission,
-  ) {
-    switch (permission) {
-      case PermissionsTypes.dashboard:
-        return localization.dashboard;
-      case PermissionsTypes.categories:
-        return localization.categories;
-      case PermissionsTypes.products:
-        return localization.products;
-      case PermissionsTypes.brands:
-        return localization.brands;
-      case PermissionsTypes.orders:
-        return localization.orders;
-      case PermissionsTypes.clients:
-        return localization.clients;
-      case PermissionsTypes.discounts:
-        return localization.discounts;
-      case PermissionsTypes.users:
-        return localization.users;
-      case PermissionsTypes.banners:
-        return localization.banners;
-      case PermissionsTypes.admins:
-        return localization.admins;
-    }
-  }
-
-  IconData _getPermissionIcon(PermissionsTypes permission) {
-    switch (permission) {
-      case PermissionsTypes.dashboard:
-        return Icons.dashboard_outlined;
-      case PermissionsTypes.categories:
-        return Icons.category_outlined;
-      case PermissionsTypes.products:
-        return Icons.shopping_bag_outlined;
-      case PermissionsTypes.brands:
-        return Icons.branding_watermark_outlined;
-      case PermissionsTypes.orders:
-        return Icons.shopping_cart_outlined;
-      case PermissionsTypes.clients:
-        return Icons.people_outline;
-      case PermissionsTypes.discounts:
-        return Icons.discount_outlined;
-      case PermissionsTypes.users:
-        return Icons.person_outline;
-      case PermissionsTypes.banners:
-        return Icons.image_outlined;
-      case PermissionsTypes.admins:
-        return Icons.admin_panel_settings_outlined;
-    }
-  }
+showCreateAdminDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return const AddSubAdminDialog();
+    },
+  );
 }

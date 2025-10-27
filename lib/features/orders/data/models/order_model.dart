@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sofian_admin_panel/core/helpers/functions.dart';
 import 'package:sofian_admin_panel/core/theming/app_colors.dart';
-import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
 class OrderItem {
   final String clientName;
