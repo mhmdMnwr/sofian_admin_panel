@@ -14,9 +14,9 @@ class AdminsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-
+    final theme = Theme.of(context);
     return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
+      color: theme.scaffoldBackgroundColor,
       child: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
           horizontal: AppConstants.pageHorizontalPadding,

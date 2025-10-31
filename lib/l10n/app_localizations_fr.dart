@@ -334,4 +334,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get customer_info => 'Informations client';
+
+  @override
+  String get selectAssignedSections => 'Sélectionner les sections assignées';
+
+  @override
+  String get confirm => 'Confirmer';
+
+  @override
+  String get confirmation => 'Confirmation';
+
+  @override
+  String get are_you_sure_you_want_to_add_this_admin => 'Êtes-vous sûr de vouloir ajouter cet administrateur ?';
+
+  @override
+  String get assigned_sections => 'Sections assignées :';
+
+  @override
+  String get unit_per_box => 'Unité par boîte :';
 }

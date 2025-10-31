@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sofian_admin_panel/core/helpers/spacing.dart';
 import 'package:sofian_admin_panel/core/widgets/add_button.dart';
 import 'package:sofian_admin_panel/core/widgets/app_form_filed.dart';
 import 'package:sofian_admin_panel/core/widgets/app_drop_down_menu.dart';
@@ -23,6 +24,7 @@ class AddProductDialog extends StatefulWidget {
 class _AddProductDialogState extends State<AddProductDialog> {
   String? _name;
   String? _price;
+  String? _unitPerBox;
   String? _selectedCategory;
   String? _selectedBrand;
   String? _selectedState;
@@ -119,18 +121,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
     );
   }
 
-  void _submit() {
-    // Return a simple map with the filled values. The caller can handle saving.
-    Navigator.of(context).pop({
-      'name': _name,
-      'price': _price,
-      'category': _selectedCategory,
-      'brand': _selectedBrand,
-      'state': _selectedState,
-      'image': _imageFile,
-      'isEdit': widget.isEdit,
-    });
-  }
+  void _submit() {}
 
   @override
   Widget build(BuildContext context) {
@@ -139,137 +130,140 @@ class _AddProductDialogState extends State<AddProductDialog> {
       insetPadding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
       child: Padding(
         padding: EdgeInsets.all(16.w),
-        child: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 520.w),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      widget.isEdit
-                          ? AppLocalizations.of(context)!.edit_product
-                          : AppLocalizations.of(context)!.add_product,
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 520.w),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    widget.isEdit
+                        ? AppLocalizations.of(context)!.edit_product
+                        : AppLocalizations.of(context)!.add_product,
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: Icon(Icons.close),
+                  ),
+                ],
+              ),
+              verticalSpace(12.h),
+
+              // Product name
+              AppFormField(
+                hintText: AppLocalizations.of(context)!.product_name,
+                onSearchChanged: (value) => _name = value,
+              ),
+              AppFormField(
+                keyboardType: TextInputType.number,
+                hintText: AppLocalizations.of(context)!.unit_per_box,
+                onSearchChanged: (value) => _unitPerBox = value,
+              ),
+
+              verticalSpace(12.h),
+
+              // Category dropdown
+              _buildStyledDropdown(
+                hintText: AppLocalizations.of(context)!.select_category,
+                items: _categories,
+                value: _selectedCategory,
+                onChanged: (v) => setState(() => _selectedCategory = v),
+              ),
+
+              verticalSpace(12.h),
+
+              // Brand dropdown
+              _buildStyledDropdown(
+                hintText: AppLocalizations.of(context)!.select_brand,
+                items: _brands,
+                value: _selectedBrand,
+                onChanged: (v) => setState(() => _selectedBrand = v),
+              ),
+
+              verticalSpace(12.h),
+
+              // Price + State
+              Row(
+                children: [
+                  Expanded(
+                    child: AppFormField(
+                      hintText: AppLocalizations.of(context)!.price,
+                      onSearchChanged: (value) => _price = value,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      icon: Icon(Icons.close),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 12.h),
-
-                // Product name
-                AppFormField(
-                  hintText: AppLocalizations.of(context)!.product_name,
-                  onSearchChanged: (value) => _name = value,
-                ),
-
-                SizedBox(height: 12.h),
-
-                // Category dropdown
-                _buildStyledDropdown(
-                  hintText: AppLocalizations.of(context)!.select_category,
-                  items: _categories,
-                  value: _selectedCategory,
-                  onChanged: (v) => setState(() => _selectedCategory = v),
-                ),
-
-                SizedBox(height: 12.h),
-
-                // Brand dropdown
-                _buildStyledDropdown(
-                  hintText: AppLocalizations.of(context)!.select_brand,
-                  items: _brands,
-                  value: _selectedBrand,
-                  onChanged: (v) => setState(() => _selectedBrand = v),
-                ),
-
-                SizedBox(height: 12.h),
-
-                // Price + State
-                Row(
-                  children: [
-                    Expanded(
-                      child: AppFormField(
-                        hintText: AppLocalizations.of(context)!.price,
-                        onSearchChanged: (value) => _price = value,
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d*\.?\d*'),
                         ),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                            RegExp(r'^\d*\.?\d*'),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    _buildStyledDropdown(
-                      hintText: AppLocalizations.of(context)!.select_state,
-                      items: _states,
-                      value: _selectedState,
-                      onChanged: (v) => setState(() => _selectedState = v),
-                      width: 160.w,
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 12.h),
-
-                // Image chooser
-                Row(
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.images,
-                      style: TextStyle(fontSize: 16.sp),
-                    ),
-                    const Spacer(),
-                    ElevatedButton(
-                      onPressed: _pickImage,
-                      child: Text(AppLocalizations.of(context)!.choose_image),
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 8.h),
-
-                if (_imageFile != null)
-                  SizedBox(
-                    height: 120.h,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.r),
-                      child: Image.file(
-                        _imageFile!,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                      ),
+                      ],
                     ),
                   ),
+                  SizedBox(width: 12.w),
+                  _buildStyledDropdown(
+                    hintText: AppLocalizations.of(context)!.select_state,
+                    items: _states,
+                    value: _selectedState,
+                    onChanged: (v) => setState(() => _selectedState = v),
+                    width: 160.w,
+                  ),
+                ],
+              ),
 
-                SizedBox(height: 18.h),
+              verticalSpace(12.h),
 
-                Center(
-                  child: SizedBox(
-                    width: 200,
-                    child: AddButton(
-                      horizontalPadding: 10,
-                      text: widget.isEdit
-                          ? AppLocalizations.of(context)!.save
-                          : AppLocalizations.of(context)!.add,
-                      onTap: _submit,
+              // Image chooser
+              Row(
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.images,
+                    style: TextStyle(fontSize: 16.sp),
+                  ),
+                  const Spacer(),
+                  ElevatedButton(
+                    onPressed: _pickImage,
+                    child: Text(AppLocalizations.of(context)!.choose_image),
+                  ),
+                ],
+              ),
+
+              verticalSpace(8.h),
+
+              if (_imageFile != null)
+                SizedBox(
+                  height: 120.h,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.r),
+                    child: Image.file(
+                      _imageFile!,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
                     ),
                   ),
                 ),
-              ],
-            ),
+
+              verticalSpace(18.h),
+
+              Center(
+                child: SizedBox(
+                  width: 200,
+                  child: AddButton(
+                    horizontalPadding: 10,
+                    text: widget.isEdit
+                        ? AppLocalizations.of(context)!.save
+                        : AppLocalizations.of(context)!.add,
+                    onTap: _submit,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

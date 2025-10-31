@@ -108,7 +108,13 @@
   "update_state": "Update State",
   "total": "Total",
   "order_details": "Order Details",
-  "customer_info": "Customer Info"
+  "customer_info": "Customer Info",
+  "selectAssignedSections"  : "Select Assigned Sections",
+  "confirm": "Confirm",
+  "confirmation": "Confirmation",
+  "are_you_sure_you_want_to_add_this_admin": "Are you sure you want to add this admin?",
+  "assigned_sections": "Assigned sections :",
+  "unit_per_box": "Unit per box :"
 
 
 }

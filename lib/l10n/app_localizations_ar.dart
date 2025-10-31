@@ -334,4 +334,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get customer_info => 'معلومات العميل';
+
+  @override
+  String get selectAssignedSections => 'تحديد الأقسام المعينة';
+
+  @override
+  String get confirm => 'تأكيد';
+
+  @override
+  String get confirmation => 'تأكيد';
+
+  @override
+  String get are_you_sure_you_want_to_add_this_admin => 'هل أنت متأكد أنك تريد إضافة هذا المسؤول؟';
+
+  @override
+  String get assigned_sections => 'الأقسام المعينة :';
+
+  @override
+  String get unit_per_box => 'الوحدة في الصندوق :';
 }

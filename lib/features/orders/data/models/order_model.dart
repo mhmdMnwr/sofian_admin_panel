@@ -35,22 +35,19 @@ class OrderItem {
   }
 
   Widget buildStatusBadge(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 14.h),
-
-      child: Container(
-        decoration: BoxDecoration(
-          color: statusColor,
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        child: Center(
-          child: Text(
-            statusText(context, status),
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-            ),
+    return Container(
+      height: 26,
+      decoration: BoxDecoration(
+        color: statusColor,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Center(
+        child: Text(
+          statusText(context, status),
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
           ),
         ),
       ),

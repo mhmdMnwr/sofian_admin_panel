@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sofian_admin_panel/core/helpers/spacing.dart';
 import 'package:sofian_admin_panel/core/layout/sidebar_page_model.dart';
 import 'package:sofian_admin_panel/core/routing/routes.dart';
 import 'package:sofian_admin_panel/features/admin/data/model/admin_model.dart';
@@ -172,14 +173,14 @@ class AccessDeniedPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.lock, size: 64, color: Colors.red),
-            const SizedBox(height: 16),
-            const Text(
+            verticalSpace(16),
+            Text(
               'Access Denied',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8),
-            const Text('You do not have permission to access this page.'),
-            const SizedBox(height: 16),
+            verticalSpace(8),
+            Text('You do not have permission to access this page.'),
+            verticalSpace(16),
             ElevatedButton(
               onPressed: () => context.go(_getFirstPermittedRoute()),
               child: const Text('Go to Home'),

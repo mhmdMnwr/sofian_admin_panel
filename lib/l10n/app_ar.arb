@@ -108,6 +108,12 @@
   "update_state": "تحديث الحالة",
   "total": "المجموع",
   "order_details": "تفاصيل الطلب",
-  "customer_info": "معلومات العميل"
+  "customer_info": "معلومات العميل",
+  "selectAssignedSections"  : "تحديد الأقسام المعينة",
+  "confirm": "تأكيد",
+  "confirmation": "تأكيد",
+  "are_you_sure_you_want_to_add_this_admin": "هل أنت متأكد أنك تريد إضافة هذا المسؤول؟",
+  "assigned_sections": "الأقسام المعينة :",
+  "unit_per_box": "الوحدة في الصندوق :"
 
 }

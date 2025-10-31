@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:sofian_admin_panel/core/helpers/spacing.dart';
 import 'package:sofian_admin_panel/core/theming/app_icons.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
@@ -108,7 +109,7 @@ class _GenericTableState extends State<GenericTable> {
             mainAxisSize: MainAxisSize.min,
             children: [
               widget.child,
-              const SizedBox(height: 30),
+              verticalSpace(30),
               // Horizontal scrollbar + scroll area
               Scrollbar(
                 controller: _horizontalController,
@@ -319,7 +320,7 @@ class _GenericTableState extends State<GenericTable> {
       constraints: const BoxConstraints(
         minWidth: 28,
         minHeight: 28,
-        maxWidth: 36,
+        maxWidth: 50,
         maxHeight: 36,
       ),
       icon: (() {

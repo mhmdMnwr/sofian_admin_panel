@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sofian_admin_panel/core/helpers/spacing.dart';
+import 'package:sofian_admin_panel/core/widgets/add_button.dart';
+import 'package:sofian_admin_panel/core/widgets/alert_dialog.dart';
 import 'package:sofian_admin_panel/core/widgets/app_form_filed.dart';
+import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
-//TODO this ui is not centered and i should use the appbutton and the permissions list  and the applocalizations for language and icons for the persmissions and the password field
 class AddSubAdminDialog extends StatefulWidget {
   const AddSubAdminDialog({super.key});
 
@@ -11,141 +14,203 @@ class AddSubAdminDialog extends StatefulWidget {
 }
 
 class _AddSubAdminDialogState extends State<AddSubAdminDialog> {
-  final List<String> sections = [
-    'Categories',
-    'Products',
-    'Brands',
-    'Orders',
-    'Banners',
-    'Promotions',
-  ];
-
   final Map<String, bool> selectedSections = {};
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  // We'll fill this in didChangeDependencies where context/localization is available
+  List<String> _sections = [];
+  bool _didInitLocalizations = false;
 
   @override
-  void initState() {
-    super.initState();
-    for (var section in sections) {
-      selectedSections[section] = false;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_didInitLocalizations) {
+      final loc = AppLocalizations.of(context)!;
+
+      // build the sections list from localization
+      _sections = [
+        loc.dashboard,
+        loc.categories,
+        loc.products,
+        loc.brands,
+        loc.orders,
+        loc.clients,
+        loc.discounts,
+        loc.banners,
+      ];
+
+      // initialize selectedSections map
+      for (var section in _sections) {
+        selectedSections.putIfAbsent(section, () => false);
+      }
+
+      _didInitLocalizations = true;
     }
   }
 
-  void _submit() {
-    // Example submission logic
-    final selected = selectedSections.entries
-        .where((e) => e.value)
-        .map((e) => e.key)
-        .toList();
-
-    // TODO: send to backend / cubit / repository
-    debugPrint('Name: ${nameController.text}');
-    debugPrint('Phone: ${phoneController.text}');
-    debugPrint('Address: ${addressController.text}');
-    debugPrint('Selected Sections: $selected');
-
-    Navigator.pop(context);
-  }
+  void _submit() => showAppAlertDialog(
+    context: context,
+    title: AppLocalizations.of(context)!.confirmation,
+    content: AppLocalizations.of(
+      context,
+    )!.are_you_sure_you_want_to_add_this_admin,
+    primaryButtonText: AppLocalizations.of(context)!.confirm,
+    secondaryButtonText: AppLocalizations.of(context)!.cancel,
+    onPrimaryButtonTap: () {
+      // Handle admin creation logic here
+      Navigator.of(context).pop(); // Close confirmation dialog
+      Navigator.of(context).pop(); // Close add admin dialog
+    },
+    onSecondaryButtonTap: () {
+      Navigator.of(context).pop(); // Close confirmation dialog
+    },
+  );
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-      insetPadding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-      child: Padding(
-        padding: EdgeInsets.all(20.w),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /// Header Row
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Add a Sub - Admin',
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16.h),
-
-              /// Form Fields
-              AppFormField(
-                hintText: 'Name',
-                onSearchChanged: (v) => nameController.text = v,
-              ),
-              SizedBox(height: 12.h),
-              AppFormField(
-                hintText: 'Phone Number',
-                keyboardType: TextInputType.phone,
-                onSearchChanged: (v) => phoneController.text = v,
-              ),
-              SizedBox(height: 12.h),
-              AppFormField(
-                hintText: 'Address',
-                onSearchChanged: (v) => addressController.text = v,
-              ),
-              SizedBox(height: 20.h),
-
-              /// Section Selector
-              Text(
-                'Select assigned sections',
-                style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500),
-              ),
-              SizedBox(height: 10.h),
-
-              Wrap(
-                spacing: 40.w,
-                runSpacing: 8.h,
-                children: sections.map((section) {
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Checkbox(
-                        value: selectedSections[section],
-                        onChanged: (value) {
-                          setState(() {
-                            selectedSections[section] = value ?? false;
-                          });
-                        },
-                      ),
-                      Text(section, style: TextStyle(fontSize: 14.sp)),
-                    ],
-                  );
-                }).toList(),
-              ),
-
-              SizedBox(height: 24.h),
-
-              /// Add Button
-              Center(
-                child: SizedBox(
-                  width: 180.w,
-                  height: 42.h,
-                  child: FilledButton(
-                    onPressed: _submit,
-                    style: FilledButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
+    final loc = AppLocalizations.of(context)!;
+    final ThemeData theme = Theme.of(context);
+    return Center(
+      child: Dialog(
+        backgroundColor: theme.scaffoldBackgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        insetPadding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 600.w),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(20.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                /// Header Row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      // consider adding this key to your localization files
+                      loc.add_admin,
+                      style: theme.textTheme.bodyMedium!.copyWith(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    child: const Text('Add'),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+                verticalSpace(16.h),
+
+                /// Form Fields
+                // If your AppFormField supports a controller and obscureText param,
+                // prefer passing controller: nameController etc.
+                AppFormField(
+                  hintText: loc.name, // use localized hint
+                  onSearchChanged: (v) => nameController.text = v,
+                ),
+                verticalSpace(12),
+                AppFormField(
+                  hintText: loc.phone_number,
+                  keyboardType: TextInputType.phone,
+                  onSearchChanged: (v) => phoneController.text = v,
+                ),
+                verticalSpace(12),
+                AppFormField(
+                  hintText: loc.address,
+                  onSearchChanged: (v) => addressController.text = v,
+                ),
+                verticalSpace(12),
+
+                // Password field — if AppFormField supports obscureText and controller:
+                AppFormField(
+                  hintText: loc.password,
+                  onSearchChanged: (v) => passwordController.text = v,
+                  obscureText: true,
+                ),
+
+                // If AppFormField does NOT support obscureText, use native TextFormField:
+                // TextFormField(
+                //   controller: passwordController,
+                //   obscureText: true,
+                //   decoration: InputDecoration(hintText: loc.password),
+                // ),
+                verticalSpace(20.h),
+
+                /// Section Selector
+                Align(
+                  alignment:
+                      Localizations.localeOf(context).languageCode == 'ar'
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
+                  child: Text(
+                    loc.selectAssignedSections,
+                    style: theme.textTheme.bodyMedium!.copyWith(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-            ],
+                verticalSpace(10.h),
+
+                Wrap(
+                  spacing: 24.w,
+                  runSpacing: 8.h,
+                  children: _sections.map((section) {
+                    final isSelected = selectedSections[section] ?? false;
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedSections[section] =
+                              !(selectedSections[section] ?? false);
+                        });
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Checkbox(
+                            value: isSelected,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedSections[section] = value ?? false;
+                              });
+                            },
+                          ),
+                          SizedBox(width: 6.w),
+                          Text(
+                            section,
+                            style: theme.textTheme.bodyMedium!.copyWith(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+
+                verticalSpace(24.h),
+
+                /// Add Button
+                Center(
+                  child: SizedBox(
+                    width: 120,
+                    child: AddButton(
+                      horizontalPadding: 0,
+                      onTap: _submit,
+                      text: loc.add,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -153,7 +218,7 @@ class _AddSubAdminDialogState extends State<AddSubAdminDialog> {
   }
 }
 
-showCreateAdminDialog(BuildContext context) {
+void showCreateAdminDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (context) {

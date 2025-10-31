@@ -108,8 +108,13 @@
   "update_state": "Mettre à jour l'état",
   "total": "Total",
   "order_details": "Détails de la commande",
-  "customer_info": "Informations client"
-
+  "customer_info": "Informations client",
+  "selectAssignedSections"  : "Sélectionner les sections assignées",
+  "confirm": "Confirmer",
+  "confirmation": "Confirmation",
+  "are_you_sure_you_want_to_add_this_admin": "Êtes-vous sûr de vouloir ajouter cet administrateur ?",
+  "assigned_sections": "Sections assignées :",
+  "unit_per_box": "Unité par boîte :"
 
 
 }

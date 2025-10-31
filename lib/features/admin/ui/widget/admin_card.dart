@@ -4,6 +4,7 @@ import 'package:sofian_admin_panel/core/helpers/spacing.dart';
 import 'package:sofian_admin_panel/core/layout/sidebar_page_model.dart';
 import 'package:sofian_admin_panel/core/theming/app_colors.dart';
 import 'package:sofian_admin_panel/core/theming/font_weight.dart';
+import 'package:sofian_admin_panel/core/widgets/alert_dialog.dart';
 import 'package:sofian_admin_panel/features/admin/data/model/admin_model.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
@@ -14,7 +15,7 @@ class AdminCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
+    final loc = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
     return Container(
@@ -63,7 +64,27 @@ class AdminCard extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.delete_outline, color: Colors.red),
                   onPressed: () {
-                    // TODO: Implement delete functionality
+                    showAppAlertDialog(
+                      context: context,
+                      title: loc.confirmation,
+                      content: AppLocalizations.of(
+                        context,
+                      )!.are_you_sure_you_want_to_add_this_admin,
+                      primaryButtonText: loc.confirm,
+                      secondaryButtonText: loc.cancel,
+                      onPrimaryButtonTap: () {
+                        // Handle admin creation logic here
+                        Navigator.of(
+                          context,
+                        ).pop(); // Close confirmation dialog
+                        Navigator.of(context).pop(); // Close add admin dialog
+                      },
+                      onSecondaryButtonTap: () {
+                        Navigator.of(
+                          context,
+                        ).pop(); // Close confirmation dialog
+                      },
+                    );
                   },
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
@@ -76,7 +97,7 @@ class AdminCard extends StatelessWidget {
             _buildInfoRow(
               context,
               icon: Icons.person_outline,
-              label: localizations.name,
+              label: loc.name,
               value: admin.name ?? 'N/A',
             ),
             verticalSpace(12),
@@ -85,7 +106,7 @@ class AdminCard extends StatelessWidget {
             _buildInfoRow(
               context,
               icon: Icons.phone_outlined,
-              label: localizations.phone_number,
+              label: loc.phone_number,
               value: admin.phoneNumber ?? 'N/A',
             ),
             verticalSpace(12),
@@ -94,7 +115,7 @@ class AdminCard extends StatelessWidget {
             _buildInfoRow(
               context,
               icon: Icons.location_on_outlined,
-              label: localizations.address,
+              label: loc.address,
               value: admin.address ?? 'N/A',
             ),
             verticalSpace(12),
@@ -103,14 +124,14 @@ class AdminCard extends StatelessWidget {
             _buildInfoRow(
               context,
               icon: Icons.calendar_today_outlined,
-              label: localizations.join_date,
+              label: loc.join_date,
               value: admin.joinDate ?? 'N/A',
             ),
             verticalSpace(16),
 
             // Assigned Sections
             Text(
-              'Assigned sections :',
+              loc.selectAssignedSections,
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeightHelper.semiBold,
                 fontSize: 15,
@@ -121,7 +142,7 @@ class AdminCard extends StatelessWidget {
             // Permissions List
             Expanded(
               child: SingleChildScrollView(
-                child: _buildPermissionsList(context),
+                child: _buildPermissionsList(context, loc),
               ),
             ),
 
@@ -136,7 +157,7 @@ class AdminCard extends StatelessWidget {
                 },
                 icon: const Icon(Icons.edit),
                 label: Text(
-                  localizations.edit,
+                  loc.edit,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -197,7 +218,7 @@ class AdminCard extends StatelessWidget {
     );
   }
 
-  Widget _buildPermissionsList(BuildContext context) {
+  Widget _buildPermissionsList(BuildContext context, loc) {
     final localizations = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
@@ -211,7 +232,7 @@ class AdminCard extends StatelessWidget {
 
     if (admin.permissions == null || admin.permissions!.isEmpty) {
       return Text(
-        'No permissions assigned',
+        loc.no_permissions_assigned,
         style: theme.textTheme.bodySmall?.copyWith(
           fontSize: 14,
           fontStyle: FontStyle.italic,
@@ -270,29 +291,29 @@ class AdminCard extends StatelessWidget {
     BuildContext context,
     PermissionsTypes permission,
   ) {
-    final localizations = AppLocalizations.of(context)!;
+    final loc = AppLocalizations.of(context)!;
 
     switch (permission) {
       case PermissionsTypes.dashboard:
-        return localizations.dashboard;
+        return loc.dashboard;
       case PermissionsTypes.categories:
-        return localizations.categories;
+        return loc.categories;
       case PermissionsTypes.products:
-        return localizations.products;
+        return loc.products;
       case PermissionsTypes.brands:
-        return localizations.brands;
+        return loc.brands;
       case PermissionsTypes.orders:
-        return localizations.orders;
+        return loc.orders;
       case PermissionsTypes.clients:
-        return localizations.clients;
+        return loc.clients;
       case PermissionsTypes.discounts:
-        return localizations.discounts;
+        return loc.discounts;
       case PermissionsTypes.users:
-        return localizations.users;
+        return loc.users;
       case PermissionsTypes.banners:
-        return localizations.banners;
+        return loc.banners;
       case PermissionsTypes.admins:
-        return localizations.admins;
+        return loc.admins;
     }
   }
 

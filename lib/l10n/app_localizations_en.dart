@@ -334,4 +334,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get customer_info => 'Customer Info';
+
+  @override
+  String get selectAssignedSections => 'Select Assigned Sections';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get confirmation => 'Confirmation';
+
+  @override
+  String get are_you_sure_you_want_to_add_this_admin => 'Are you sure you want to add this admin?';
+
+  @override
+  String get assigned_sections => 'Assigned sections :';
+
+  @override
+  String get unit_per_box => 'Unit per box :';
 }

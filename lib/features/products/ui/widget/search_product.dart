@@ -230,7 +230,7 @@ class _SearchProductState extends State<SearchProduct> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     _buildSearchField(),
-                    SizedBox(height: 12.h),
+                    verticalSpace(12.h),
                     // Wrap so dropdowns wrap rather than overflow
                     Wrap(
                       spacing: 8.w,

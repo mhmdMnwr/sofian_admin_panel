@@ -750,6 +750,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Customer Info'**
   String get customer_info;
+
+  /// No description provided for @selectAssignedSections.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Assigned Sections'**
+  String get selectAssignedSections;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmation'**
+  String get confirmation;
+
+  /// No description provided for @are_you_sure_you_want_to_add_this_admin.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to add this admin?'**
+  String get are_you_sure_you_want_to_add_this_admin;
+
+  /// No description provided for @assigned_sections.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned sections :'**
+  String get assigned_sections;
+
+  /// No description provided for @unit_per_box.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit per box :'**
+  String get unit_per_box;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
