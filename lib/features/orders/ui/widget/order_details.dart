@@ -42,8 +42,10 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
             ?.map(
               (p) => OrderProducts(
                 productName: p.productName,
-                quantity: p.quantity,
+                boxesQuantity: p.boxesQuantity,
+                unitesQuantity: p.unitesQuantity,
                 price: p.price,
+                unitPerBox: p.unitPerBox,
               ),
             )
             .toList() ??
@@ -51,21 +53,55 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
     selectedStatus = widget.order.status;
   }
 
-  double get computedTotal => products.fold(
-    0.0,
-    (sum, p) => sum + (p.quantity ?? 0) * (p.price ?? 0.0),
-  );
+  double get computedTotal => products.fold(0.0, (sum, p) {
+    final totalUnits = _getTotalUnits(p);
+    return sum + totalUnits * (p.price ?? 0.0);
+  });
+
+  double _getTotalUnits(OrderProducts p) {
+    // If it's a weight product (double quantity)
+    if (p.unitesQuantity != null && p.unitesQuantity! % 1 != 0) {
+      return p.unitesQuantity!;
+    }
+    // Otherwise calculate: boxes * unitPerBox + rest
+    final boxes = p.boxesQuantity ?? 0;
+    final rest = p.unitesQuantity?.toInt() ?? 0;
+    final unitPerBox = p.unitPerBox ?? 1;
+    return (boxes * unitPerBox + rest).toDouble();
+  }
 
   void _incrementQuantity(int index) {
     setState(() {
-      products[index].quantity = (products[index].quantity ?? 0) + 1;
+      final product = products[index];
+      // If it's a weight product, increment by 0.5
+      if (product.unitesQuantity != null && product.unitesQuantity! % 1 != 0) {
+        product.unitesQuantity = (product.unitesQuantity ?? 0) + 0.5;
+      } else {
+        // Increment rest units
+        product.unitesQuantity = ((product.unitesQuantity ?? 0).toInt() + 1)
+            .toDouble();
+      }
     });
   }
 
   void _decrementQuantity(int index) {
     setState(() {
-      final quantity = (products[index].quantity ?? 0) - 1;
-      products[index].quantity = quantity < 0 ? 0 : quantity;
+      final product = products[index];
+      // If it's a weight product, decrement by 0.5
+      if (product.unitesQuantity != null && product.unitesQuantity! % 1 != 0) {
+        final newValue = (product.unitesQuantity ?? 0) - 0.5;
+        product.unitesQuantity = newValue < 0 ? 0 : newValue;
+      } else {
+        // Decrement rest units
+        final newValue = (product.unitesQuantity ?? 0).toInt() - 1;
+        if (newValue < 0 && (product.boxesQuantity ?? 0) > 0) {
+          // Borrow from boxes
+          product.boxesQuantity = (product.boxesQuantity ?? 0) - 1;
+          product.unitesQuantity = ((product.unitPerBox ?? 1) - 1).toDouble();
+        } else {
+          product.unitesQuantity = (newValue < 0 ? 0 : newValue).toDouble();
+        }
+      }
     });
   }
 

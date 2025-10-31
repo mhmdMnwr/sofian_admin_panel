@@ -98,7 +98,7 @@ class _ProductsTableHeader extends StatelessWidget {
 }
 
 /// Single product row.
-class _ProductRow extends StatelessWidget {
+class _ProductRow extends StatefulWidget {
   final OrderProducts product;
   final int index;
   final Function(int) onIncrement;
@@ -112,10 +112,105 @@ class _ProductRow extends StatelessWidget {
   });
 
   @override
+  State<_ProductRow> createState() => _ProductRowState();
+}
+
+class _ProductRowState extends State<_ProductRow> {
+  bool _isEditing = false;
+  late TextEditingController _quantityController;
+
+  @override
+  void initState() {
+    super.initState();
+    _quantityController = TextEditingController(text: _getQuantityText());
+  }
+
+  @override
+  void dispose() {
+    _quantityController.dispose();
+    super.dispose();
+  }
+
+  String _getQuantityText() {
+    final product = widget.product;
+    // If it's a weight product (double)
+    if (product.unitesQuantity != null && product.unitesQuantity! % 1 != 0) {
+      return product.unitesQuantity!.toStringAsFixed(2);
+    }
+    // Otherwise show boxes+rest format
+    final boxes = product.boxesQuantity ?? 0;
+    final rest = product.unitesQuantity?.toInt() ?? 0;
+    return '$boxes+$rest';
+  }
+
+  double _getTotalUnits() {
+    final product = widget.product;
+    // If it's a weight product
+    if (product.unitesQuantity != null && product.unitesQuantity! % 1 != 0) {
+      return product.unitesQuantity!;
+    }
+    // Calculate: boxes * unitPerBox + rest
+    final boxes = product.boxesQuantity ?? 0;
+    final rest = product.unitesQuantity?.toInt() ?? 0;
+    final unitPerBox = product.unitPerBox ?? 1;
+    return (boxes * unitPerBox + rest).toDouble();
+  }
+
+  String _getQuantityDisplay() {
+    final product = widget.product;
+    // If it's a weight product
+    if (product.unitesQuantity != null && product.unitesQuantity! % 1 != 0) {
+      return '${product.unitesQuantity!.toStringAsFixed(2)} kg';
+    }
+    // Show: boxes * unitPerBox + rest = total
+    final boxes = product.boxesQuantity ?? 0;
+    final rest = product.unitesQuantity?.toInt() ?? 0;
+    final unitPerBox = product.unitPerBox ?? 1;
+    final total = boxes * unitPerBox + rest;
+    return '$boxes×$unitPerBox+$rest = $total';
+  }
+
+  void _handleQuantityEdit() {
+    final text = _quantityController.text.trim();
+
+    // Check if it's a weight (contains decimal point)
+    if (text.contains('.')) {
+      final weight = double.tryParse(text);
+      if (weight != null && weight >= 0) {
+        widget.product.unitesQuantity = weight;
+        widget.product.boxesQuantity = 0;
+      }
+    } else if (text.contains('+')) {
+      // Parse "boxes+rest" format
+      final parts = text.split('+');
+      if (parts.length == 2) {
+        final boxes = int.tryParse(parts[0].trim());
+        final rest = int.tryParse(parts[1].trim());
+        if (boxes != null && rest != null && boxes >= 0 && rest >= 0) {
+          widget.product.boxesQuantity = boxes;
+          widget.product.unitesQuantity = rest.toDouble();
+        }
+      }
+    } else {
+      // Just a number, treat as rest
+      final rest = int.tryParse(text);
+      if (rest != null && rest >= 0) {
+        widget.product.boxesQuantity = 0;
+        widget.product.unitesQuantity = rest.toDouble();
+      }
+    }
+
+    setState(() {
+      _isEditing = false;
+      _quantityController.text = _getQuantityText();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final quantity = product.quantity ?? 0;
-    final unitPrice = product.price ?? 0.0;
-    final total = quantity * unitPrice;
+    final unitPrice = widget.product.price ?? 0.0;
+    final totalUnits = _getTotalUnits();
+    final total = totalUnits * unitPrice;
 
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.h),
@@ -130,7 +225,7 @@ class _ProductRow extends StatelessWidget {
           Expanded(
             flex: 5,
             child: Text(
-              product.productName ?? '',
+              widget.product.productName ?? '',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
@@ -140,29 +235,89 @@ class _ProductRow extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Center(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _QuantityButton(
-                    icon: Icons.remove,
-                    onTap: () => onDecrement(index),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: Text(
-                      quantity.toString(),
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
+              child: _isEditing
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: 80.w,
+                          child: TextField(
+                            controller: _quantityController,
+                            autofocus: true,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 4.w,
+                                vertical: 4.h,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4.r),
+                              ),
+                              isDense: true,
+                            ),
+                            onSubmitted: (_) => _handleQuantityEdit(),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.check, size: 16),
+                          onPressed: _handleQuantityEdit,
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints(),
+                        ),
+                      ],
+                    )
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _QuantityButton(
+                          icon: Icons.remove,
+                          onTap: () {
+                            widget.onDecrement(widget.index);
+                            setState(() {
+                              _quantityController.text = _getQuantityText();
+                            });
+                          },
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8.w),
+                          child: InkWell(
+                            onTap: () => setState(() => _isEditing = true),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8.w,
+                                vertical: 4.h,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey.shade300),
+                                borderRadius: BorderRadius.circular(4.r),
+                              ),
+                              child: Text(
+                                _getQuantityDisplay(),
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        _QuantityButton(
+                          icon: Icons.add,
+                          onTap: () {
+                            widget.onIncrement(widget.index);
+                            setState(() {
+                              _quantityController.text = _getQuantityText();
+                            });
+                          },
+                        ),
+                      ],
                     ),
-                  ),
-                  _QuantityButton(
-                    icon: Icons.add,
-                    onTap: () => onIncrement(index),
-                  ),
-                ],
-              ),
             ),
           ),
           Expanded(
