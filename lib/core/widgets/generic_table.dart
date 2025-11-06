@@ -15,6 +15,7 @@ class GenericTable extends StatefulWidget {
   final Function(int)? onDelete;
   final Function(int)? onView;
   final Widget child;
+  final bool isDashboard;
   final Map<int, Widget Function(dynamic)>?
   customBuilders; // Custom builders for specific columns
 
@@ -31,6 +32,7 @@ class GenericTable extends StatefulWidget {
     this.onView,
     this.customBuilders,
     this.child = const SizedBox.shrink(),
+    this.isDashboard = false,
   });
 
   @override
@@ -162,9 +164,9 @@ class _GenericTableState extends State<GenericTable> {
       );
     } else {
       // Need vertical scrolling - wrap with Scrollbar and controller
-      double height = math.max(120, maxAvailableHeight - 90);
+      // the table height
       return SizedBox(
-        height: height,
+        height: widget.isDashboard ? 330 : 400,
         child: Scrollbar(
           controller: _verticalController,
           thumbVisibility: true,
@@ -215,7 +217,7 @@ class _GenericTableState extends State<GenericTable> {
                   fontSize: 14,
                 ),
                 textAlign: isRTL ? TextAlign.right : TextAlign.left,
-                overflow: TextOverflow.ellipsis,
+                overflow: TextOverflow.clip,
               ),
             ),
           );

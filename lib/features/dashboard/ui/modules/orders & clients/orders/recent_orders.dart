@@ -15,6 +15,7 @@ class RecentOrders extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isRtl = Directionality.of(context) == TextDirection.rtl;
     return GenericTable(
+      isDashboard: true,
       headers: [
         AppLocalizations.of(context)!.userName,
         AppLocalizations.of(context)!.order_id,

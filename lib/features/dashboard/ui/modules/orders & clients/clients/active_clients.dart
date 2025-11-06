@@ -19,7 +19,7 @@ class _ActiveClientsState extends State<ActiveClients> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 30.h, bottom: 30.h),
+      padding: EdgeInsets.only(top: 30, bottom: 50),
       child: Container(
         constraints: BoxConstraints(maxHeight: 700.h, minHeight: 300.h),
         padding: EdgeInsets.only(top: 26.h),
