@@ -114,7 +114,11 @@
   "confirmation": "Confirmation",
   "are_you_sure_you_want_to_add_this_admin": "Êtes-vous sûr de vouloir ajouter cet administrateur ?",
   "assigned_sections": "Sections assignées :",
-  "unit_per_box": "Unité par boîte :"
+  "unit_per_box": "Unité par boîte :",
+  "category_name": "Nom de la catégorie",
+  "edit_category": "Modifier la catégorie",
+  "brand_name": "Nom de la marque",
+  "edit_brand": "Modifier la marque"
 
 
 }

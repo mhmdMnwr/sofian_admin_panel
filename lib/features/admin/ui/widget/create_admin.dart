@@ -202,7 +202,7 @@ class _AddSubAdminDialogState extends State<AddSubAdminDialog> {
                 Center(
                   child: SizedBox(
                     width: 120,
-                    child: AddButton(
+                    child: AppButton(
                       horizontalPadding: 0,
                       onTap: _submit,
                       text: loc.add,

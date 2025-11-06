@@ -352,4 +352,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unit_per_box => 'Unit per box :';
+
+  @override
+  String get category_name => 'Category Name';
+
+  @override
+  String get edit_category => 'Edit Category';
+
+  @override
+  String get brand_name => 'Brand Name';
+
+  @override
+  String get edit_brand => 'Edit Brand';
 }

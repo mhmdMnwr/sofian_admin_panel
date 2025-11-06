@@ -6,15 +6,15 @@ import 'package:sofian_admin_panel/core/widgets/app_form_filed.dart';
 import 'package:sofian_admin_panel/core/widgets/drop_down_list.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
-class AddCategorie extends StatefulWidget {
+class AddBrand extends StatefulWidget {
   final bool isEdit;
-  const AddCategorie({super.key, this.isEdit = false});
+  const AddBrand({super.key, this.isEdit = false});
 
   @override
-  State<AddCategorie> createState() => _AddCategorieState();
+  State<AddBrand> createState() => _AddBrandState();
 }
 
-class _AddCategorieState extends State<AddCategorie> {
+class _AddBrandState extends State<AddBrand> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
@@ -33,7 +33,7 @@ class _AddCategorieState extends State<AddCategorie> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      widget.isEdit ? loc.edit_category : loc.add_category,
+                      widget.isEdit ? loc.edit_brand : loc.add_brand,
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
@@ -47,7 +47,7 @@ class _AddCategorieState extends State<AddCategorie> {
                 ),
                 verticalSpace(12.h),
                 AppFormField(
-                  hintText: loc.category_name,
+                  hintText: loc.brand_name,
                   onSearchChanged: (value) {},
                   width: 400,
                 ),
@@ -89,6 +89,6 @@ Future<Map<String, dynamic>?> showAddCategoryDialog(
   return showDialog<Map<String, dynamic>>(
     context: context,
     barrierDismissible: true,
-    builder: (_) => AddCategorie(isEdit: isEdit),
+    builder: (_) => AddBrand(isEdit: isEdit),
   );
 }

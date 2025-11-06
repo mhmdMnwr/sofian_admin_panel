@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sofian_admin_panel/core/helpers/spacing.dart';
 import 'package:sofian_admin_panel/core/widgets/add_button.dart';
 import 'package:sofian_admin_panel/core/widgets/app_form_filed.dart';
-import 'package:sofian_admin_panel/core/widgets/app_drop_down_menu.dart';
+import 'package:sofian_admin_panel/core/widgets/drop_down_list.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
 
 /// Dialog used to add or edit a product.
@@ -61,65 +61,6 @@ class _AddProductDialogState extends State<AddProductDialog> {
   }
 
   /// Builds the same styled dropdown matching AppFormField exactly.
-  Widget _buildStyledDropdown({
-    required String hintText,
-    required String? value,
-    required List<String> items,
-    required Function(String?) onChanged,
-    double? width,
-  }) {
-    final uniqueItems = items.toSet().toList();
-
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24.w),
-      child: SizedBox(
-        width: width ?? 300.w,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25.r),
-            border: Border.all(color: Colors.grey.shade300, width: 1.5),
-            color: Colors.grey,
-          ),
-          child: AppDropDownMenu<String>(
-            hintText: hintText,
-            value: value,
-            items: DropdownItemHelper.createStringItems(
-              uniqueItems,
-              itemStyle: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: Colors.black87,
-              ),
-            ),
-            onChanged: onChanged,
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 12.h,
-            ),
-            inputTextStyle: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Colors.black87,
-            ),
-            hintStyle: TextStyle(
-              color: Colors.grey.shade600,
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(25.r),
-              borderSide: const BorderSide(color: Colors.black),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(25.r),
-              borderSide: const BorderSide(color: Colors.black),
-            ),
-            backgroundColor: Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
 
   void _submit() {}
 
@@ -170,7 +111,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
               verticalSpace(12.h),
 
               // Category dropdown
-              _buildStyledDropdown(
+              BuildStyledDropdown(
                 hintText: AppLocalizations.of(context)!.select_category,
                 items: _categories,
                 value: _selectedCategory,
@@ -180,7 +121,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
               verticalSpace(12.h),
 
               // Brand dropdown
-              _buildStyledDropdown(
+              BuildStyledDropdown(
                 hintText: AppLocalizations.of(context)!.select_brand,
                 items: _brands,
                 value: _selectedBrand,
@@ -207,7 +148,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                     ),
                   ),
                   SizedBox(width: 12.w),
-                  _buildStyledDropdown(
+                  BuildStyledDropdown(
                     hintText: AppLocalizations.of(context)!.select_state,
                     items: _states,
                     value: _selectedState,
@@ -254,7 +195,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
               Center(
                 child: SizedBox(
                   width: 200,
-                  child: AddButton(
+                  child: AppButton(
                     horizontalPadding: 10,
                     text: widget.isEdit
                         ? AppLocalizations.of(context)!.save

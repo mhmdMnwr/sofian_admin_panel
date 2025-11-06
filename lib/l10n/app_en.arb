@@ -114,7 +114,11 @@
   "confirmation": "Confirmation",
   "are_you_sure_you_want_to_add_this_admin": "Are you sure you want to add this admin?",
   "assigned_sections": "Assigned sections :",
-  "unit_per_box": "Unit per box :"
+  "unit_per_box": "Unit per box :",
+  "category_name": "Category Name",
+  "edit_category": "Edit Category",
+  "brand_name": "Brand Name",
+  "edit_brand": "Edit Brand"
 
 
 }

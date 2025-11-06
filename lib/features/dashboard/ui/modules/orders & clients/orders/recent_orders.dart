@@ -5,6 +5,8 @@ import 'package:sofian_admin_panel/core/widgets/alert_dialog.dart';
 import 'package:sofian_admin_panel/core/widgets/generic_table.dart';
 import 'package:sofian_admin_panel/features/orders/data/models/order_model.dart';
 import 'package:sofian_admin_panel/l10n/app_localizations.dart';
+import 'package:sofian_admin_panel/features/orders/data/models/order_details_model.dart';
+import 'package:sofian_admin_panel/features/orders/ui/widget/order_details.dart';
 
 class RecentOrders extends StatelessWidget {
   const RecentOrders({super.key});
@@ -23,7 +25,9 @@ class RecentOrders extends StatelessWidget {
       onDelete: (int index) {
         _deleteOrder(context);
       },
-      onEdit: (int index) {},
+      onEdit: (int index) {
+        showOrderDetailsDialog(context, order: testOrderDetails);
+      },
       onView: (int index) {},
       child: _buildTitle(context, isRtl),
     );

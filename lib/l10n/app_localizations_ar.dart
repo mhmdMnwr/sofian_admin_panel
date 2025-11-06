@@ -352,4 +352,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get unit_per_box => 'الوحدة في الصندوق :';
+
+  @override
+  String get category_name => 'اسم الفئة';
+
+  @override
+  String get edit_category => 'تعديل الفئة';
+
+  @override
+  String get brand_name => 'اسم الماركة';
+
+  @override
+  String get edit_brand => 'تعديل الماركة';
 }

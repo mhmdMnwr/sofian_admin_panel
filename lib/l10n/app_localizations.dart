@@ -786,6 +786,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unit per box :'**
   String get unit_per_box;
+
+  /// No description provided for @category_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Category Name'**
+  String get category_name;
+
+  /// No description provided for @edit_category.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Category'**
+  String get edit_category;
+
+  /// No description provided for @brand_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand Name'**
+  String get brand_name;
+
+  /// No description provided for @edit_brand.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Brand'**
+  String get edit_brand;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

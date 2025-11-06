@@ -36,7 +36,7 @@ class BrandsPage extends StatelessWidget {
                         )!.brands_management,
                       ),
                       Spacer(),
-                      AddButton(text: AppLocalizations.of(context)!.add_brand),
+                      AppButton(text: AppLocalizations.of(context)!.add_brand),
                     ],
                   );
                 } else {
@@ -50,7 +50,7 @@ class BrandsPage extends StatelessWidget {
                         )!.brands_management,
                       ),
                       verticalSpace(16),
-                      AddButton(text: AppLocalizations.of(context)!.add_brand),
+                      AppButton(text: AppLocalizations.of(context)!.add_brand),
                     ],
                   );
                 }

@@ -36,7 +36,7 @@ class ProductsPage extends StatelessWidget {
                         )!.products_management,
                       ),
                       Spacer(),
-                      AddButton(
+                      AppButton(
                         text: AppLocalizations.of(context)!.add_product,
                         onTap: () =>
                             showAddProductDialog(context, isEdit: false),
@@ -53,7 +53,7 @@ class ProductsPage extends StatelessWidget {
                         )!.products_management,
                       ),
                       verticalSpace(16),
-                      AddButton(
+                      AppButton(
                         text: AppLocalizations.of(context)!.add_product,
                       ),
                     ],

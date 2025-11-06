@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sofian_admin_panel/core/theming/app_colors.dart';
 
-class AddButton extends StatelessWidget {
+class AppButton extends StatelessWidget {
   final String text;
   final VoidCallback? onTap;
   final double horizontalPadding;
-  const AddButton({
+  const AppButton({
     super.key,
     required this.text,
     this.onTap,

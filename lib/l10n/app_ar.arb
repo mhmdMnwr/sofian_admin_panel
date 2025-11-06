@@ -114,6 +114,10 @@
   "confirmation": "تأكيد",
   "are_you_sure_you_want_to_add_this_admin": "هل أنت متأكد أنك تريد إضافة هذا المسؤول؟",
   "assigned_sections": "الأقسام المعينة :",
-  "unit_per_box": "الوحدة في الصندوق :"
+  "unit_per_box": "الوحدة في الصندوق :",
+  "category_name": "اسم الفئة",
+  "edit_category": "تعديل الفئة",
+  "brand_name": "اسم الماركة",
+  "edit_brand": "تعديل الماركة"
 
 }

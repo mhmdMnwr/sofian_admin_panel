@@ -149,7 +149,7 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
             Center(
               child: SizedBox(
                 width: double.infinity,
-                child: AddButton(
+                child: AppButton(
                   text: AppLocalizations.of(context)!.edit,
                   horizontalPadding: 0,
                   onTap: _onEditOrder,

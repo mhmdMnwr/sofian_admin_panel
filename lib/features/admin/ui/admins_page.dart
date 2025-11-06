@@ -36,7 +36,7 @@ class AdminsPage extends StatelessWidget {
                     children: [
                       PageTitle(pageName: localizations.admins_management),
                       Spacer(),
-                      AddButton(
+                      AppButton(
                         text: localizations.add_admin,
                         onTap: () => showCreateAdminDialog(context),
                       ),
@@ -49,7 +49,7 @@ class AdminsPage extends StatelessWidget {
                     children: [
                       PageTitle(pageName: localizations.admins_management),
                       verticalSpace(16),
-                      AddButton(
+                      AppButton(
                         text: localizations.add_admin,
                         onTap: () => showCreateAdminDialog(context),
                       ),
