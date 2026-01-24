@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
+import { useTranslation } from 'react-i18next';
+import { FiMail, FiLock, FiEye, FiEyeOff, FiAlertCircle, FiWifi } from 'react-icons/fi';
 import { useAppDispatch, useAppSelector } from '../../core/hooks/reduxHooks';
-import { login, clearError } from '../../core/store/slices/authSlice';
+import { login, clearError, selectAuthError, selectAuthErrorMessage, selectAuthLoading } from '../../core/store/slices/authSlice';
 import { isValidEmail } from '../../core/utils/helpers';
+import { ErrorCode } from '../../core/utils/errorHandler';
 import './LoginPage.css';
 
 const LoginPage: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { isLoading, error } = useAppSelector((state) => state.auth);
+  const isLoading = useAppSelector(selectAuthLoading);
+  const error = useAppSelector(selectAuthError);
+  const errorMessage = useAppSelector(selectAuthErrorMessage);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,10 +25,10 @@ const LoginPage: React.FC = () => {
 
   const validate = (): boolean => {
     const newErrors = { email: '', password: '' };
-    if (!email) newErrors.email = 'Email is required';
-    else if (!isValidEmail(email)) newErrors.email = 'Please enter a valid email';
-    if (!password) newErrors.password = 'Password is required';
-    else if (password.length < 6) newErrors.password = 'Password must be at least 6 characters';
+    if (!email.trim()) newErrors.email = t('validation.emailRequired');
+    else if (!isValidEmail(email)) newErrors.email = t('validation.emailInvalid');
+    if (!password) newErrors.password = t('validation.passwordRequired');
+    else if (password.length < 6) newErrors.password = t('validation.passwordMinLength', { min: 6 });
     setErrors(newErrors);
     return !newErrors.email && !newErrors.password;
   };
@@ -32,10 +37,9 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
     if (!validate()) return;
     try {
-      await dispatch(login({ email, password })).unwrap();
-      console.log('Login successful!');
+      await dispatch(login({ email: email.trim().toLowerCase(), password })).unwrap();
     } catch (err) {
-      console.error('Login failed:', err);
+      // Error is handled by Redux, no need for additional handling
     }
   };
 
@@ -46,19 +50,49 @@ const LoginPage: React.FC = () => {
     if (error) dispatch(clearError());
   };
 
+  // Determine error icon and style based on error type
+  const getErrorDisplay = () => {
+    if (!error || !errorMessage) return null;
+
+    const isNetworkError = error.code === ErrorCode.NETWORK_ERROR || error.code === ErrorCode.TIMEOUT_ERROR;
+    const isAuthError = error.code === ErrorCode.INVALID_CREDENTIALS || error.code === ErrorCode.UNAUTHORIZED;
+
+    return (
+      <div className={`error-alert ${isNetworkError ? 'network-error' : ''} ${isAuthError ? 'auth-error' : ''}`}>
+        <span className="error-icon">
+          {isNetworkError 
+            ? React.createElement(FiWifi as any, {})
+            : React.createElement(FiAlertCircle as any, {})}
+        </span>
+        <div className="error-content">
+          <span className="error-text">{errorMessage}</span>
+          {isNetworkError && (
+            <button 
+              type="button" 
+              className="retry-button"
+              onClick={() => handleSubmit({ preventDefault: () => {} } as React.FormEvent)}
+            >
+              {t('common.tryAgain')}
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="login-page">
       <div className="login-card">
         <div className="login-header">
-          <h1 className="login-title">Login</h1>
-          <p className="login-subtitle">Sign in to your account</p>
+          <h1 className="login-title">{t('auth.login')}</h1>
+          <p className="login-subtitle">{t('auth.signInToAccount')}</p>
         </div>
 
-        {error && <div className="error-alert">{error}</div>}
+        {getErrorDisplay()}
 
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
-            <label htmlFor="email" className="form-label">Email</label>
+            <label htmlFor="email" className="form-label">{t('auth.email')}</label>
             <div className="input-wrapper">
               {React.createElement(FiMail as any, { className: "input-icon" })}
               <input
@@ -67,14 +101,14 @@ const LoginPage: React.FC = () => {
                 value={email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 className={`form-input ${errors.email ? 'error' : ''}`}
-                placeholder="Enter your email"
+                placeholder={t('auth.enterEmail')}
               />
             </div>
             {errors.email && <p className="error-message">{errors.email}</p>}
           </div>
 
           <div className="form-group">
-            <label htmlFor="password" className="form-label">Password</label>
+            <label htmlFor="password" className="form-label">{t('auth.password')}</label>
             <div className="input-wrapper">
               {React.createElement(FiLock as any, { className: "input-icon" })}
               <input
@@ -83,7 +117,7 @@ const LoginPage: React.FC = () => {
                 value={password}
                 onChange={(e) => handleInputChange('password', e.target.value)}
                 className={`form-input ${errors.password ? 'error' : ''}`}
-                placeholder="Enter your password"
+                placeholder={t('auth.enterPassword')}
               />
               <button
                 type="button"
@@ -99,12 +133,12 @@ const LoginPage: React.FC = () => {
           </div>
 
           <button type="submit" className="submit-button" disabled={isLoading}>
-            {isLoading ? 'Signing in...' : 'Sign In'}
+            {isLoading ? t('auth.signingIn') : t('auth.signIn')}
           </button>
         </form>
 
         <div className="login-footer">
-          <p>© 2025 Sofian Admin Panel. All rights reserved.</p>
+          <p>{t('common.allRightsReserved', { year: new Date().getFullYear() })}</p>
         </div>
       </div>
     </div>

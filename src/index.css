@@ -12,10 +12,56 @@ body {
 :root {
   --primary: #4F46E5;
   --primary-dark: #4338CA;
+  --primary-light: #6366F1;
+  --secondary: #10B981;
   --bg-default: #F9FAFB;
   --bg-paper: #FFFFFF;
+  --bg-elevated: #FFFFFF;
   --text-primary: #111827;
   --text-secondary: #6B7280;
+  --text-disabled: #9CA3AF;
   --border: #D1D5DB;
+  --border-light: #E5E7EB;
   --error: #EF4444;
+  --warning: #F59E0B;
+  --success: #10B981;
+  --info: #3B82F6;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark theme */
+[data-theme='dark'] {
+  --primary: #6366F1;
+  --primary-dark: #4F46E5;
+  --bg-default: #111827;
+  --bg-paper: #1F2937;
+  --bg-elevated: #374151;
+  --text-primary: #F9FAFB;
+  --text-secondary: #9CA3AF;
+  --text-disabled: #4B5563;
+  --border: #374151;
+  --border-light: #4B5563;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+}
+
+/* RTL Support */
+[dir='rtl'] {
+  text-align: right;
+}
+
+/* App loading state */
+.app-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--bg-default);
+  color: var(--text-primary);
+  font-size: 1.125rem;
 }
