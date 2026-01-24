@@ -4,9 +4,9 @@ export const API_CONFIG = {
   TIMEOUT: 30000,
   ENDPOINTS: {
     LOGIN: '/users/login',
-    REGISTER: '/users/register',
     REFRESH_TOKEN: '/users/refresh-token',
     USERS: '/users',
+    ME: '/users/me',
   },
 };
 

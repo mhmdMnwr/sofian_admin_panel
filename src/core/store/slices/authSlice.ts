@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { User, LoginCredentials, AuthResponse, RegisterCredentials } from '../../types';
-import { post } from '../../api/apiClient';
+import { User, LoginCredentials, AuthResponse, UserResponse } from '../../types';
+import { get, post } from '../../api/apiClient';
 import { API_CONFIG, STORAGE_KEYS } from '../../constants';
 import { parseApiError, AppError, ErrorCode, isNetworkError } from '../../utils/errorHandler';
+import { tokenManager } from '../../utils/tokenManager';
 
 interface AuthState {
   user: User | null;
@@ -23,9 +24,10 @@ const initialState: AuthState = {
 };
 
 // Login action
-export const login = createAsyncThunk<AuthResponse, LoginCredentials, { rejectValue: AppError }>(
+export const login = createAsyncThunk<AuthResponse, LoginCredentials, { rejectValue: AppError }>
+(
   'auth/login',
-  async (credentials, { rejectWithValue }) => {
+  async (credentials, { rejectWithValue, dispatch }) => {
     try {
       // Validate credentials before sending
       if (!credentials.email || !credentials.password) {
@@ -38,16 +40,19 @@ export const login = createAsyncThunk<AuthResponse, LoginCredentials, { rejectVa
       const response = await post<AuthResponse>(API_CONFIG.ENDPOINTS.LOGIN, credentials);
       
       // Validate response structure
-      if (!response.data?.accessToken || !response.data?.user) {
+      if (!response.data?.accessToken) {
         return rejectWithValue({
           code: ErrorCode.UNKNOWN_ERROR,
           message: 'Invalid response from server. Please try again.',
         });
       }
 
-      localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, response.data.accessToken);
-      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, response.data.refreshToken);
-      localStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(response.data.user));
+      // Store tokens using tokenManager
+      tokenManager.saveTokens(response.data.accessToken, response.data.refreshToken);
+      
+      // Fetch user data from /users/me
+      dispatch(fetchCurrentUser());
+      
       return response;
     } catch (error: unknown) {
       const appError = parseApiError(error);
@@ -73,68 +78,25 @@ export const login = createAsyncThunk<AuthResponse, LoginCredentials, { rejectVa
   }
 );
 
-// Register action
-export const register = createAsyncThunk<AuthResponse, RegisterCredentials, { rejectValue: AppError }>(
-  'auth/register',
-  async (credentials, { rejectWithValue }) => {
+// Fetch current user action
+export const fetchCurrentUser = createAsyncThunk<UserResponse, void, { rejectValue: AppError }>
+(
+  'auth/fetchCurrentUser',
+  async (_, { rejectWithValue }) => {
     try {
-      // Validate required fields
-      if (!credentials.email || !credentials.password || !credentials.firstName || !credentials.lastName) {
-        return rejectWithValue({
-          code: ErrorCode.MISSING_FIELDS,
-          message: 'All fields are required. Please fill in your first name, last name, email, and password.',
-        });
-      }
-
-      // Validate password strength
-      if (credentials.password.length < 6) {
-        return rejectWithValue({
-          code: ErrorCode.WEAK_PASSWORD,
-          message: 'Password must be at least 6 characters long.',
-        });
-      }
-
-      const response = await post<AuthResponse>(API_CONFIG.ENDPOINTS.REGISTER, credentials);
+      const response = await get<UserResponse>(API_CONFIG.ENDPOINTS.ME);
       
-      // Validate response structure
-      if (!response.data?.accessToken || !response.data?.user) {
+      if (!response.data) {
         return rejectWithValue({
           code: ErrorCode.UNKNOWN_ERROR,
-          message: 'Invalid response from server. Please try again.',
+          message: 'Failed to fetch user data.',
         });
       }
-
-      localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, response.data.accessToken);
-      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, response.data.refreshToken);
-      localStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(response.data.user));
+      
+      localStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(response.data));
       return response;
     } catch (error: unknown) {
       const appError = parseApiError(error);
-      
-      // Provide more specific messages for registration errors
-      if (appError.statusCode === 409) {
-        return rejectWithValue({
-          ...appError,
-          code: ErrorCode.EMAIL_ALREADY_EXISTS,
-          message: 'An account with this email already exists. Please login or use a different email.',
-        });
-      }
-      
-      if (appError.statusCode === 400) {
-        return rejectWithValue({
-          ...appError,
-          code: ErrorCode.VALIDATION_ERROR,
-          message: appError.message || 'Invalid registration data. Please check your information and try again.',
-        });
-      }
-      
-      if (isNetworkError(error)) {
-        return rejectWithValue({
-          ...appError,
-          message: 'Unable to connect to the server. Please check your internet connection and try again.',
-        });
-      }
-      
       return rejectWithValue(appError);
     }
   }
@@ -142,10 +104,46 @@ export const register = createAsyncThunk<AuthResponse, RegisterCredentials, { re
 
 // Logout action
 export const logout = createAsyncThunk<void, void>('auth/logout', async () => {
-  localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
-  localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
-  localStorage.removeItem(STORAGE_KEYS.USER_DATA);
+  tokenManager.clearTokens();
 });
+
+// Check session on app startup
+export const checkSession = createAsyncThunk<UserResponse | null, void, { rejectValue: AppError }>(
+  'auth/checkSession',
+  async (_, { rejectWithValue }) => {
+    try {
+      // Initialize token manager
+      tokenManager.initialize();
+      
+      // Check if we have a valid session
+      if (!tokenManager.hasValidSession()) {
+        return null;
+      }
+      
+      // If token is expired, try to refresh
+      if (tokenManager.isTokenExpired()) {
+        const newToken = await tokenManager.refreshAccessToken();
+        if (!newToken) {
+          return null;
+        }
+      }
+      
+      // Fetch current user to validate session
+      const response = await get<UserResponse>(API_CONFIG.ENDPOINTS.ME);
+      
+      if (response.data) {
+        localStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(response.data));
+        return response;
+      }
+      
+      return null;
+    } catch (error: unknown) {
+      // Session invalid, clear tokens
+      tokenManager.clearTokens();
+      return rejectWithValue(parseApiError(error));
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: 'auth',
@@ -168,18 +166,17 @@ const authSlice = createSlice({
     },
     restoreSession: (state) => {
       try {
-        const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
+        tokenManager.initialize();
+        const token = tokenManager.getAccessToken();
         const userData = localStorage.getItem(STORAGE_KEYS.USER_DATA);
-        if (token && userData) {
+        if (token && userData && tokenManager.hasValidSession()) {
           state.token = token;
           state.user = JSON.parse(userData);
           state.isAuthenticated = true;
         }
       } catch (error) {
         // If parsing fails, clear corrupted data
-        localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
-        localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
-        localStorage.removeItem(STORAGE_KEYS.USER_DATA);
+        tokenManager.clearTokens();
         state.error = {
           code: ErrorCode.UNKNOWN_ERROR,
           message: 'Session data corrupted. Please login again.',
@@ -199,7 +196,6 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = true;
-        state.user = action.payload.data.user;
         state.token = action.payload.data.accessToken;
         state.error = null;
         state.errorMessage = null;
@@ -209,24 +205,13 @@ const authSlice = createSlice({
         state.error = action.payload || { code: ErrorCode.UNKNOWN_ERROR, message: 'Login failed. Please try again.' };
         state.errorMessage = action.payload?.message || 'Login failed. Please try again.';
       })
-      // Register
-      .addCase(register.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-        state.errorMessage = null;
+      // Fetch Current User
+      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
+        state.user = action.payload.data;
       })
-      .addCase(register.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload.data.user;
-        state.token = action.payload.data.accessToken;
-        state.error = null;
-        state.errorMessage = null;
-      })
-      .addCase(register.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload || { code: ErrorCode.UNKNOWN_ERROR, message: 'Registration failed. Please try again.' };
-        state.errorMessage = action.payload?.message || 'Registration failed. Please try again.';
+      .addCase(fetchCurrentUser.rejected, (state) => {
+        // User fetch failed, but we're still authenticated with token
+        state.user = null;
       })
       // Logout
       .addCase(logout.fulfilled, (state) => {
@@ -235,6 +220,28 @@ const authSlice = createSlice({
         state.token = null;
         state.error = null;
         state.errorMessage = null;
+      })
+      // Check Session
+      .addCase(checkSession.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(checkSession.fulfilled, (state, action) => {
+        state.isLoading = false;
+        if (action.payload?.data) {
+          state.user = action.payload.data;
+          state.token = tokenManager.getAccessToken();
+          state.isAuthenticated = true;
+        } else {
+          state.isAuthenticated = false;
+          state.user = null;
+          state.token = null;
+        }
+      })
+      .addCase(checkSession.rejected, (state) => {
+        state.isLoading = false;
+        state.isAuthenticated = false;
+        state.user = null;
+        state.token = null;
       });
   },
 });

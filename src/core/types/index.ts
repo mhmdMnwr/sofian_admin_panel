@@ -16,14 +16,6 @@ export interface LoginCredentials {
   password: string;
 }
 
-// Register credentials
-export interface RegisterCredentials {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
-
 // API Response wrapper from backend
 export interface ApiResponse<T> {
   status: 'success' | 'fail' | 'error';
@@ -32,9 +24,9 @@ export interface ApiResponse<T> {
   data: T;
 }
 
-// Auth data from server
+// Auth data from server (user is optional, may need to decode from JWT)
 export interface AuthData {
-  user: User;
+  user?: User;
   accessToken: string;
   refreshToken: string;
 }
@@ -44,4 +36,20 @@ export interface AuthResponse {
   status: 'success' | 'fail' | 'error';
   message?: string;
   data: AuthData;
+}
+
+// User response from /users/me
+export interface UserResponse {
+  status: 'success' | 'fail' | 'error';
+  message?: string;
+  data: User;
+}
+
+// JWT payload structure
+export interface JwtPayload {
+  email: string;
+  id: string;
+  role: string;
+  iat: number;
+  exp: number;
 }

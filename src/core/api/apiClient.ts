@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { API_CONFIG, STORAGE_KEYS } from '../constants';
+import { API_CONFIG } from '../constants';
+import { tokenManager } from '../utils/tokenManager';
 
 const apiClient = axios.create({
   baseURL: API_CONFIG.BASE_URL,
@@ -7,9 +8,10 @@ const apiClient = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-// Add auth token to requests
-apiClient.interceptors.request.use((config: any) => {
-  const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
+// Add auth token to requests (using tokenManager)
+apiClient.interceptors.request.use(async (config: any) => {
+  // Get valid token (will refresh if expired)
+  const token = await tokenManager.getValidAccessToken();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -26,37 +28,25 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       
-      const refreshToken = localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
-      
-      if (refreshToken) {
-        try {
-          // Try to refresh the token
-          const response = await axios.post(
-            `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.REFRESH_TOKEN}`,
-            { refreshToken }
-          );
-          
-          const { accessToken, refreshToken: newRefreshToken } = response.data.data;
-          
-          localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, accessToken);
-          localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, newRefreshToken);
-          
+      try {
+        // Try to refresh the token using tokenManager
+        const newToken = await tokenManager.refreshAccessToken();
+        
+        if (newToken) {
           // Retry the original request with new token
-          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
           return apiClient(originalRequest);
-        } catch (refreshError) {
-          // Refresh failed, clear tokens and redirect to login
-          localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
-          localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
-          localStorage.removeItem(STORAGE_KEYS.USER_DATA);
+        } else {
+          // Refresh failed, redirect to login
+          tokenManager.clearTokens();
           window.location.href = '/login';
-          return Promise.reject(refreshError);
+          return Promise.reject(error);
         }
-      } else {
-        // No refresh token, redirect to login
-        localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
-        localStorage.removeItem(STORAGE_KEYS.USER_DATA);
+      } catch (refreshError) {
+        // Refresh failed, clear tokens and redirect to login
+        tokenManager.clearTokens();
         window.location.href = '/login';
+        return Promise.reject(refreshError);
       }
     }
     return Promise.reject(error);

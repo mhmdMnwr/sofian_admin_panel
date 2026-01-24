@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FiMail, FiLock, FiEye, FiEyeOff, FiAlertCircle, FiWifi } from 'react-icons/fi';
 import { useAppDispatch, useAppSelector } from '../../core/hooks/reduxHooks';
@@ -9,6 +10,7 @@ import './LoginPage.css';
 
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(selectAuthLoading);
   const error = useAppSelector(selectAuthError);
@@ -38,6 +40,7 @@ const LoginPage: React.FC = () => {
     if (!validate()) return;
     try {
       await dispatch(login({ email: email.trim().toLowerCase(), password })).unwrap();
+      navigate('/dashboard');
     } catch (err) {
       // Error is handled by Redux, no need for additional handling
     }
