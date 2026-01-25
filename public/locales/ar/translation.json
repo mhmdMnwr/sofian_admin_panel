@@ -88,9 +88,23 @@
     "admins": "المديرون",
     "settings": "الإعدادات"
   },
+  "sidebar": {
+    "companyName": "شعار الشركة",
+    "dashboard": "لوحة التحكم",
+    "categories": "الفئات",
+    "products": "المنتجات",
+    "brands": "العلامات التجارية",
+    "orders": "الطلبات",
+    "clients": "العملاء"
+  },
   "dashboard": {
     "title": "لوحة التحكم",
     "welcome": "مرحباً بعودتك، {{name}}!",
+    "welcomeBack": "مرحباً بعودتك",
+    "goodMorning": "صباح الخير",
+    "goodAfternoon": "مساء الخير",
+    "goodEvening": "مساء الخير",
+    "selectPage": "اختر صفحة من القائمة الجانبية للبدء",
     "totalOrders": "إجمالي الطلبات",
     "totalRevenue": "إجمالي الإيرادات",
     "totalProducts": "إجمالي المنتجات",

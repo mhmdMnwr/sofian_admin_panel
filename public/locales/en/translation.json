@@ -88,9 +88,23 @@
     "admins": "Admins",
     "settings": "Settings"
   },
+  "sidebar": {
+    "companyName": "COMPANY LOGO",
+    "dashboard": "Dashboard",
+    "categories": "Categories",
+    "products": "Products",
+    "brands": "Brands",
+    "orders": "Orders",
+    "clients": "Clients"
+  },
   "dashboard": {
     "title": "Dashboard",
     "welcome": "Welcome back, {{name}}!",
+    "welcomeBack": "Welcome back",
+    "goodMorning": "Good Morning",
+    "goodAfternoon": "Good Afternoon",
+    "goodEvening": "Good Evening",
+    "selectPage": "Select a page from the sidebar to get started",
     "totalOrders": "Total Orders",
     "totalRevenue": "Total Revenue",
     "totalProducts": "Total Products",

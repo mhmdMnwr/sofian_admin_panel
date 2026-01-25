@@ -88,9 +88,23 @@
     "admins": "Administrateurs",
     "settings": "Paramètres"
   },
+  "sidebar": {
+    "companyName": "LOGO ENTREPRISE",
+    "dashboard": "Tableau de bord",
+    "categories": "Catégories",
+    "products": "Produits",
+    "brands": "Marques",
+    "orders": "Commandes",
+    "clients": "Clients"
+  },
   "dashboard": {
     "title": "Tableau de bord",
     "welcome": "Bienvenue, {{name}} !",
+    "welcomeBack": "Bon retour",
+    "goodMorning": "Bonjour",
+    "goodAfternoon": "Bon après-midi",
+    "goodEvening": "Bonsoir",
+    "selectPage": "Sélectionnez une page dans la barre latérale pour commencer",
     "totalOrders": "Total des commandes",
     "totalRevenue": "Chiffre d'affaires total",
     "totalProducts": "Total des produits",
