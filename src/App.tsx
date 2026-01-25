@@ -6,6 +6,9 @@ import { useAppSelector, useAppDispatch } from './core/hooks/reduxHooks';
 import { selectIsAuthenticated, selectAuthLoading, checkSession } from './core/store/slices/authSlice';
 import LoginPage from './features/authentication/LoginPage';
 import DashboardPage from './features/dashboard/DashboardPage';
+import ProductsPage from './features/products/ProductsPage';
+import CategoriesPage from './features/categories/CategoriesPage';
+import BrandsPage from './features/brands/BrandsPage';
 
 // Session checker component
 const SessionChecker: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -49,6 +52,9 @@ const AppRoutes: React.FC = () => (
     <Routes>
       <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
       <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+      <Route path="/products" element={<ProtectedRoute><ProductsPage /></ProtectedRoute>} />
+      <Route path="/categories" element={<ProtectedRoute><CategoriesPage /></ProtectedRoute>} />
+      <Route path="/brands" element={<ProtectedRoute><BrandsPage /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   </SessionChecker>

@@ -53,3 +53,24 @@ export interface JwtPayload {
   iat: number;
   exp: number;
 }
+
+// Product type
+export interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  image?: string;
+  brand?: string;
+  category?: string;
+  units_num?: number;
+  state: 'available' | 'not available';
+}
+
+// Products API response
+export interface ProductsResponse {
+  status: 'success' | 'fail' | 'error';
+  data: {
+    products: Product[];
+    totalProducts?: number;
+  };
+}

@@ -1,3 +1,4 @@
+/* Page Layout */
 .login-page {
   min-height: 100vh;
   display: flex;
@@ -8,7 +9,7 @@
 }
 
 .login-card {
-  background: var(--bg-paper);
+  background: var(--bg-paper, #ffffff);
   border-radius: 16px;
   padding: 3rem;
   width: 100%;
@@ -16,6 +17,7 @@
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
+/* Header & Titles */
 .login-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -24,90 +26,15 @@
 .login-title {
   font-size: 2rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary, #111);
   margin-bottom: 0.5rem;
 }
 
 .login-subtitle {
-  color: var(--text-secondary);
+  color: var(--text-secondary, #666);
 }
 
-.error-alert {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  background: #FEE2E2;
-  border: 1px solid var(--error);
-  border-radius: 8px;
-  padding: 0.875rem 1rem;
-  margin-bottom: 1.5rem;
-  color: var(--error);
-  font-size: 0.875rem;
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.error-alert.network-error {
-  background: #FEF3C7;
-  border-color: #F59E0B;
-  color: #B45309;
-}
-
-.error-alert.auth-error {
-  background: #FEE2E2;
-  border-color: var(--error);
-  color: var(--error);
-}
-
-.error-icon {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  margin-top: 1px;
-}
-
-.error-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.error-text {
-  line-height: 1.5;
-}
-
-.retry-button {
-  align-self: flex-start;
-  padding: 0.375rem 0.75rem;
-  background: transparent;
-  border: 1px solid currentColor;
-  border-radius: 4px;
-  color: inherit;
-  font-size: 0.75rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 200ms, color 200ms;
-}
-
-.retry-button:hover {
-  background: #B45309;
-  border-color: #B45309;
-  color: white;
-}
-
+/* Form Layout */
 .login-form {
   display: flex;
   flex-direction: column;
@@ -123,58 +50,81 @@
 .form-label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-primary, #111);
 }
 
+/* --- THE FIX START --- */
+
+/* 1. The Wrapper: Must be relative to anchor the icon */
 .input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
+  position: relative !important;
+  display: block; /* Important: removes flexbox behavior that collapses items */
+  width: 100%;
 }
 
-.input-icon {
-  position: absolute;
-  left: 1rem;
-  color: var(--text-secondary);
-}
-
+/* 2. The Input: Needs heavy left padding to clear the icon */
 .form-input {
   width: 100%;
-  padding: 0.875rem 1rem 0.875rem 3rem;
-  border: 1px solid var(--border);
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+  padding-right: 1rem;
+  
+  /* CRITICAL: This 3rem pushes the text to the right so it doesn't hit the icon */
+  padding-left: 3rem !important; 
+  
+  border: 1px solid var(--border, #e2e8f0);
   border-radius: 8px;
   font-size: 1rem;
-  background: var(--bg-default);
+  background: var(--bg-default, #fff);
+  box-sizing: border-box; /* Ensures padding is included in width */
+  transition: all 0.2s;
 }
+
+/* 3. The Icon: Absolute positioned on top of the input */
+.input-icon {
+  position: absolute;
+  left: 1rem; /* Distance from left edge */
+  top: 50%;
+  transform: translateY(-50%); /* Perfectly centered vertically */
+  color: var(--text-secondary, #9ca3af);
+  z-index: 10; /* Ensures it sits ON TOP of the input background */
+  pointer-events: none; /* Clicks pass through to the input */
+  font-size: 1.25rem; /* Ensures icon is visible size */
+}
+
+/* --- THE FIX END --- */
 
 .form-input:focus {
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  border-color: var(--primary, #667eea);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .form-input.error {
-  border-color: var(--error);
+  border-color: var(--error, #ef4444);
 }
 
+/* Password Toggle Eye Icon */
 .password-toggle {
   position: absolute;
   right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
   background: transparent;
   border: none;
-  color: var(--text-secondary);
+  color: var(--text-secondary, #9ca3af);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+  padding: 0;
 }
 
-.error-message {
-  font-size: 0.875rem;
-  color: var(--error);
-}
-
+/* Submit Button */
 .submit-button {
   width: 100%;
   padding: 0.875rem;
-  background: var(--primary);
+  background: var(--primary, #667eea);
   color: white;
   border: none;
   border-radius: 8px;
@@ -185,17 +135,37 @@
 }
 
 .submit-button:hover:not(:disabled) {
-  background: var(--primary-dark);
+  background: var(--primary-dark, #5a67d8);
 }
 
 .submit-button:disabled {
-  opacity: 0.6;
+  opacity: 0.7;
   cursor: not-allowed;
 }
 
+/* Footer & Errors */
 .login-footer {
   margin-top: 2rem;
   text-align: center;
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: var(--text-secondary, #666);
+}
+
+.error-message {
+  font-size: 0.875rem;
+  color: var(--error, #ef4444);
+  margin-top: 0.25rem;
+}
+
+.error-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: #FEE2E2;
+  border: 1px solid #ef4444;
+  border-radius: 8px;
+  padding: 0.875rem 1rem;
+  margin-bottom: 1.5rem;
+  color: #ef4444;
+  font-size: 0.875rem;
 }

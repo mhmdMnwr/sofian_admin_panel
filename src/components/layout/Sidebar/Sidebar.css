@@ -3,8 +3,8 @@
   flex-direction: column;
   width: 220px;
   height: 100vh;
-  background-color: var(--sidebar-bg, #ffffff);
-  border-right: 1px solid var(--sidebar-border, #e5e7eb);
+  background-color: var(--sidebar-bg, #EDEDED);
+  border-right: 1px solid var(--sidebar-border, #d9d9d9);
   position: fixed;
   left: 0;
   top: 0;
@@ -85,19 +85,13 @@
   border-radius: 6px;
   text-decoration: none;
   color: var(--sidebar-text, #374151);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   transition: all 0.2s ease;
 }
 
-/* Dashboard link - bigger and bolder */
-.sidebar__nav-item:first-child .sidebar__nav-link {
-  font-size: 17px;
-  font-weight: 600;
-}
-
 .sidebar__nav-link:hover {
-  background-color: var(--sidebar-hover-bg, #f3f4f6);
+  background-color: var(--sidebar-hover-bg, #e0e0e0);
   color: var(--sidebar-hover-text, #111827);
 }
 
