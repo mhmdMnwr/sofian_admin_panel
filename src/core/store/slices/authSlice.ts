@@ -30,10 +30,10 @@ export const login = createAsyncThunk<AuthResponse, LoginCredentials, { rejectVa
   async (credentials, { rejectWithValue, dispatch }) => {
     try {
       // Validate credentials before sending
-      if (!credentials.email || !credentials.password) {
+      if (!credentials.username || !credentials.password) {
         return rejectWithValue({
           code: ErrorCode.MISSING_FIELDS,
-          message: 'Email and password are required.',
+          message: 'Username and password are required.',
         });
       }
 
@@ -57,12 +57,40 @@ export const login = createAsyncThunk<AuthResponse, LoginCredentials, { rejectVa
     } catch (error: unknown) {
       const appError = parseApiError(error);
       
-      // Provide more specific messages for login errors
-      if (appError.statusCode === 401 || appError.statusCode === 400) {
+      // Extract error details from API response
+      const axiosError = error as { response?: { data?: { message?: string; code?: string } } };
+      const serverMessage = axiosError?.response?.data?.message?.toLowerCase() || '';
+      const serverCode = axiosError?.response?.data?.code || '';
+      
+      // Handle specific login error cases
+      // Case 1: User not found
+      if (serverMessage.includes('not found') || serverMessage.includes('user not found') || 
+          serverMessage.includes('no user') || serverCode === 'USER_NOT_FOUND') {
+        return rejectWithValue({
+          ...appError,
+          code: ErrorCode.USER_NOT_FOUND,
+          message: 'No account found with this username.',
+        });
+      }
+      
+      // Case 2: User is inactive
+      if (serverMessage.includes('inactive') || serverMessage.includes('deactivated') || 
+          serverMessage.includes('disabled') || serverCode === 'USER_INACTIVE') {
+        return rejectWithValue({
+          ...appError,
+          code: ErrorCode.USER_INACTIVE,
+          message: 'Your account is inactive. Please contact an administrator.',
+        });
+      }
+      
+      // Case 3: Password mismatch / Invalid credentials
+      if (appError.statusCode === 401 || appError.statusCode === 400 ||
+          serverMessage.includes('password') || serverMessage.includes('credentials') ||
+          serverMessage.includes('invalid') || serverCode === 'INVALID_CREDENTIALS') {
         return rejectWithValue({
           ...appError,
           code: ErrorCode.INVALID_CREDENTIALS,
-          message: 'Invalid email or password. Please check your credentials and try again.',
+          message: 'Invalid username or password. Please check your credentials and try again.',
         });
       }
       

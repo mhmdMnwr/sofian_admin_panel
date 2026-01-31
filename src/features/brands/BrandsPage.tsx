@@ -2,30 +2,17 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MainLayout } from '../../components/layout';
 import apiClient from '../../core/api/apiClient';
+import { Brand, BrandsResponse } from '../../core/types';
 import './BrandsPage.css';
 
-interface Brand {
-  _id: string;
-  name: string;
-  icon?: string;
-}
-
-interface BrandsResponse {
-  status: string;
-  data: {
-    brands: Brand[];
-    totalBrands?: number;
-  };
-}
-
 interface BrandForm {
-  name: string;
-  icon: File | null;
+  title: string;
+  image: File | null;
 }
 
 const initialFormState: BrandForm = {
-  name: '',
-  icon: null,
+  title: '',
+  image: null,
 };
 
 const BrandsPage: React.FC = () => {
@@ -35,8 +22,13 @@ const BrandsPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [totalBrands, setTotalBrands] = useState(0);
   
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [itemsPerPage] = useState(10);
+  
   // Search state
-  const [searchName, setSearchName] = useState('');
+  const [searchTitle, setSearchTitle] = useState('');
   
   // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,28 +38,34 @@ const BrandsPage: React.FC = () => {
   const [formErrors, setFormErrors] = useState<Partial<Record<keyof BrandForm, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [iconPreview, setIconPreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Delete confirmation state
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deletingBrandId, setDeletingBrandId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
-  const fetchBrands = useCallback(async () => {
+  const fetchBrands = useCallback(async (page: number = currentPage) => {
     try {
       setLoading(true);
       setError(null);
       
-      const params: Record<string, string> = {};
-      if (searchName) params.name = searchName;
+      const params: Record<string, string | number> = {
+        page,
+        limit: itemsPerPage,
+      };
+      if (searchTitle) params.title = searchTitle;
       
       const response = await apiClient.get<BrandsResponse>('/brands', { params });
       
       if (response.data.status === 'success') {
-        const fetchedBrands = response.data.data.brands || response.data.data || [];
+        const fetchedBrands = response.data.data || [];
         setBrands(fetchedBrands);
-        setTotalBrands(response.data.data.totalBrands || fetchedBrands.length);
+        setTotalBrands(response.data.meta?.totalItems || fetchedBrands.length);
+        setTotalPages(response.data.meta?.totalPages || 1);
+        setCurrentPage(response.data.meta?.page || page);
       }
     } catch (err) {
       setError(t('errors.unknownError', 'An error occurred while fetching brands'));
@@ -75,14 +73,20 @@ const BrandsPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [t, searchName]);
+  }, [t, searchTitle, currentPage, itemsPerPage]);
 
   useEffect(() => {
-    fetchBrands();
+    fetchBrands(1);
   }, []);
 
   const handleSearch = () => {
-    fetchBrands();
+    setCurrentPage(1);
+    fetchBrands(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    fetchBrands(page);
   };
 
   // Modal functions
@@ -92,7 +96,7 @@ const BrandsPage: React.FC = () => {
     setEditingBrandId(null);
     setFormData(initialFormState);
     setFormErrors({});
-    setIconPreview(null);
+    setImagePreview(null);
   };
 
   const closeModal = () => {
@@ -101,23 +105,24 @@ const BrandsPage: React.FC = () => {
     setEditingBrandId(null);
     setFormData(initialFormState);
     setFormErrors({});
-    setIconPreview(null);
+    setImagePreview(null);
   };
 
   const handleEditBrand = (brand: Brand) => {
     setIsEditMode(true);
     setEditingBrandId(brand._id);
     setFormData({
-      name: brand.name,
-      icon: null,
+      title: brand.title,
+      image: null,
     });
-    setIconPreview(brand.icon || null);
+    setImagePreview(brand.image || null);
     setFormErrors({});
     setIsModalOpen(true);
   };
 
   const handleDeleteBrand = (brandId: string) => {
     setDeletingBrandId(brandId);
+    setDeleteError(null);
     setIsDeleteModalOpen(true);
   };
 
@@ -125,6 +130,7 @@ const BrandsPage: React.FC = () => {
     if (!deletingBrandId) return;
     
     setIsDeleting(true);
+    setDeleteError(null);
     try {
       const response = await apiClient.delete(`/brands/${deletingBrandId}`);
       
@@ -136,7 +142,16 @@ const BrandsPage: React.FC = () => {
       }
     } catch (err: any) {
       console.error('Error deleting brand:', err);
-      alert(err.response?.data?.message || t('errors.unknownError', 'An error occurred'));
+      const serverMessage = err.response?.data?.message?.toLowerCase() || '';
+      
+      // Check if the brand is associated with products
+      if (serverMessage.includes('product') || serverMessage.includes('associated') || 
+          serverMessage.includes('in use') || serverMessage.includes('has products') ||
+          err.response?.status === 400 || err.response?.status === 409) {
+        setDeleteError(t('errors.brandHasProducts', 'This brand cannot be deleted because it has products associated with it. Please remove or reassign the products first.'));
+      } else {
+        setDeleteError(err.response?.data?.message || t('errors.unknownError', 'An error occurred'));
+      }
     } finally {
       setIsDeleting(false);
     }
@@ -145,6 +160,7 @@ const BrandsPage: React.FC = () => {
   const cancelDelete = () => {
     setIsDeleteModalOpen(false);
     setDeletingBrandId(null);
+    setDeleteError(null);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -155,23 +171,23 @@ const BrandsPage: React.FC = () => {
     }
   };
 
-  const handleIconChange = (file: File | null) => {
+  const handleImageChange = (file: File | null) => {
     if (file) {
       if (!file.type.startsWith('image/')) {
-        setFormErrors(prev => ({ ...prev, icon: t('brands.invalidIconType', 'Please select a valid image file') }));
+        setFormErrors(prev => ({ ...prev, image: t('brands.invalidImageType', 'Please select a valid image file') }));
         return;
       }
       if (file.size > 2 * 1024 * 1024) {
-        setFormErrors(prev => ({ ...prev, icon: t('brands.iconTooLarge', 'Icon must be less than 2MB') }));
+        setFormErrors(prev => ({ ...prev, image: t('brands.imageTooLarge', 'Image must be less than 2MB') }));
         return;
       }
       
-      setFormData(prev => ({ ...prev, icon: file }));
-      setFormErrors(prev => ({ ...prev, icon: undefined }));
+      setFormData(prev => ({ ...prev, image: file }));
+      setFormErrors(prev => ({ ...prev, image: undefined }));
       
       const reader = new FileReader();
       reader.onloadend = () => {
-        setIconPreview(reader.result as string);
+        setImagePreview(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
@@ -191,17 +207,17 @@ const BrandsPage: React.FC = () => {
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
-    handleIconChange(file);
+    handleImageChange(file);
   };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    handleIconChange(file);
+    handleImageChange(file);
   };
 
-  const removeIcon = () => {
-    setFormData(prev => ({ ...prev, icon: null }));
-    setIconPreview(null);
+  const removeImage = () => {
+    setFormData(prev => ({ ...prev, image: null }));
+    setImagePreview(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -210,8 +226,8 @@ const BrandsPage: React.FC = () => {
   const validateForm = (): boolean => {
     const errors: Partial<Record<keyof BrandForm, string>> = {};
     
-    if (!formData.name.trim()) {
-      errors.name = t('brands.nameRequired', 'Brand name is required');
+    if (!formData.title.trim()) {
+      errors.title = t('brands.titleRequired', 'Brand title is required');
     }
     
     setFormErrors(errors);
@@ -231,10 +247,10 @@ const BrandsPage: React.FC = () => {
       const endpoint = isEdit ? `/brands/${editingBrandId}` : '/brands';
       const method = isEdit ? 'patch' : 'post';
       
-      if (formData.icon) {
+      if (formData.image) {
         const submitData = new FormData();
-        submitData.append('name', formData.name.trim());
-        submitData.append('icon', formData.icon);
+        submitData.append('title', formData.title.trim());
+        submitData.append('image', formData.image);
         
         response = await apiClient[method](endpoint, submitData, {
           headers: {
@@ -242,7 +258,7 @@ const BrandsPage: React.FC = () => {
           },
         });
       } else {
-        response = await apiClient[method](endpoint, { name: formData.name.trim() });
+        response = await apiClient[method](endpoint, { title: formData.title.trim() });
       }
       
       if (response.data.status === 'success') {
@@ -253,7 +269,7 @@ const BrandsPage: React.FC = () => {
       console.error('Error saving brand:', err);
       setFormErrors(prev => ({ 
         ...prev, 
-        name: err.response?.data?.message || t('errors.unknownError', 'An error occurred') 
+        title: err.response?.data?.message || t('errors.unknownError', 'An error occurred') 
       }));
     } finally {
       setIsSubmitting(false);
@@ -290,7 +306,7 @@ const BrandsPage: React.FC = () => {
           ) : error ? (
             <div className="brands-page__error">
               <p>{error}</p>
-              <button onClick={fetchBrands} className="brands-page__retry-btn">
+              <button onClick={() => fetchBrands(1)} className="brands-page__retry-btn">
                 {t('common.tryAgain', 'Try Again')}
               </button>
             </div>
@@ -301,9 +317,9 @@ const BrandsPage: React.FC = () => {
                 <div className="filter-item filter-item--search">
                   <input
                     type="text"
-                    placeholder={t('brands.searchByName', 'Search by name...')}
-                    value={searchName}
-                    onChange={(e) => setSearchName(e.target.value)}
+                    placeholder={t('brands.searchByTitle', 'Search by title...')}
+                    value={searchTitle}
+                    onChange={(e) => setSearchTitle(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                     className="filter-input"
                   />
@@ -323,8 +339,8 @@ const BrandsPage: React.FC = () => {
                   <thead>
                     <tr>
                       <th style={{width: '25%'}}>{t('brands.brandId', 'Brand ID')}</th>
-                      <th className="th-separator" style={{width: '25%'}}>{t('brands.icon', 'Icon')}</th>
-                      <th className="th-separator" style={{width: '25%'}}>{t('brands.name', 'Name')}</th>
+                      <th className="th-separator" style={{width: '25%'}}>{t('brands.title', 'Title')}</th>
+                      <th className="th-separator" style={{width: '25%'}}>{t('brands.image', 'Image')}</th>
                       <th className="th-separator" style={{width: '25%'}}>{t('brands.actions', 'Actions')}</th>
                     </tr>
                   </thead>
@@ -333,15 +349,16 @@ const BrandsPage: React.FC = () => {
                       brands.map((brand, index) => (
                         <tr key={brand._id} className={index % 2 === 0 ? 'row-even' : 'row-odd'}>
                           <td className="brand-id" style={{width: '25%'}}>#{brand._id.slice(-8)}</td>
-                          <td className="brand-icon-cell" style={{width: '25%'}}>
-                            {brand.icon ? (
+                          <td className="brand-title" style={{width: '25%'}}>{brand.title}</td>
+                          <td className="brand-image-cell" style={{width: '25%'}}>
+                            {brand.image ? (
                               <img 
-                                src={brand.icon} 
-                                alt={brand.name} 
-                                className="brand-icon"
+                                src={brand.image} 
+                                alt={brand.title} 
+                                className="brand-image"
                               />
                             ) : (
-                              <div className="brand-icon-placeholder">
+                              <div className="brand-image-placeholder">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                   <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
                                   <line x1="7" y1="7" x2="7.01" y2="7"></line>
@@ -349,7 +366,6 @@ const BrandsPage: React.FC = () => {
                               </div>
                             )}
                           </td>
-                          <td className="brand-name" style={{width: '25%'}}>{brand.name}</td>
                           <td className="brand-actions" style={{width: '25%'}}>
                             <button
                               className="action-btn action-btn--edit"
@@ -386,6 +402,63 @@ const BrandsPage: React.FC = () => {
                   </tbody>
                 </table>
               </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="pagination">
+                  <button
+                    className="pagination__btn pagination__btn--prev"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    {t('pagination.previous', 'Previous')}
+                  </button>
+                  
+                  <div className="pagination__pages">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1)
+                      .filter(page => {
+                        if (totalPages <= 7) return true;
+                        if (page === 1 || page === totalPages) return true;
+                        if (Math.abs(page - currentPage) <= 1) return true;
+                        return false;
+                      })
+                      .map((page, index, arr) => (
+                        <React.Fragment key={page}>
+                          {index > 0 && arr[index - 1] !== page - 1 && (
+                            <span className="pagination__ellipsis">...</span>
+                          )}
+                          <button
+                            className={`pagination__page ${currentPage === page ? 'pagination__page--active' : ''}`}
+                            onClick={() => handlePageChange(page)}
+                          >
+                            {page}
+                          </button>
+                        </React.Fragment>
+                      ))}
+                  </div>
+                  
+                  <button
+                    className="pagination__btn pagination__btn--next"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                  >
+                    {t('pagination.next', 'Next')}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </button>
+                </div>
+              )}
+
+              {/* Page info */}
+              {totalBrands > 0 && (
+                <div className="pagination-info">
+                  {t('pagination.showing', 'Showing')} {(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, totalBrands)} {t('pagination.of', 'of')} {totalBrands} {t('pagination.items', 'items')}
+                </div>
+              )}
             </>
           )}
         </div>
@@ -406,40 +479,40 @@ const BrandsPage: React.FC = () => {
             </div>
             
             <form onSubmit={handleSubmit} className="modal-form">
-              {/* Name Field */}
+              {/* Title Field */}
               <div className="form-group">
-                <label htmlFor="name">
-                  {t('brands.name', 'Name')} <span className="required">*</span>
+                <label htmlFor="title">
+                  {t('brands.title', 'Title')} <span className="required">*</span>
                 </label>
                 <input
                   type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
+                  id="title"
+                  name="title"
+                  value={formData.title}
                   onChange={handleInputChange}
-                  placeholder={t('brands.enterName', 'Enter brand name')}
-                  className={formErrors.name ? 'error' : ''}
+                  placeholder={t('brands.enterTitle', 'Enter brand title')}
+                  className={formErrors.title ? 'error' : ''}
                 />
-                {formErrors.name && <span className="error-message">{formErrors.name}</span>}
+                {formErrors.title && <span className="error-message">{formErrors.title}</span>}
               </div>
 
-              {/* Icon Upload Field */}
+              {/* Image Upload Field */}
               <div className="form-group">
-                <label>{t('brands.icon', 'Icon')}</label>
+                <label>{t('brands.image', 'Image')}</label>
                 <div
-                  className={`icon-drop-zone ${isDragging ? 'dragging' : ''} ${iconPreview ? 'has-icon' : ''}`}
+                  className={`image-drop-zone ${isDragging ? 'dragging' : ''} ${imagePreview ? 'has-image' : ''}`}
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
                   onClick={() => fileInputRef.current?.click()}
                 >
-                  {iconPreview ? (
-                    <div className="icon-preview-container">
-                      <img src={iconPreview} alt="Preview" className="icon-preview" />
+                  {imagePreview ? (
+                    <div className="image-preview-container">
+                      <img src={imagePreview} alt="Preview" className="image-preview" />
                       <button
                         type="button"
-                        className="remove-icon-btn"
-                        onClick={(e) => { e.stopPropagation(); removeIcon(); }}
+                        className="remove-image-btn"
+                        onClick={(e) => { e.stopPropagation(); removeImage(); }}
                       >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -454,7 +527,7 @@ const BrandsPage: React.FC = () => {
                         <polyline points="17 8 12 3 7 8"></polyline>
                         <line x1="12" y1="3" x2="12" y2="15"></line>
                       </svg>
-                      <p>{t('brands.dragDropIcon', 'Drag & drop an icon here')}</p>
+                      <p>{t('brands.dragDropImage', 'Drag & drop an image here')}</p>
                       <span>{t('brands.orClickToSelect', 'or click to select')}</span>
                     </div>
                   )}
@@ -466,7 +539,7 @@ const BrandsPage: React.FC = () => {
                     style={{ display: 'none' }}
                   />
                 </div>
-                {formErrors.icon && <span className="error-message">{formErrors.icon}</span>}
+                {formErrors.image && <span className="error-message">{formErrors.image}</span>}
               </div>
 
               {/* Form Actions */}
@@ -505,6 +578,16 @@ const BrandsPage: React.FC = () => {
             </div>
             <div className="modal-body">
               <p>{t('brands.deleteConfirmation', 'Are you sure you want to delete this brand? This action cannot be undone.')}</p>
+              {deleteError && (
+                <div className="form-error-banner" style={{ marginTop: '16px' }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                  <span>{deleteError}</span>
+                </div>
+              )}
             </div>
             <div className="modal-actions">
               <button type="button" onClick={cancelDelete} className="btn-cancel">

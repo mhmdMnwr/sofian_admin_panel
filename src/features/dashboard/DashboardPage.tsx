@@ -27,7 +27,7 @@ const DashboardPage: React.FC = () => {
             </div>
             <h1 className="welcome-greeting">{getGreeting()}</h1>
             <h2 className="welcome-title">
-              {t('dashboard.welcomeBack', 'Welcome back')}, <span className="welcome-name">{user?.firstName || 'User'}</span>
+              {t('dashboard.welcomeBack', 'Welcome back')}, <span className="welcome-name">{user?.username || 'User'}</span>
             </h2>
             <p className="welcome-subtitle">
               {t('dashboard.selectPage', 'Select a page from the sidebar to get started')}

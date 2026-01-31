@@ -5,7 +5,10 @@ export enum ErrorCode {
   // Authentication errors
   INVALID_CREDENTIALS = 'INVALID_CREDENTIALS',
   USER_NOT_FOUND = 'USER_NOT_FOUND',
+  USER_INACTIVE = 'USER_INACTIVE',
+  PASSWORD_MISMATCH = 'PASSWORD_MISMATCH',
   EMAIL_ALREADY_EXISTS = 'EMAIL_ALREADY_EXISTS',
+  RESOURCE_IN_USE = 'RESOURCE_IN_USE',
   TOKEN_EXPIRED = 'TOKEN_EXPIRED',
   TOKEN_INVALID = 'TOKEN_INVALID',
   UNAUTHORIZED = 'UNAUTHORIZED',
@@ -50,7 +53,10 @@ export interface AppError {
 export const ERROR_TRANSLATION_KEYS: Record<string, string> = {
   [ErrorCode.INVALID_CREDENTIALS]: 'errors.invalidCredentials',
   [ErrorCode.USER_NOT_FOUND]: 'errors.userNotFound',
+  [ErrorCode.USER_INACTIVE]: 'errors.userInactive',
+  [ErrorCode.PASSWORD_MISMATCH]: 'errors.passwordMismatch',
   [ErrorCode.EMAIL_ALREADY_EXISTS]: 'errors.emailAlreadyExists',
+  [ErrorCode.RESOURCE_IN_USE]: 'errors.resourceInUse',
   [ErrorCode.TOKEN_EXPIRED]: 'errors.tokenExpired',
   [ErrorCode.TOKEN_INVALID]: 'errors.tokenInvalid',
   [ErrorCode.UNAUTHORIZED]: 'errors.unauthorized',
@@ -67,9 +73,12 @@ export const ERROR_TRANSLATION_KEYS: Record<string, string> = {
 
 // Fallback error messages (used when i18n is not available)
 const FALLBACK_ERROR_MESSAGES: Record<string, string> = {
-  [ErrorCode.INVALID_CREDENTIALS]: 'Invalid email or password. Please check your credentials and try again.',
-  [ErrorCode.USER_NOT_FOUND]: 'No account found with this email address.',
+  [ErrorCode.INVALID_CREDENTIALS]: 'Invalid username or password. Please check your credentials and try again.',
+  [ErrorCode.USER_NOT_FOUND]: 'No account found with this username.',
+  [ErrorCode.USER_INACTIVE]: 'Your account is inactive. Please contact an administrator.',
+  [ErrorCode.PASSWORD_MISMATCH]: 'Incorrect password. Please try again.',
   [ErrorCode.EMAIL_ALREADY_EXISTS]: 'An account with this email already exists.',
+  [ErrorCode.RESOURCE_IN_USE]: 'This item cannot be deleted because it is being used by other resources.',
   [ErrorCode.TOKEN_EXPIRED]: 'Your session has expired. Please login again.',
   [ErrorCode.TOKEN_INVALID]: 'Invalid authentication. Please login again.',
   [ErrorCode.UNAUTHORIZED]: 'You are not authorized to perform this action.',

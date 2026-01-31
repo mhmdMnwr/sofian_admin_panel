@@ -2,30 +2,17 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MainLayout } from '../../components/layout';
 import apiClient from '../../core/api/apiClient';
+import { Category, CategoriesResponse } from '../../core/types';
 import './CategoriesPage.css';
 
-interface Category {
-  _id: string;
-  name: string;
-  icon?: string;
-}
-
-interface CategoriesResponse {
-  status: string;
-  data: {
-    categories: Category[];
-    totalCategories?: number;
-  };
-}
-
 interface CategoryForm {
-  name: string;
-  icon: File | null;
+  title: string;
+  image: File | null;
 }
 
 const initialFormState: CategoryForm = {
-  name: '',
-  icon: null,
+  title: '',
+  image: null,
 };
 
 const CategoriesPage: React.FC = () => {
@@ -35,8 +22,13 @@ const CategoriesPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [totalCategories, setTotalCategories] = useState(0);
   
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [itemsPerPage] = useState(10);
+  
   // Search state
-  const [searchName, setSearchName] = useState('');
+  const [searchTitle, setSearchTitle] = useState('');
   
   // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,28 +38,34 @@ const CategoriesPage: React.FC = () => {
   const [formErrors, setFormErrors] = useState<Partial<Record<keyof CategoryForm, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [iconPreview, setIconPreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Delete confirmation state
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deletingCategoryId, setDeletingCategoryId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
-  const fetchCategories = useCallback(async () => {
+  const fetchCategories = useCallback(async (page: number = currentPage) => {
     try {
       setLoading(true);
       setError(null);
       
-      const params: Record<string, string> = {};
-      if (searchName) params.name = searchName;
+      const params: Record<string, string | number> = {
+        page,
+        limit: itemsPerPage,
+      };
+      if (searchTitle) params.title = searchTitle;
       
       const response = await apiClient.get<CategoriesResponse>('/categories', { params });
       
       if (response.data.status === 'success') {
-        const fetchedCategories = response.data.data.categories || response.data.data || [];
+        const fetchedCategories = response.data.data || [];
         setCategories(fetchedCategories);
-        setTotalCategories(response.data.data.totalCategories || fetchedCategories.length);
+        setTotalCategories(response.data.meta?.totalItems || fetchedCategories.length);
+        setTotalPages(response.data.meta?.totalPages || 1);
+        setCurrentPage(response.data.meta?.page || page);
       }
     } catch (err) {
       setError(t('errors.unknownError', 'An error occurred while fetching categories'));
@@ -75,14 +73,20 @@ const CategoriesPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [t, searchName]);
+  }, [t, searchTitle, currentPage, itemsPerPage]);
 
   useEffect(() => {
-    fetchCategories();
+    fetchCategories(1);
   }, []);
 
   const handleSearch = () => {
-    fetchCategories();
+    setCurrentPage(1);
+    fetchCategories(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    fetchCategories(page);
   };
 
   // Modal functions
@@ -92,7 +96,7 @@ const CategoriesPage: React.FC = () => {
     setEditingCategoryId(null);
     setFormData(initialFormState);
     setFormErrors({});
-    setIconPreview(null);
+    setImagePreview(null);
   };
 
   const closeModal = () => {
@@ -101,23 +105,24 @@ const CategoriesPage: React.FC = () => {
     setEditingCategoryId(null);
     setFormData(initialFormState);
     setFormErrors({});
-    setIconPreview(null);
+    setImagePreview(null);
   };
 
   const handleEditCategory = (category: Category) => {
     setIsEditMode(true);
     setEditingCategoryId(category._id);
     setFormData({
-      name: category.name,
-      icon: null,
+      title: category.title,
+      image: null,
     });
-    setIconPreview(category.icon || null);
+    setImagePreview(category.image || null);
     setFormErrors({});
     setIsModalOpen(true);
   };
 
   const handleDeleteCategory = (categoryId: string) => {
     setDeletingCategoryId(categoryId);
+    setDeleteError(null);
     setIsDeleteModalOpen(true);
   };
 
@@ -125,6 +130,7 @@ const CategoriesPage: React.FC = () => {
     if (!deletingCategoryId) return;
     
     setIsDeleting(true);
+    setDeleteError(null);
     try {
       const response = await apiClient.delete(`/categories/${deletingCategoryId}`);
       
@@ -136,7 +142,16 @@ const CategoriesPage: React.FC = () => {
       }
     } catch (err: any) {
       console.error('Error deleting category:', err);
-      alert(err.response?.data?.message || t('errors.unknownError', 'An error occurred'));
+      const serverMessage = err.response?.data?.message?.toLowerCase() || '';
+      
+      // Check if the category is associated with products
+      if (serverMessage.includes('product') || serverMessage.includes('associated') || 
+          serverMessage.includes('in use') || serverMessage.includes('has products') ||
+          err.response?.status === 400 || err.response?.status === 409) {
+        setDeleteError(t('errors.categoryHasProducts', 'This category cannot be deleted because it has products associated with it. Please remove or reassign the products first.'));
+      } else {
+        setDeleteError(err.response?.data?.message || t('errors.unknownError', 'An error occurred'));
+      }
     } finally {
       setIsDeleting(false);
     }
@@ -145,6 +160,7 @@ const CategoriesPage: React.FC = () => {
   const cancelDelete = () => {
     setIsDeleteModalOpen(false);
     setDeletingCategoryId(null);
+    setDeleteError(null);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -155,23 +171,23 @@ const CategoriesPage: React.FC = () => {
     }
   };
 
-  const handleIconChange = (file: File | null) => {
+  const handleImageChange = (file: File | null) => {
     if (file) {
       if (!file.type.startsWith('image/')) {
-        setFormErrors(prev => ({ ...prev, icon: t('categories.invalidIconType', 'Please select a valid image file') }));
+        setFormErrors(prev => ({ ...prev, image: t('categories.invalidImageType', 'Please select a valid image file') }));
         return;
       }
       if (file.size > 2 * 1024 * 1024) {
-        setFormErrors(prev => ({ ...prev, icon: t('categories.iconTooLarge', 'Icon must be less than 2MB') }));
+        setFormErrors(prev => ({ ...prev, image: t('categories.imageTooLarge', 'Image must be less than 2MB') }));
         return;
       }
       
-      setFormData(prev => ({ ...prev, icon: file }));
-      setFormErrors(prev => ({ ...prev, icon: undefined }));
+      setFormData(prev => ({ ...prev, image: file }));
+      setFormErrors(prev => ({ ...prev, image: undefined }));
       
       const reader = new FileReader();
       reader.onloadend = () => {
-        setIconPreview(reader.result as string);
+        setImagePreview(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
@@ -191,17 +207,17 @@ const CategoriesPage: React.FC = () => {
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
-    handleIconChange(file);
+    handleImageChange(file);
   };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    handleIconChange(file);
+    handleImageChange(file);
   };
 
-  const removeIcon = () => {
-    setFormData(prev => ({ ...prev, icon: null }));
-    setIconPreview(null);
+  const removeImage = () => {
+    setFormData(prev => ({ ...prev, image: null }));
+    setImagePreview(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -210,8 +226,8 @@ const CategoriesPage: React.FC = () => {
   const validateForm = (): boolean => {
     const errors: Partial<Record<keyof CategoryForm, string>> = {};
     
-    if (!formData.name.trim()) {
-      errors.name = t('categories.nameRequired', 'Category name is required');
+    if (!formData.title.trim()) {
+      errors.title = t('categories.titleRequired', 'Category title is required');
     }
     
     setFormErrors(errors);
@@ -231,10 +247,10 @@ const CategoriesPage: React.FC = () => {
       const endpoint = isEdit ? `/categories/${editingCategoryId}` : '/categories';
       const method = isEdit ? 'patch' : 'post';
       
-      if (formData.icon) {
+      if (formData.image) {
         const submitData = new FormData();
-        submitData.append('name', formData.name.trim());
-        submitData.append('icon', formData.icon);
+        submitData.append('title', formData.title.trim());
+        submitData.append('image', formData.image);
         
         response = await apiClient[method](endpoint, submitData, {
           headers: {
@@ -242,7 +258,7 @@ const CategoriesPage: React.FC = () => {
           },
         });
       } else {
-        response = await apiClient[method](endpoint, { name: formData.name.trim() });
+        response = await apiClient[method](endpoint, { title: formData.title.trim() });
       }
       
       if (response.data.status === 'success') {
@@ -253,7 +269,7 @@ const CategoriesPage: React.FC = () => {
       console.error('Error saving category:', err);
       setFormErrors(prev => ({ 
         ...prev, 
-        name: err.response?.data?.message || t('errors.unknownError', 'An error occurred') 
+        title: err.response?.data?.message || t('errors.unknownError', 'An error occurred') 
       }));
     } finally {
       setIsSubmitting(false);
@@ -290,7 +306,7 @@ const CategoriesPage: React.FC = () => {
           ) : error ? (
             <div className="categories-page__error">
               <p>{error}</p>
-              <button onClick={fetchCategories} className="categories-page__retry-btn">
+              <button onClick={() => fetchCategories(1)} className="categories-page__retry-btn">
                 {t('common.tryAgain', 'Try Again')}
               </button>
             </div>
@@ -301,9 +317,9 @@ const CategoriesPage: React.FC = () => {
                 <div className="filter-item filter-item--search">
                   <input
                     type="text"
-                    placeholder={t('categories.searchByName', 'Search by name...')}
-                    value={searchName}
-                    onChange={(e) => setSearchName(e.target.value)}
+                    placeholder={t('categories.searchByTitle', 'Search by title...')}
+                    value={searchTitle}
+                    onChange={(e) => setSearchTitle(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                     className="filter-input"
                   />
@@ -323,8 +339,8 @@ const CategoriesPage: React.FC = () => {
                   <thead>
                     <tr>
                       <th style={{width: '25%'}}>{t('categories.categoryId', 'Category ID')}</th>
-                      <th className="th-separator" style={{width: '25%'}}>{t('categories.icon', 'Icon')}</th>
-                      <th className="th-separator" style={{width: '25%'}}>{t('categories.name', 'Name')}</th>
+                      <th className="th-separator" style={{width: '25%'}}>{t('categories.title', 'Title')}</th>
+                      <th className="th-separator" style={{width: '25%'}}>{t('categories.image', 'Image')}</th>
                       <th className="th-separator" style={{width: '25%'}}>{t('categories.actions', 'Actions')}</th>
                     </tr>
                   </thead>
@@ -333,15 +349,16 @@ const CategoriesPage: React.FC = () => {
                       categories.map((category, index) => (
                         <tr key={category._id} className={index % 2 === 0 ? 'row-even' : 'row-odd'}>
                           <td className="category-id" style={{width: '25%'}}>#{category._id.slice(-8)}</td>
-                          <td className="category-icon-cell" style={{width: '25%'}}>
-                            {category.icon ? (
+                          <td className="category-title" style={{width: '25%'}}>{category.title}</td>
+                          <td className="category-image-cell" style={{width: '25%'}}>
+                            {category.image ? (
                               <img 
-                                src={category.icon} 
-                                alt={category.name} 
-                                className="category-icon"
+                                src={category.image} 
+                                alt={category.title} 
+                                className="category-image"
                               />
                             ) : (
-                              <div className="category-icon-placeholder">
+                              <div className="category-image-placeholder">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                   <rect x="3" y="3" width="7" height="7"></rect>
                                   <rect x="14" y="3" width="7" height="7"></rect>
@@ -351,7 +368,6 @@ const CategoriesPage: React.FC = () => {
                               </div>
                             )}
                           </td>
-                          <td className="category-name" style={{width: '25%'}}>{category.name}</td>
                           <td className="category-actions" style={{width: '25%'}}>
                             <button
                               className="action-btn action-btn--edit"
@@ -388,6 +404,63 @@ const CategoriesPage: React.FC = () => {
                   </tbody>
                 </table>
               </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="pagination">
+                  <button
+                    className="pagination__btn pagination__btn--prev"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    {t('pagination.previous', 'Previous')}
+                  </button>
+                  
+                  <div className="pagination__pages">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1)
+                      .filter(page => {
+                        if (totalPages <= 7) return true;
+                        if (page === 1 || page === totalPages) return true;
+                        if (Math.abs(page - currentPage) <= 1) return true;
+                        return false;
+                      })
+                      .map((page, index, arr) => (
+                        <React.Fragment key={page}>
+                          {index > 0 && arr[index - 1] !== page - 1 && (
+                            <span className="pagination__ellipsis">...</span>
+                          )}
+                          <button
+                            className={`pagination__page ${currentPage === page ? 'pagination__page--active' : ''}`}
+                            onClick={() => handlePageChange(page)}
+                          >
+                            {page}
+                          </button>
+                        </React.Fragment>
+                      ))}
+                  </div>
+                  
+                  <button
+                    className="pagination__btn pagination__btn--next"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                  >
+                    {t('pagination.next', 'Next')}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </button>
+                </div>
+              )}
+
+              {/* Page info */}
+              {totalCategories > 0 && (
+                <div className="pagination-info">
+                  {t('pagination.showing', 'Showing')} {(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, totalCategories)} {t('pagination.of', 'of')} {totalCategories} {t('pagination.items', 'items')}
+                </div>
+              )}
             </>
           )}
         </div>
@@ -410,38 +483,38 @@ const CategoriesPage: React.FC = () => {
             <form onSubmit={handleSubmit} className="modal-form">
               {/* Name Field */}
               <div className="form-group">
-                <label htmlFor="name">
-                  {t('categories.name', 'Name')} <span className="required">*</span>
+                <label htmlFor="title">
+                  {t('categories.title', 'Title')} <span className="required">*</span>
                 </label>
                 <input
                   type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
+                  id="title"
+                  name="title"
+                  value={formData.title}
                   onChange={handleInputChange}
-                  placeholder={t('categories.enterName', 'Enter category name')}
-                  className={formErrors.name ? 'error' : ''}
+                  placeholder={t('categories.enterTitle', 'Enter category title')}
+                  className={formErrors.title ? 'error' : ''}
                 />
-                {formErrors.name && <span className="error-message">{formErrors.name}</span>}
+                {formErrors.title && <span className="error-message">{formErrors.title}</span>}
               </div>
 
-              {/* Icon Upload Field */}
+              {/* Image Upload Field */}
               <div className="form-group">
-                <label>{t('categories.icon', 'Icon')}</label>
+                <label>{t('categories.image', 'Image')}</label>
                 <div
-                  className={`icon-drop-zone ${isDragging ? 'dragging' : ''} ${iconPreview ? 'has-icon' : ''}`}
+                  className={`image-drop-zone ${isDragging ? 'dragging' : ''} ${imagePreview ? 'has-image' : ''}`}
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
                   onClick={() => fileInputRef.current?.click()}
                 >
-                  {iconPreview ? (
-                    <div className="icon-preview-container">
-                      <img src={iconPreview} alt="Preview" className="icon-preview" />
+                  {imagePreview ? (
+                    <div className="image-preview-container">
+                      <img src={imagePreview} alt="Preview" className="image-preview" />
                       <button
                         type="button"
-                        className="remove-icon-btn"
-                        onClick={(e) => { e.stopPropagation(); removeIcon(); }}
+                        className="remove-image-btn"
+                        onClick={(e) => { e.stopPropagation(); removeImage(); }}
                       >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -456,7 +529,7 @@ const CategoriesPage: React.FC = () => {
                         <polyline points="17 8 12 3 7 8"></polyline>
                         <line x1="12" y1="3" x2="12" y2="15"></line>
                       </svg>
-                      <p>{t('categories.dragDropIcon', 'Drag & drop an icon here')}</p>
+                      <p>{t('categories.dragDropImage', 'Drag & drop an image here')}</p>
                       <span>{t('categories.orClickToSelect', 'or click to select')}</span>
                     </div>
                   )}
@@ -468,7 +541,7 @@ const CategoriesPage: React.FC = () => {
                     style={{ display: 'none' }}
                   />
                 </div>
-                {formErrors.icon && <span className="error-message">{formErrors.icon}</span>}
+                {formErrors.image && <span className="error-message">{formErrors.image}</span>}
               </div>
 
               {/* Form Actions */}
@@ -507,6 +580,16 @@ const CategoriesPage: React.FC = () => {
             </div>
             <div className="modal-body">
               <p>{t('categories.deleteConfirmation', 'Are you sure you want to delete this category? This action cannot be undone.')}</p>
+              {deleteError && (
+                <div className="form-error-banner" style={{ marginTop: '16px' }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                  <span>{deleteError}</span>
+                </div>
+              )}
             </div>
             <div className="modal-actions">
               <button type="button" onClick={cancelDelete} className="btn-cancel">

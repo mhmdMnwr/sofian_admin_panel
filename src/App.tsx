@@ -9,6 +9,7 @@ import DashboardPage from './features/dashboard/DashboardPage';
 import ProductsPage from './features/products/ProductsPage';
 import CategoriesPage from './features/categories/CategoriesPage';
 import BrandsPage from './features/brands/BrandsPage';
+import OrdersPage from './features/orders/OrdersPage';
 
 // Session checker component
 const SessionChecker: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -55,6 +56,7 @@ const AppRoutes: React.FC = () => (
       <Route path="/products" element={<ProtectedRoute><ProductsPage /></ProtectedRoute>} />
       <Route path="/categories" element={<ProtectedRoute><CategoriesPage /></ProtectedRoute>} />
       <Route path="/brands" element={<ProtectedRoute><BrandsPage /></ProtectedRoute>} />
+      <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   </SessionChecker>

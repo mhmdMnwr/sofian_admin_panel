@@ -1,130 +1,268 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { FiMail, FiLock, FiEye, FiEyeOff, FiAlertCircle, FiWifi } from 'react-icons/fi';
+import { FiUser, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
 import { useAppDispatch, useAppSelector } from '../../core/hooks/reduxHooks';
 import { login, clearError, selectAuthError, selectAuthErrorMessage, selectAuthLoading } from '../../core/store/slices/authSlice';
-import { isValidEmail } from '../../core/utils/helpers';
 import { ErrorCode } from '../../core/utils/errorHandler';
+import { logo } from '../../assets';
 import './LoginPage.css';
 
+// Sun icon for light mode
+const SunIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <circle cx="12" cy="12" r="5" />
+    <line x1="12" y1="1" x2="12" y2="3" />
+    <line x1="12" y1="21" x2="12" y2="23" />
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+    <line x1="1" y1="12" x2="3" y2="12" />
+    <line x1="21" y1="12" x2="23" y2="12" />
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+  </svg>
+);
+
+// Moon icon for dark mode
+const MoonIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+  </svg>
+);
+
+// Globe icon for language
+const GlobeIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <circle cx="12" cy="12" r="10" />
+    <line x1="2" y1="12" x2="22" y2="12" />
+    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+  </svg>
+);
+
+interface Language {
+  code: string;
+  name: string;
+  flag: string;
+}
+
+const languages: Language[] = [
+  { code: 'en', name: 'English', flag: '🇺🇸' },
+  { code: 'fr', name: 'Français', flag: '🇫🇷' },
+  { code: 'ar', name: 'العربية', flag: '🇸🇦' },
+];
+
 const LoginPage: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(selectAuthLoading);
   const error = useAppSelector(selectAuthError);
   const errorMessage = useAppSelector(selectAuthErrorMessage);
 
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({ email: '', password: '' });
+  const [errors, setErrors] = useState({ username: '', password: '' });
+  
+  // Theme state
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    return saved === 'dark';
+  });
+  
+  // Language dropdown state
+  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     return () => { dispatch(clearError()); };
   }, [dispatch]);
 
+  // Apply theme on mount and change
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsLangDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  const changeLanguage = (langCode: string) => {
+    i18n.changeLanguage(langCode);
+    setIsLangDropdownOpen(false);
+    
+    // Set RTL for Arabic
+    if (langCode === 'ar') {
+      document.documentElement.setAttribute('dir', 'rtl');
+    } else {
+      document.documentElement.setAttribute('dir', 'ltr');
+    }
+  };
+
+  const currentLanguage = languages.find((lang) => lang.code === i18n.language) || languages[0];
+
   const validate = (): boolean => {
-    const newErrors = { email: '', password: '' };
-    if (!email.trim()) newErrors.email = t('validation.emailRequired');
-    else if (!isValidEmail(email)) newErrors.email = t('validation.emailInvalid');
+    const newErrors = { username: '', password: '' };
+    if (!username.trim()) newErrors.username = t('validation.usernameRequired');
+    else if (username.trim().length < 3) newErrors.username = t('validation.usernameMinLength', { min: 3 });
     if (!password) newErrors.password = t('validation.passwordRequired');
     else if (password.length < 6) newErrors.password = t('validation.passwordMinLength', { min: 6 });
     setErrors(newErrors);
-    return !newErrors.email && !newErrors.password;
+    return !newErrors.username && !newErrors.password;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
     try {
-      await dispatch(login({ email: email.trim().toLowerCase(), password })).unwrap();
+      await dispatch(login({ username: username.trim(), password })).unwrap();
       navigate('/dashboard');
     } catch (err) {
-      // Error is handled by Redux, no need for additional handling
+      // Error is handled by Redux
     }
   };
 
-  const handleInputChange = (field: 'email' | 'password', value: string) => {
-    if (field === 'email') setEmail(value);
+  const handleInputChange = (field: 'username' | 'password', value: string) => {
+    if (field === 'username') setUsername(value);
     else setPassword(value);
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: '' }));
     if (error) dispatch(clearError());
   };
 
-  // Determine error icon and style based on error type
-  const getErrorDisplay = () => {
+  // Get translated error message
+  const getTranslatedError = () => {
     if (!error || !errorMessage) return null;
-
-    const isNetworkError = error.code === ErrorCode.NETWORK_ERROR || error.code === ErrorCode.TIMEOUT_ERROR;
-    const isAuthError = error.code === ErrorCode.INVALID_CREDENTIALS || error.code === ErrorCode.UNAUTHORIZED;
-
-    return (
-      <div className={`error-alert ${isNetworkError ? 'network-error' : ''} ${isAuthError ? 'auth-error' : ''}`}>
-        <span className="error-icon">
-          {isNetworkError 
-            ? React.createElement(FiWifi as any, {})
-            : React.createElement(FiAlertCircle as any, {})}
-        </span>
-        <div className="error-content">
-          <span className="error-text">{errorMessage}</span>
-          {isNetworkError && (
-            <button 
-              type="button" 
-              className="retry-button"
-              onClick={() => handleSubmit({ preventDefault: () => {} } as React.FormEvent)}
-            >
-              {t('common.tryAgain')}
-            </button>
-          )}
-        </div>
-      </div>
-    );
+    
+    switch (error.code) {
+      case ErrorCode.USER_NOT_FOUND:
+        return t('errors.userNotFound', errorMessage);
+      case ErrorCode.USER_INACTIVE:
+        return t('errors.userInactive', errorMessage);
+      case ErrorCode.INVALID_CREDENTIALS:
+        return t('errors.invalidCredentials', errorMessage);
+      case ErrorCode.NETWORK_ERROR:
+        return t('errors.networkError', errorMessage);
+      case ErrorCode.TIMEOUT_ERROR:
+        return t('errors.timeoutError', errorMessage);
+      default:
+        return t('errors.unknownError', errorMessage);
+    }
   };
+
+  const translatedError = getTranslatedError();
 
   return (
     <div className="login-page">
+      {/* Settings buttons in top right */}
+      <div className="login-settings">
+        {/* Theme Toggle */}
+        <button
+          className="login-settings__btn"
+          onClick={toggleTheme}
+          title={isDarkMode ? t('common.lightMode', 'Light Mode') : t('common.darkMode', 'Dark Mode')}
+        >
+          {isDarkMode ? <SunIcon /> : <MoonIcon />}
+        </button>
+
+        {/* Language Dropdown */}
+        <div className="login-lang-dropdown" ref={dropdownRef}>
+          <button
+            className="login-settings__btn"
+            onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+            title={t('common.changeLanguage', 'Change Language')}
+          >
+            <GlobeIcon />
+            <span className="login-lang-code">{currentLanguage.code.toUpperCase()}</span>
+          </button>
+          
+          {isLangDropdownOpen && (
+            <div className="login-lang-menu">
+              {languages.map((lang) => (
+                <button
+                  key={lang.code}
+                  className={`login-lang-item ${lang.code === i18n.language ? 'active' : ''}`}
+                  onClick={() => changeLanguage(lang.code)}
+                >
+                  <span className="login-lang-flag">{lang.flag}</span>
+                  <span className="login-lang-name">{lang.name}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className="login-card">
-        <div className="login-header">
-          <h1 className="login-title">{t('auth.login')}</h1>
-          <p className="login-subtitle">{t('auth.signInToAccount')}</p>
+        {/* Logo */}
+        <div className="login-logo">
+          <img src={logo} alt="Bouchfoof Logo" />
         </div>
 
-        {getErrorDisplay()}
+        {/* Welcome Text */}
+        <h1 className="login-title">{t('auth.welcomeBack', 'Welcome Back')}</h1>
 
+        {/* Error Display */}
+        {translatedError && (
+          <div className="login-error">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span>{translatedError}</span>
+          </div>
+        )}
+
+        {/* Login Form */}
         <form onSubmit={handleSubmit} className="login-form">
-          <div className="form-group">
-            <label htmlFor="email" className="form-label">{t('auth.email')}</label>
-            <div className="input-wrapper">
-              {React.createElement(FiMail as any, { className: "input-icon" })}
+          <div className="login-field">
+            <div className="login-input-wrapper">
+              <span className="login-input-icon">
+                {React.createElement(FiUser as any, {})}
+              </span>
               <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-                className={`form-input ${errors.email ? 'error' : ''}`}
-                placeholder={t('auth.enterEmail')}
+                type="text"
+                value={username}
+                onChange={(e) => handleInputChange('username', e.target.value)}
+                className={`login-input ${errors.username ? 'error' : ''}`}
+                placeholder={t('auth.username', 'User Name')}
               />
             </div>
-            {errors.email && <p className="error-message">{errors.email}</p>}
+            {errors.username && <p className="login-field-error">{errors.username}</p>}
           </div>
 
-          <div className="form-group">
-            <label htmlFor="password" className="form-label">{t('auth.password')}</label>
-            <div className="input-wrapper">
-              {React.createElement(FiLock as any, { className: "input-icon" })}
+          <div className="login-field">
+            <div className="login-input-wrapper">
+              <span className="login-input-icon">
+                {React.createElement(FiLock as any, {})}
+              </span>
               <input
                 type={showPassword ? 'text' : 'password'}
-                id="password"
                 value={password}
                 onChange={(e) => handleInputChange('password', e.target.value)}
-                className={`form-input ${errors.password ? 'error' : ''}`}
-                placeholder={t('auth.enterPassword')}
+                className={`login-input ${errors.password ? 'error' : ''}`}
+                placeholder={t('auth.password', 'Password')}
               />
               <button
                 type="button"
-                className="password-toggle"
+                className="login-password-toggle"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword 
@@ -132,17 +270,19 @@ const LoginPage: React.FC = () => {
                   : React.createElement(FiEye as any, {})}
               </button>
             </div>
-            {errors.password && <p className="error-message">{errors.password}</p>}
+            {errors.password && <p className="login-field-error">{errors.password}</p>}
           </div>
 
-          <button type="submit" className="submit-button" disabled={isLoading}>
-            {isLoading ? t('auth.signingIn') : t('auth.signIn')}
+          <button type="submit" className="login-submit" disabled={isLoading}>
+            {isLoading ? (
+              <span className="login-loading">
+                <span className="login-spinner"></span>
+              </span>
+            ) : (
+              t('auth.logIn', 'Log In')
+            )}
           </button>
         </form>
-
-        <div className="login-footer">
-          <p>{t('common.allRightsReserved', { year: new Date().getFullYear() })}</p>
-        </div>
       </div>
     </div>
   );
