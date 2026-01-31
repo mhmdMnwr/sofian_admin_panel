@@ -11,6 +11,8 @@ import productsIcon from '../../../assets/icons/products.svg';
 import brandsIcon from '../../../assets/icons/brands.svg';
 import ordersIcon from '../../../assets/icons/orders.svg';
 import clientsIcon from '../../../assets/icons/clients.svg';
+import managersIcon from '../../../assets/icons/managers.svg';
+import feedbacksIcon from '../../../assets/icons/feedbacks.svg';
 
 interface NavItem {
   path: string;
@@ -25,6 +27,8 @@ const navItems: NavItem[] = [
   { path: '/brands', labelKey: 'sidebar.brands', icon: brandsIcon },
   { path: '/orders', labelKey: 'sidebar.orders', icon: ordersIcon },
   { path: '/clients', labelKey: 'sidebar.clients', icon: clientsIcon },
+  { path: '/managers', labelKey: 'sidebar.managers', icon: managersIcon },
+  { path: '/feedbacks', labelKey: 'sidebar.feedbacks', icon: feedbacksIcon },
 ];
 
 interface SidebarProps {

@@ -56,7 +56,7 @@ i18n
     
     // React configuration
     react: {
-      useSuspense: true,
+      useSuspense: false, // Don't use Suspense to avoid blank page flashes
     },
   });
 

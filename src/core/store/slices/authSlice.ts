@@ -59,49 +59,55 @@ export const login = createAsyncThunk<AuthResponse, LoginCredentials, { rejectVa
       
       // Extract error details from API response
       const axiosError = error as { response?: { data?: { message?: string; code?: string } } };
-      const serverMessage = axiosError?.response?.data?.message?.toLowerCase() || '';
+      const serverMessage = axiosError?.response?.data?.message || '';
+      const serverMessageLower = serverMessage.toLowerCase();
       const serverCode = axiosError?.response?.data?.code || '';
       
       // Handle specific login error cases
       // Case 1: User not found
-      if (serverMessage.includes('not found') || serverMessage.includes('user not found') || 
-          serverMessage.includes('no user') || serverCode === 'USER_NOT_FOUND') {
+      if (serverMessageLower.includes('not found') || serverMessageLower.includes('user not found') || 
+          serverMessageLower.includes('no user') || serverCode === 'USER_NOT_FOUND') {
         return rejectWithValue({
           ...appError,
           code: ErrorCode.USER_NOT_FOUND,
-          message: 'No account found with this username.',
+          message: serverMessage || 'No account found with this username.',
         });
       }
       
       // Case 2: User is inactive
-      if (serverMessage.includes('inactive') || serverMessage.includes('deactivated') || 
-          serverMessage.includes('disabled') || serverCode === 'USER_INACTIVE') {
+      if (serverMessageLower.includes('inactive') || serverMessageLower.includes('deactivated') || 
+          serverMessageLower.includes('disabled') || serverCode === 'USER_INACTIVE') {
         return rejectWithValue({
           ...appError,
           code: ErrorCode.USER_INACTIVE,
-          message: 'Your account is inactive. Please contact an administrator.',
+          message: serverMessage || 'Your account is inactive. Please contact an administrator.',
         });
       }
       
       // Case 3: Password mismatch / Invalid credentials
       if (appError.statusCode === 401 || appError.statusCode === 400 ||
-          serverMessage.includes('password') || serverMessage.includes('credentials') ||
-          serverMessage.includes('invalid') || serverCode === 'INVALID_CREDENTIALS') {
+          serverMessageLower.includes('password') || serverMessageLower.includes('credentials') ||
+          serverMessageLower.includes('invalid') || serverCode === 'INVALID_CREDENTIALS') {
         return rejectWithValue({
           ...appError,
           code: ErrorCode.INVALID_CREDENTIALS,
-          message: 'Invalid username or password. Please check your credentials and try again.',
+          message: serverMessage || 'Invalid username or password. Please check your credentials and try again.',
         });
       }
       
       if (isNetworkError(error)) {
         return rejectWithValue({
           ...appError,
+          code: ErrorCode.NETWORK_ERROR,
           message: 'Unable to connect to the server. Please check your internet connection and try again.',
         });
       }
       
-      return rejectWithValue(appError);
+      // Return the appError with the server message if available
+      return rejectWithValue({
+        ...appError,
+        message: serverMessage || appError.message || 'Login failed. Please try again.',
+      });
     }
   }
 );
@@ -188,6 +194,9 @@ const authSlice = createSlice({
         message: action.payload,
       };
     },
+    setAuthenticated: (state, action: PayloadAction<boolean>) => {
+      state.isAuthenticated = action.payload;
+    },
     setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
       state.isAuthenticated = true;
@@ -223,7 +232,8 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isAuthenticated = true;
+        // Don't set isAuthenticated here - let the component handle navigation
+        // isAuthenticated will be set by fetchCurrentUser or manually after navigation
         state.token = action.payload.data.accessToken;
         state.error = null;
         state.errorMessage = null;
@@ -274,7 +284,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearError, setError, setUser, restoreSession } = authSlice.actions;
+export const { clearError, setError, setAuthenticated, setUser, restoreSession } = authSlice.actions;
 export default authSlice.reducer;
 
 // Selector helpers

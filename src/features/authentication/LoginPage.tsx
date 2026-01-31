@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FiUser, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
 import { useAppDispatch, useAppSelector } from '../../core/hooks/reduxHooks';
-import { login, clearError, selectAuthError, selectAuthErrorMessage, selectAuthLoading } from '../../core/store/slices/authSlice';
+import { login, clearError, setAuthenticated, selectAuthError, selectAuthErrorMessage, selectAuthLoading } from '../../core/store/slices/authSlice';
 import { ErrorCode } from '../../core/utils/errorHandler';
 import { logo } from '../../assets';
 import './LoginPage.css';
@@ -74,10 +74,6 @@ const LoginPage: React.FC = () => {
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    return () => { dispatch(clearError()); };
-  }, [dispatch]);
-
   // Apply theme on mount and change
   useEffect(() => {
     if (isDarkMode) {
@@ -133,9 +129,11 @@ const LoginPage: React.FC = () => {
     if (!validate()) return;
     try {
       await dispatch(login({ username: username.trim(), password })).unwrap();
+      // Only set authenticated and navigate after successful login
+      dispatch(setAuthenticated(true));
       navigate('/dashboard');
     } catch (err) {
-      // Error is handled by Redux
+      // Error is handled by Redux - stay on login page
     }
   };
 
@@ -148,21 +146,30 @@ const LoginPage: React.FC = () => {
 
   // Get translated error message
   const getTranslatedError = () => {
-    if (!error || !errorMessage) return null;
+    // Check if we have any error
+    if (!error && !errorMessage) return null;
     
-    switch (error.code) {
+    // Get the error code - could be from error object or default to unknown
+    const errorCode = error?.code || ErrorCode.UNKNOWN_ERROR;
+    // Get the fallback message
+    const fallbackMessage = errorMessage || error?.message || 'An error occurred';
+    
+    switch (errorCode) {
       case ErrorCode.USER_NOT_FOUND:
-        return t('errors.userNotFound', errorMessage);
+        return t('errors.userNotFound', fallbackMessage);
       case ErrorCode.USER_INACTIVE:
-        return t('errors.userInactive', errorMessage);
+        return t('errors.userInactive', fallbackMessage);
       case ErrorCode.INVALID_CREDENTIALS:
-        return t('errors.invalidCredentials', errorMessage);
+        return t('errors.invalidCredentials', fallbackMessage);
       case ErrorCode.NETWORK_ERROR:
-        return t('errors.networkError', errorMessage);
+        return t('errors.networkError', fallbackMessage);
       case ErrorCode.TIMEOUT_ERROR:
-        return t('errors.timeoutError', errorMessage);
+        return t('errors.timeoutError', fallbackMessage);
+      case ErrorCode.MISSING_FIELDS:
+        return t('errors.missingFields', fallbackMessage);
       default:
-        return t('errors.unknownError', errorMessage);
+        // For unknown errors, show the actual error message from the server
+        return t('errors.unknownError', fallbackMessage);
     }
   };
 

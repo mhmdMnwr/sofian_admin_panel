@@ -8,6 +8,7 @@ export type UserRole = 'customer' | 'manager' | 'admin' | 'super_admin';
 export interface User {
   _id: string;
   username: string;
+  name?: string;
   status: UserStatus;
   role: UserRole;
   totalOrders: number;
@@ -197,4 +198,13 @@ export interface OrderResponse {
   status: 'success' | 'fail' | 'error';
   message: string;
   data: Order;
+}
+
+// Users API response
+export interface UsersResponse {
+  statusCode: number;
+  status: 'success' | 'fail' | 'error';
+  message?: string;
+  data: User[];
+  meta?: Pagination;
 }

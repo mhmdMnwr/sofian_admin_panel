@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Order, OrderStatus, OrderItem, CustomerInfo } from '../../../core/types';
+import { Order, OrderStatus, OrderItem, CustomerInfo, Product } from '../../../core/types';
 import { formatDate } from '../../../core/utils/helpers';
+import apiClient from '../../../core/api/apiClient';
 
 interface OrderViewModalProps {
   isOpen: boolean;
   order: Order | null;
   onClose: () => void;
 }
+
+// Product cache to store fetched product titles
+type ProductCache = Record<string, { title: string; units: number }>;
 
 // Helper: Get customer info from order
 const getCustomerInfo = (order: Order): CustomerInfo => {
@@ -28,18 +32,32 @@ const getCustomerInfo = (order: Order): CustomerInfo => {
   };
 };
 
-// Helper: Get product info from order item
-const getProductInfo = (item: OrderItem): { title: string; productUnits: number } => {
+// Helper: Get product info from order item (with cache)
+const getProductInfo = (item: OrderItem, productCache: ProductCache): { title: string; productUnits: number; needsFetch: boolean } => {
   if (item.productId && typeof item.productId === 'object') {
     const product = item.productId as { title: string; units?: number };
     return {
       title: product.title || '-',
       productUnits: product.units || item.units || 1,
+      needsFetch: false,
     };
   }
+  
+  const productId = String(item.productId);
+  
+  // Check cache
+  if (productCache[productId]) {
+    return {
+      title: productCache[productId].title,
+      productUnits: productCache[productId].units,
+      needsFetch: false,
+    };
+  }
+  
   return {
-    title: String(item.productId),
+    title: productId, // Show ID temporarily until fetched
     productUnits: item.units || 1,
+    needsFetch: true,
   };
 };
 
@@ -70,6 +88,57 @@ const getStatusClass = (status: OrderStatus): string => {
 
 const OrderViewModal: React.FC<OrderViewModalProps> = ({ isOpen, order, onClose }) => {
   const { t } = useTranslation();
+  const [productCache, setProductCache] = useState<ProductCache>({});
+  const [loadingProducts, setLoadingProducts] = useState(false);
+
+  // Fetch missing product details when order changes
+  useEffect(() => {
+    if (!isOpen || !order) return;
+
+    const fetchMissingProducts = async () => {
+      // Find products that need to be fetched
+      const productIdsToFetch: string[] = [];
+      
+      order.items.forEach((item) => {
+        if (typeof item.productId === 'string') {
+          const productId = item.productId;
+          if (!productCache[productId]) {
+            productIdsToFetch.push(productId);
+          }
+        }
+      });
+
+      if (productIdsToFetch.length === 0) return;
+
+      setLoadingProducts(true);
+      
+      // Fetch each product
+      const newCache: ProductCache = { ...productCache };
+      
+      await Promise.all(
+        productIdsToFetch.map(async (productId) => {
+          try {
+            const response = await apiClient.get<{ status: string; data: Product }>(`/products/${productId}`);
+            if (response.data.status === 'success' && response.data.data) {
+              newCache[productId] = {
+                title: response.data.data.title,
+                units: response.data.data.units || 1,
+              };
+            }
+          } catch (err) {
+            console.error(`Failed to fetch product ${productId}:`, err);
+            // Keep showing ID if fetch fails
+            newCache[productId] = { title: productId, units: 1 };
+          }
+        })
+      );
+      
+      setProductCache(newCache);
+      setLoadingProducts(false);
+    };
+
+    fetchMissingProducts();
+  }, [isOpen, order]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!isOpen || !order) return null;
 
@@ -165,6 +234,7 @@ const OrderViewModal: React.FC<OrderViewModalProps> = ({ isOpen, order, onClose 
           <div className="order-info-card order-info-card--full">
             <h3 className="order-info-card-title">
               {t('orders.items', 'Items')} ({order.items.length})
+              {loadingProducts && <span className="loading-products"> - {t('common.loading', 'Loading...')}</span>}
             </h3>
             <div className="order-info-card-content">
               <div className="order-items-container">
@@ -179,7 +249,7 @@ const OrderViewModal: React.FC<OrderViewModalProps> = ({ isOpen, order, onClose 
                   </thead>
                   <tbody>
                     {order.items.map((item, index) => {
-                      const { title, productUnits } = getProductInfo(item);
+                      const { title, productUnits } = getProductInfo(item, productCache);
                       const subtotal = item.quantity * item.price;
                       
                       return (

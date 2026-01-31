@@ -55,13 +55,8 @@ body {
   text-align: right;
 }
 
-/* App loading state */
+/* App loading state - invisible background during initial load */
 .app-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   min-height: 100vh;
   background: var(--bg-default);
-  color: var(--text-primary);
-  font-size: 1.125rem;
 }

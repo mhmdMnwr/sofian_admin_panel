@@ -1,40 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './core/store';
-import { useAppSelector, useAppDispatch } from './core/hooks/reduxHooks';
-import { selectIsAuthenticated, selectAuthLoading, checkSession } from './core/store/slices/authSlice';
+import { useAppSelector } from './core/hooks/reduxHooks';
+import { selectIsAuthenticated, checkSession } from './core/store/slices/authSlice';
 import LoginPage from './features/authentication/LoginPage';
 import DashboardPage from './features/dashboard/DashboardPage';
 import ProductsPage from './features/products/ProductsPage';
 import CategoriesPage from './features/categories/CategoriesPage';
 import BrandsPage from './features/brands/BrandsPage';
 import OrdersPage from './features/orders/OrdersPage';
+import UsersPage from './features/users/UsersPage';
+import ManagersPage from './features/managers/ManagersPage';
+import FeedbacksPage from './features/feedbacks/FeedbacksPage';
 
-// Session checker component
-const SessionChecker: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const dispatch = useAppDispatch();
-  const isLoading = useAppSelector(selectAuthLoading);
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  useEffect(() => {
-    const initSession = async () => {
-      await dispatch(checkSession());
-      setIsInitialized(true);
-    };
-    initSession();
-  }, [dispatch]);
-
-  if (!isInitialized || isLoading) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <div>Loading...</div>
-      </div>
-    );
-  }
-
-  return <>{children}</>;
-};
+// Check session ONCE at app startup - before React renders
+store.dispatch(checkSession());
 
 // Protected Route component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -49,17 +30,18 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 };
 
 const AppRoutes: React.FC = () => (
-  <SessionChecker>
-    <Routes>
-      <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
-      <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-      <Route path="/products" element={<ProtectedRoute><ProductsPage /></ProtectedRoute>} />
-      <Route path="/categories" element={<ProtectedRoute><CategoriesPage /></ProtectedRoute>} />
-      <Route path="/brands" element={<ProtectedRoute><BrandsPage /></ProtectedRoute>} />
-      <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
-    </Routes>
-  </SessionChecker>
+  <Routes>
+    <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+    <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+    <Route path="/products" element={<ProtectedRoute><ProductsPage /></ProtectedRoute>} />
+    <Route path="/categories" element={<ProtectedRoute><CategoriesPage /></ProtectedRoute>} />
+    <Route path="/brands" element={<ProtectedRoute><BrandsPage /></ProtectedRoute>} />
+    <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
+    <Route path="/clients" element={<ProtectedRoute><UsersPage /></ProtectedRoute>} />
+    <Route path="/managers" element={<ProtectedRoute><ManagersPage /></ProtectedRoute>} />
+    <Route path="/feedbacks" element={<ProtectedRoute><FeedbacksPage /></ProtectedRoute>} />
+    <Route path="*" element={<Navigate to="/dashboard" replace />} />
+  </Routes>
 );
 
 const App: React.FC = () => (

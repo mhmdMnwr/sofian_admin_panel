@@ -131,14 +131,29 @@ const getStatusClass = (status: OrderStatus): string => {
   return statusClasses[status] || 'status--pending';
 };
 
+// Product cache type
+type ProductCache = Record<string, { title: string; units: number }>;
+
 // Helper: Convert order items to editable items
-const orderItemsToEditable = (items: OrderItem[]): EditableOrderItem[] => {
+const orderItemsToEditable = (items: OrderItem[], productCache: ProductCache = {}): EditableOrderItem[] => {
   return items.map((item) => {
     const productId = typeof item.productId === 'object' ? item.productId._id : item.productId;
-    const productTitle = typeof item.productId === 'object' ? item.productId.title : String(item.productId);
-    const productUnits = typeof item.productId === 'object' && item.productId.units 
-      ? item.productId.units 
-      : item.units || 1;
+    
+    // First try from populated object, then from cache
+    let productTitle: string;
+    let productUnits: number;
+    
+    if (typeof item.productId === 'object') {
+      productTitle = item.productId.title;
+      productUnits = item.productId.units || item.units || 1;
+    } else if (productCache[productId]) {
+      productTitle = productCache[productId].title;
+      productUnits = productCache[productId].units || item.units || 1;
+    } else {
+      // Will be updated when product is fetched
+      productTitle = `Product #${productId.slice(-6)}`;
+      productUnits = item.units || 1;
+    }
     
     return {
       productId,
@@ -169,22 +184,76 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
   const [editingQuantityIndex, setEditingQuantityIndex] = useState<number | null>(null);
   const [quantityInputValue, setQuantityInputValue] = useState<string>('');
   
+  // Product cache for fetched product details
+  const [productCache, setProductCache] = useState<ProductCache>({});
+  const [loadingProductDetails, setLoadingProductDetails] = useState(false);
+  
   // Product search state
   const [showProductSearch, setShowProductSearch] = useState(false);
   const [productSearch, setProductSearch] = useState('');
   const [availableProducts, setAvailableProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
 
+  // Fetch missing product details
+  useEffect(() => {
+    if (!isOpen || !order) return;
+    
+    // Find items that need product details fetched (productId is a string, not in cache)
+    const missingProductIds = order.items
+      .filter(item => {
+        if (typeof item.productId === 'object') return false; // Already populated
+        return !productCache[item.productId]; // Not in cache
+      })
+      .map(item => item.productId as string);
+    
+    // Get unique IDs using filter
+    const uniqueIds = missingProductIds.filter((id, index) => missingProductIds.indexOf(id) === index);
+    
+    if (uniqueIds.length === 0) return;
+    
+    const fetchMissingProducts = async () => {
+      setLoadingProductDetails(true);
+      const newCache: ProductCache = { ...productCache };
+      
+      await Promise.all(
+        uniqueIds.map(async (productId) => {
+          try {
+            const response = await apiClient.get<{ status: string; data: Product }>(`/products/${productId}`);
+            if (response.data.status === 'success' && response.data.data) {
+              newCache[productId] = {
+                title: response.data.data.title,
+                units: response.data.data.units || 1,
+              };
+            }
+          } catch (err) {
+            console.error(`Failed to fetch product ${productId}:`, err);
+          }
+        })
+      );
+      
+      setProductCache(newCache);
+      
+      // Update editable items with new product info
+      if (order) {
+        setEditableItems(orderItemsToEditable(order.items, newCache));
+      }
+      
+      setLoadingProductDetails(false);
+    };
+    
+    fetchMissingProducts();
+  }, [isOpen, order]);
+
   // Initialize state when order changes
   useEffect(() => {
     if (order) {
       setEditStatus(order.status);
-      setEditableItems(orderItemsToEditable(order.items));
+      setEditableItems(orderItemsToEditable(order.items, productCache));
       setItemErrors({});
       setShowProductSearch(false);
       setProductSearch('');
     }
-  }, [order]);
+  }, [order, productCache]);
 
   // Fetch products for add
   const fetchProducts = useCallback(async (search: string = '') => {
@@ -498,6 +567,7 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
             <div className="order-info-card-header">
               <h3 className="order-info-card-title">
                 {t('orders.items', 'Items')} ({editableItems.length})
+                {loadingProductDetails && <span className="loading-products"> - {t('common.loading', 'Loading...')}</span>}
               </h3>
               <button 
                 type="button" 
