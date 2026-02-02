@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Product } from '../../../core/types';
+import { getOptimizedImageUrl } from '../../../core/services/cloudinaryService';
 
 interface ProductTableProps {
   products: Product[];
@@ -83,7 +84,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete 
               <td className="product-name">{product.title}</td>
               <td className="product-image-cell">
                 {product.image ? (
-                  <img src={product.image} alt={product.title} className="product-image" />
+                  <img src={getOptimizedImageUrl(product.image, { width: 112, height: 112, crop: 'fill' })} alt={product.title} className="product-image" />
                 ) : (
                   <div className="product-image-placeholder">
                     <svg

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { MainLayout } from '../../components/layout';
 import apiClient from '../../core/api/apiClient';
 import { Category, CategoriesResponse } from '../../core/types';
+import { uploadToCloudinary, getOptimizedImageUrl } from '../../core/services/cloudinaryService';
 import './CategoriesPage.css';
 
 interface CategoryForm {
@@ -242,24 +243,32 @@ const CategoriesPage: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      let response;
       const isEdit = isEditMode && editingCategoryId;
       const endpoint = isEdit ? `/categories/${editingCategoryId}` : '/categories';
       const method = isEdit ? 'patch' : 'post';
       
+      // Prepare submit data
+      const submitData: { title: string; image?: string } = {
+        title: formData.title.trim(),
+      };
+      
+      // Upload image to Cloudinary if a new image is selected
       if (formData.image) {
-        const submitData = new FormData();
-        submitData.append('title', formData.title.trim());
-        submitData.append('image', formData.image);
+        const uploadResult = await uploadToCloudinary(formData.image, 'categories');
         
-        response = await apiClient[method](endpoint, submitData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-      } else {
-        response = await apiClient[method](endpoint, { title: formData.title.trim() });
+        if (!uploadResult.success) {
+          setFormErrors(prev => ({
+            ...prev,
+            image: uploadResult.error || t('errors.imageUploadFailed', 'Failed to upload image'),
+          }));
+          setIsSubmitting(false);
+          return;
+        }
+        
+        submitData.image = uploadResult.url;
       }
+      
+      const response = await apiClient[method](endpoint, submitData);
       
       if (response.data.status === 'success') {
         closeModal();
@@ -353,7 +362,7 @@ const CategoriesPage: React.FC = () => {
                           <td className="category-image-cell" style={{width: '25%'}}>
                             {category.image ? (
                               <img 
-                                src={category.image} 
+                                src={getOptimizedImageUrl(category.image, { width: 96, height: 96, crop: 'fill' })} 
                                 alt={category.title} 
                                 className="category-image"
                               />

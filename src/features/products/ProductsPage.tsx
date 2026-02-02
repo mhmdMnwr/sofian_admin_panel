@@ -5,6 +5,7 @@ import { Pagination, ConfirmModal } from '../../components/common';
 import { ProductFilters, ProductTable, ProductFormModal, ProductFormData } from './components';
 import apiClient from '../../core/api/apiClient';
 import { Product, ProductsResponse } from '../../core/types';
+import { uploadToCloudinary, getOptimizedImageUrl } from '../../core/services/cloudinaryService';
 import './ProductsPage.css';
 
 // Types
@@ -274,45 +275,39 @@ const ProductsPage: React.FC = () => {
       const endpoint = isEdit ? `/products/${editingProductId}` : '/products';
       const method = isEdit ? 'patch' : 'post';
 
-      let response;
+      // Prepare submit data
+      const submitData: Record<string, string | number | null> = {
+        title: formData.title.trim(),
+        units: parseInt(formData.units),
+        price: parseFloat(formData.price),
+        state: formData.state,
+      };
 
-      if (formData.image) {
-        const submitData = new FormData();
-        submitData.append('title', formData.title.trim());
-        submitData.append('units', formData.units);
-        submitData.append('price', formData.price);
-        submitData.append('state', formData.state);
-
-        if (isEdit) {
-          if (formData.category) submitData.append('category', formData.category);
-          if (formData.brand) submitData.append('brand', formData.brand);
-        } else {
-          if (formData.category) submitData.append('categoryID', formData.category);
-          if (formData.brand) submitData.append('brandID', formData.brand);
-        }
-        submitData.append('image', formData.image);
-
-        response = await apiClient[method](endpoint, submitData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
+      if (isEdit) {
+        submitData.category = formData.category || null;
+        submitData.brand = formData.brand || null;
       } else {
-        const submitData: Record<string, string | number | null> = {
-          title: formData.title.trim(),
-          units: parseInt(formData.units),
-          price: parseFloat(formData.price),
-          state: formData.state,
-        };
-
-        if (isEdit) {
-          submitData.category = formData.category || null;
-          submitData.brand = formData.brand || null;
-        } else {
-          submitData.categoryID = formData.category || null;
-          submitData.brandID = formData.brand || null;
-        }
-
-        response = await apiClient[method](endpoint, submitData);
+        submitData.categoryID = formData.category || null;
+        submitData.brandID = formData.brand || null;
       }
+
+      // Upload image to Cloudinary if a new image is selected
+      if (formData.image) {
+        const uploadResult = await uploadToCloudinary(formData.image, 'products');
+        
+        if (!uploadResult.success) {
+          setFormErrors((prev) => ({
+            ...prev,
+            image: uploadResult.error || t('errors.imageUploadFailed', 'Failed to upload image'),
+          }));
+          setIsSubmitting(false);
+          return;
+        }
+        
+        submitData.image = uploadResult.url || null;
+      }
+
+      const response = await apiClient[method](endpoint, submitData);
 
       if (response.data.status === 'success') {
         closeModal();

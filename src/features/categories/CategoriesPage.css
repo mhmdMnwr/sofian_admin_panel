@@ -314,6 +314,38 @@
   border: 2px dashed var(--categories-border);
 }
 
+/* ===== Category Image (Table) ===== */
+.category-image-cell {
+  width: 80px;
+}
+
+.category-image {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid var(--categories-border-light);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.category-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.category-image-placeholder {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--categories-icon-bg);
+  border-radius: 8px;
+  color: var(--categories-text-muted);
+  border: 2px dashed var(--categories-border);
+}
+
 /* ===== Category Name ===== */
 .category-name {
   font-weight: 600;
