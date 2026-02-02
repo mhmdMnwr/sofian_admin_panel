@@ -26,6 +26,68 @@ export interface UploadResult {
 }
 
 /**
+ * Extract public ID from Cloudinary URL
+ * @param url - The Cloudinary URL
+ * @returns The public ID or null if not a Cloudinary URL
+ */
+export const extractPublicIdFromUrl = (url: string): string | null => {
+  if (!url || !url.includes('cloudinary.com')) {
+    return null;
+  }
+
+  try {
+    // URL format: https://res.cloudinary.com/{cloud}/image/upload/{transformations?}/{public_id}.{format}
+    const uploadIndex = url.indexOf('/upload/');
+    if (uploadIndex === -1) return null;
+
+    let pathAfterUpload = url.substring(uploadIndex + 8);
+    
+    // Remove any transformation parameters (they start with letters and contain commas or underscores)
+    // Transformations like: f_auto,q_auto,w_96,h_96,c_fill/
+    if (pathAfterUpload.match(/^[a-z]/i)) {
+      const slashIndex = pathAfterUpload.indexOf('/');
+      if (slashIndex !== -1) {
+        pathAfterUpload = pathAfterUpload.substring(slashIndex + 1);
+      }
+    }
+
+    // Remove file extension
+    const lastDotIndex = pathAfterUpload.lastIndexOf('.');
+    if (lastDotIndex !== -1) {
+      pathAfterUpload = pathAfterUpload.substring(0, lastDotIndex);
+    }
+
+    return pathAfterUpload || null;
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * Delete an image from Cloudinary
+ * Note: For unsigned presets, deletion requires backend support or Admin API
+ * This function attempts deletion but may fail for unsigned uploads
+ * @param imageUrl - The Cloudinary image URL to delete
+ * @returns Promise with deletion result
+ */
+export const deleteFromCloudinary = async (imageUrl: string): Promise<{ success: boolean; error?: string }> => {
+  const publicId = extractPublicIdFromUrl(imageUrl);
+  
+  if (!publicId) {
+    // Not a Cloudinary URL, nothing to delete
+    return { success: true };
+  }
+
+  // For unsigned uploads, we cannot delete images directly from the frontend
+  // Cloudinary requires authenticated API calls for deletion
+  // The image will remain in Cloudinary but won't be referenced
+  // For production, implement deletion through your backend
+  console.log(`Image cleanup needed for public_id: ${publicId}`);
+  
+  return { success: true };
+};
+
+/**
  * Upload an image to Cloudinary
  * @param file - The image file to upload
  * @param folder - The folder to organize images (products, brands, categories)

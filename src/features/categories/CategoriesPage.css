@@ -531,8 +531,8 @@
   color: #ef4444;
 }
 
-/* Icon Drop Zone */
-.icon-drop-zone {
+/* Image Drop Zone */
+.image-drop-zone {
   border: 2px dashed var(--categories-border);
   border-radius: 12px;
   padding: 24px;
@@ -542,57 +542,57 @@
   background-color: var(--categories-bg);
 }
 
-.icon-drop-zone:hover {
+.image-drop-zone:hover {
   border-color: var(--categories-accent);
   background-color: var(--categories-accent-light);
 }
 
-.icon-drop-zone.dragging {
+.image-drop-zone.dragging {
   border-color: var(--categories-accent);
   background-color: var(--categories-accent-light);
   border-style: solid;
 }
 
-.icon-drop-zone.has-icon {
+.image-drop-zone.has-image {
   padding: 16px;
 }
 
-.icon-drop-zone .drop-zone-content {
+.image-drop-zone .drop-zone-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
 }
 
-.icon-drop-zone .drop-zone-content svg {
+.image-drop-zone .drop-zone-content svg {
   color: var(--categories-text-muted);
 }
 
-.icon-drop-zone .drop-zone-content p {
+.image-drop-zone .drop-zone-content p {
   margin: 0;
   font-size: 14px;
   font-weight: 500;
   color: var(--categories-text-primary);
 }
 
-.icon-drop-zone .drop-zone-content span {
+.image-drop-zone .drop-zone-content span {
   font-size: 12px;
   color: var(--categories-text-muted);
 }
 
-.icon-preview-container {
+.image-preview-container {
   position: relative;
   display: inline-block;
 }
 
-.icon-preview {
-  max-width: 80px;
-  max-height: 80px;
+.image-preview {
+  max-width: 120px;
+  max-height: 120px;
   border-radius: 8px;
-  object-fit: contain;
+  object-fit: cover;
 }
 
-.remove-icon-btn {
+.remove-image-btn {
   position: absolute;
   top: -8px;
   right: -8px;
@@ -610,7 +610,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.remove-icon-btn:hover {
+.remove-image-btn:hover {
   background-color: #dc2626;
   transform: scale(1.1);
 }

@@ -5,7 +5,7 @@ import { Pagination, ConfirmModal } from '../../components/common';
 import { ProductFilters, ProductTable, ProductFormModal, ProductFormData } from './components';
 import apiClient from '../../core/api/apiClient';
 import { Product, ProductsResponse } from '../../core/types';
-import { uploadToCloudinary, getOptimizedImageUrl } from '../../core/services/cloudinaryService';
+import { uploadToCloudinary, getOptimizedImageUrl, deleteFromCloudinary } from '../../core/services/cloudinaryService';
 import './ProductsPage.css';
 
 // Types
@@ -293,6 +293,11 @@ const ProductsPage: React.FC = () => {
 
       // Upload image to Cloudinary if a new image is selected
       if (formData.image) {
+        // Delete old image from Cloudinary if updating
+        if (isEdit && imagePreview) {
+          await deleteFromCloudinary(imagePreview);
+        }
+        
         const uploadResult = await uploadToCloudinary(formData.image, 'products');
         
         if (!uploadResult.success) {
@@ -341,9 +346,17 @@ const ProductsPage: React.FC = () => {
     setDeleteError(null);
 
     try {
+      // Find the product to get its image URL before deletion
+      const productToDelete = products.find(p => p._id === deletingProductId);
+      
       const response = await apiClient.delete(`/products/${deletingProductId}`);
 
       if (response.data.status === 'success') {
+        // Delete image from Cloudinary if exists
+        if (productToDelete?.image) {
+          await deleteFromCloudinary(productToDelete.image);
+        }
+        
         setIsDeleteModalOpen(false);
         setDeletingProductId(null);
         setProducts((prev) => prev.filter((p) => p._id !== deletingProductId));

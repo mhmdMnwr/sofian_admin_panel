@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { MainLayout } from '../../components/layout';
 import apiClient from '../../core/api/apiClient';
 import { Brand, BrandsResponse } from '../../core/types';
-import { uploadToCloudinary, getOptimizedImageUrl } from '../../core/services/cloudinaryService';
+import { uploadToCloudinary, getOptimizedImageUrl, deleteFromCloudinary } from '../../core/services/cloudinaryService';
 import './BrandsPage.css';
 
 interface BrandForm {
@@ -133,9 +133,17 @@ const BrandsPage: React.FC = () => {
     setIsDeleting(true);
     setDeleteError(null);
     try {
+      // Find the brand to get its image URL before deletion
+      const brandToDelete = brands.find(b => b._id === deletingBrandId);
+      
       const response = await apiClient.delete(`/brands/${deletingBrandId}`);
       
       if (response.data.status === 'success') {
+        // Delete image from Cloudinary if exists
+        if (brandToDelete?.image) {
+          await deleteFromCloudinary(brandToDelete.image);
+        }
+        
         setIsDeleteModalOpen(false);
         setDeletingBrandId(null);
         setBrands(prev => prev.filter(b => b._id !== deletingBrandId));
@@ -254,6 +262,11 @@ const BrandsPage: React.FC = () => {
       
       // Upload image to Cloudinary if a new image is selected
       if (formData.image) {
+        // Delete old image from Cloudinary if updating
+        if (isEdit && imagePreview) {
+          await deleteFromCloudinary(imagePreview);
+        }
+        
         const uploadResult = await uploadToCloudinary(formData.image, 'brands');
         
         if (!uploadResult.success) {

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { MainLayout } from '../../components/layout';
 import apiClient from '../../core/api/apiClient';
 import { Category, CategoriesResponse } from '../../core/types';
-import { uploadToCloudinary, getOptimizedImageUrl } from '../../core/services/cloudinaryService';
+import { uploadToCloudinary, getOptimizedImageUrl, deleteFromCloudinary } from '../../core/services/cloudinaryService';
 import './CategoriesPage.css';
 
 interface CategoryForm {
@@ -133,9 +133,17 @@ const CategoriesPage: React.FC = () => {
     setIsDeleting(true);
     setDeleteError(null);
     try {
+      // Find the category to get its image URL before deletion
+      const categoryToDelete = categories.find(c => c._id === deletingCategoryId);
+      
       const response = await apiClient.delete(`/categories/${deletingCategoryId}`);
       
       if (response.data.status === 'success') {
+        // Delete image from Cloudinary if exists
+        if (categoryToDelete?.image) {
+          await deleteFromCloudinary(categoryToDelete.image);
+        }
+        
         setIsDeleteModalOpen(false);
         setDeletingCategoryId(null);
         setCategories(prev => prev.filter(c => c._id !== deletingCategoryId));
@@ -254,6 +262,11 @@ const CategoriesPage: React.FC = () => {
       
       // Upload image to Cloudinary if a new image is selected
       if (formData.image) {
+        // Delete old image from Cloudinary if updating
+        if (isEdit && imagePreview) {
+          await deleteFromCloudinary(imagePreview);
+        }
+        
         const uploadResult = await uploadToCloudinary(formData.image, 'categories');
         
         if (!uploadResult.success) {

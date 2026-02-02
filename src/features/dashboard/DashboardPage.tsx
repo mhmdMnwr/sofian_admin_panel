@@ -217,9 +217,9 @@ const DashboardPage: React.FC = () => {
       return `${monthNames[parseInt(month) - 1]} ${year}`;
     }
     
-    // Day format: YYYY-MM-DD
+    // Day format: YYYY-MM-DD - include year for clarity
     const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
   // Custom tooltip for chart
