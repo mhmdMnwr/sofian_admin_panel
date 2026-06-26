@@ -154,7 +154,11 @@
     "ordersCount": "Commandes",
     "ordersLabel": "commandes",
     "noData": "Aucune donnée disponible",
-    "thanLastWeek": "que la semaine dernière"
+    "thanLastWeek": "que la semaine dernière",
+    "minOrderAmount": "Montant min. de commande",
+    "minOrderUpdated": "Mis à jour avec succès",
+    "minOrderError": "Échec de la mise à jour",
+    "minOrderInvalid": "Veuillez entrer un nombre positif valide"
   },
   "products": {
     "title": "Produits",
@@ -334,7 +338,9 @@
     "address": "Adresse",
     "memberSince": "Membre depuis",
     "ordersFor": "Commandes de {{name}}",
-    "noOrders": "Aucune commande trouvée pour ce client"
+    "noOrders": "Aucune commande trouvée pour ce client",
+    "position": "Position",
+    "viewOnMap": "Voir sur la carte"
   },
   "managers": {
     "title": "Gestionnaires",

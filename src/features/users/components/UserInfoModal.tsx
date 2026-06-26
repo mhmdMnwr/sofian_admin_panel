@@ -15,7 +15,7 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({ isOpen, user, onClose }) 
   if (!isOpen || !user) return null;
 
   const formatCurrency = (amount: number): string => {
-    return `${amount.toFixed(2)} DA`;
+    return `${Number(amount).toFixed(2)} DA`;
   };
 
   const getStatusText = (status: string): string => {

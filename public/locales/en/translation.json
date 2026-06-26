@@ -154,7 +154,11 @@
     "ordersCount": "Orders",
     "ordersLabel": "orders",
     "noData": "No data available",
-    "thanLastWeek": "than last week"
+    "thanLastWeek": "than last week",
+    "minOrderAmount": "Min. Order Amount",
+    "minOrderUpdated": "Updated successfully",
+    "minOrderError": "Failed to update",
+    "minOrderInvalid": "Please enter a valid positive number"
   },
   "products": {
     "title": "Products",
@@ -334,7 +338,9 @@
     "address": "Address",
     "memberSince": "Member Since",
     "ordersFor": "Orders for {{name}}",
-    "noOrders": "No orders found for this customer"
+    "noOrders": "No orders found for this customer",
+    "position": "Position",
+    "viewOnMap": "View on Map"
   },
   "managers": {
     "title": "Managers",

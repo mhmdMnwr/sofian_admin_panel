@@ -110,7 +110,8 @@ const ProductsPage: React.FC = () => {
         const response = await apiClient.get<ProductsResponse>('/products', { params });
 
         if (response.data.status === 'success') {
-          const fetchedProducts = response.data.data || [];
+          const rawData: any = response.data.data;
+          const fetchedProducts = Array.isArray(rawData) ? rawData : (rawData?.products || []);
           setProducts(fetchedProducts);
 
           const meta = response.data.meta;

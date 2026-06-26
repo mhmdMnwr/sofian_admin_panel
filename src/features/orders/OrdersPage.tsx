@@ -68,7 +68,8 @@ const OrdersPage: React.FC = () => {
         const response = await apiClient.get<OrdersResponse>('/orders', { params });
 
         if (response.data.status === 'success') {
-          const fetchedOrders = response.data.data || [];
+          const rawData: any = response.data.data;
+          const fetchedOrders = Array.isArray(rawData) ? rawData : (rawData?.orders || []);
           setOrders(fetchedOrders);
 
           const meta = response.data.meta;
@@ -76,7 +77,7 @@ const OrdersPage: React.FC = () => {
             setTotalOrders(meta.totalItems ?? fetchedOrders.length);
             setTotalPages(
               meta.totalPages ??
-                Math.ceil((meta.totalItems ?? fetchedOrders.length) / ITEMS_PER_PAGE)
+              Math.ceil((meta.totalItems ?? fetchedOrders.length) / ITEMS_PER_PAGE)
             );
             setCurrentPage(meta.page ?? page);
           } else {
@@ -157,17 +158,17 @@ const OrdersPage: React.FC = () => {
 
       // Check if items have changed (different count, quantities, prices, or products)
       const originalItems = editingOrder.items;
-      const itemsChanged = 
+      const itemsChanged =
         items.length !== originalItems.length ||
         items.some((item, index) => {
           const originalItem = originalItems[index];
           if (!originalItem) return true;
-          const originalProductId = typeof originalItem.productId === 'object' 
-            ? originalItem.productId._id 
+          const originalProductId = typeof originalItem.productId === 'object'
+            ? originalItem.productId._id
             : originalItem.productId;
           return (
             item.productId !== originalProductId ||
-            item.quantity !== originalItem.quantity || 
+            item.quantity !== originalItem.quantity ||
             item.price !== originalItem.price
           );
         });
@@ -197,7 +198,7 @@ const OrdersPage: React.FC = () => {
       console.error('Error updating order:', err);
       setEditError(
         (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
-          t('errors.unknownError', 'An error occurred')
+        t('errors.unknownError', 'An error occurred')
       );
     } finally {
       setIsSubmitting(false);
@@ -232,7 +233,7 @@ const OrdersPage: React.FC = () => {
       console.error('Error deleting order:', err);
       setDeleteError(
         (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
-          t('errors.unknownError', 'An error occurred')
+        t('errors.unknownError', 'An error occurred')
       );
     } finally {
       setIsDeleting(false);

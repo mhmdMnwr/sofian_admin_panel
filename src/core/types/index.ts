@@ -15,6 +15,8 @@ export interface User {
   totalSpent: number;
   address: string;
   phone: string;
+  latitude?: number;
+  longitude?: number;
   createdAt?: string;
   updatedAt?: string;
 }

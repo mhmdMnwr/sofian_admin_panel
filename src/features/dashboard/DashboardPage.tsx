@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MainLayout } from '../../components/layout';
 import { Pagination } from '../../components/common';
@@ -84,6 +84,69 @@ const DashboardPage: React.FC = () => {
   const [topClients, setTopClients] = useState<TopClient[]>([]);
   const [topClientsLoading, setTopClientsLoading] = useState(true);
   const [topClientsSortBy, setTopClientsSortBy] = useState<'orders' | 'revenue'>('orders');
+
+  // State for minimum order amount
+  const [minOrderAmount, setMinOrderAmount] = useState<number>(0);
+  const [minOrderLoading, setMinOrderLoading] = useState(true);
+  const [isEditingMinOrder, setIsEditingMinOrder] = useState(false);
+  const [editMinOrderValue, setEditMinOrderValue] = useState<string>('');
+  const [minOrderSaving, setMinOrderSaving] = useState(false);
+  const [minOrderFeedback, setMinOrderFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const minOrderInputRef = useRef<HTMLInputElement>(null);
+
+  // Fetch minimum order amount
+  const fetchMinOrderAmount = useCallback(async () => {
+    try {
+      setMinOrderLoading(true);
+      const response = await apiClient.get('/settings/getCurrentAmount');
+      if (response.data.status === 'success') {
+        setMinOrderAmount(response.data.data.minOrderAmount ?? 0);
+      }
+    } catch (err) {
+      console.error('Error fetching min order amount:', err);
+    } finally {
+      setMinOrderLoading(false);
+    }
+  }, []);
+
+  // Update minimum order amount
+  const handleSaveMinOrder = useCallback(async () => {
+    const newValue = parseFloat(editMinOrderValue);
+    if (isNaN(newValue) || newValue < 0) {
+      setMinOrderFeedback({ type: 'error', message: t('dashboard.minOrderInvalid', 'Please enter a valid positive number') });
+      return;
+    }
+    try {
+      setMinOrderSaving(true);
+      const response = await apiClient.patch('/settings/updateAmount', { minOrderAmount: newValue });
+      if (response.data.status === 'success') {
+        setMinOrderAmount(newValue);
+        setIsEditingMinOrder(false);
+        setMinOrderFeedback({ type: 'success', message: t('dashboard.minOrderUpdated', 'Updated successfully') });
+        setTimeout(() => setMinOrderFeedback(null), 3000);
+      }
+    } catch (err) {
+      console.error('Error updating min order amount:', err);
+      setMinOrderFeedback({ type: 'error', message: t('dashboard.minOrderError', 'Failed to update') });
+      setTimeout(() => setMinOrderFeedback(null), 3000);
+    } finally {
+      setMinOrderSaving(false);
+    }
+  }, [editMinOrderValue, t]);
+
+  // Start editing min order
+  const handleStartEditMinOrder = useCallback(() => {
+    setEditMinOrderValue(String(minOrderAmount));
+    setIsEditingMinOrder(true);
+    setMinOrderFeedback(null);
+    setTimeout(() => minOrderInputRef.current?.focus(), 50);
+  }, [minOrderAmount]);
+
+  // Cancel editing
+  const handleCancelEditMinOrder = useCallback(() => {
+    setIsEditingMinOrder(false);
+    setMinOrderFeedback(null);
+  }, []);
 
   // Fetch totals with growth
   const fetchTotals = useCallback(async () => {
@@ -172,6 +235,10 @@ const DashboardPage: React.FC = () => {
 
   // Initial fetch
   useEffect(() => {
+    fetchMinOrderAmount();
+  }, [fetchMinOrderAmount]);
+
+  useEffect(() => {
     fetchTotals();
   }, [fetchTotals]);
 
@@ -193,12 +260,12 @@ const DashboardPage: React.FC = () => {
 
   // Format number with commas
   const formatNumber = (num: number): string => {
-    return num.toLocaleString('en-US');
+    return Number(num).toLocaleString('en-US');
   };
 
   // Format currency
   const formatCurrency = (num: number): string => {
-    return `${formatNumber(num)} DA`;
+    return `${Number(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} DA`;
   };
 
   // Format date label based on interval
@@ -267,6 +334,81 @@ const DashboardPage: React.FC = () => {
             <p className="dashboard-subtitle">
               {t('dashboard.subtitle', "Welcome back! Here's what's happening with your store today.")}
             </p>
+          </div>
+          <div className="dashboard-header-right">
+            <div className="min-order-widget">
+              <div className="min-order-label">
+                <svg className="min-order-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg>
+                <span>{t('dashboard.minOrderAmount', 'Min. Order Amount')}</span>
+              </div>
+              <div className="min-order-control">
+                {minOrderLoading ? (
+                  <div className="min-order-skeleton"></div>
+                ) : isEditingMinOrder ? (
+                  <div className="min-order-edit">
+                    <input
+                      ref={minOrderInputRef}
+                      type="number"
+                      className="min-order-input"
+                      value={editMinOrderValue}
+                      onChange={(e) => setEditMinOrderValue(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') handleSaveMinOrder();
+                        if (e.key === 'Escape') handleCancelEditMinOrder();
+                      }}
+                      min="0"
+                      step="any"
+                      disabled={minOrderSaving}
+                    />
+                    <span className="min-order-currency">DA</span>
+                    <button
+                      className="min-order-btn min-order-btn--save"
+                      onClick={handleSaveMinOrder}
+                      disabled={minOrderSaving}
+                      title={t('common.save', 'Save')}
+                    >
+                      {minOrderSaving ? (
+                        <div className="min-order-btn-spinner"></div>
+                      ) : (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                          <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                      )}
+                    </button>
+                    <button
+                      className="min-order-btn min-order-btn--cancel"
+                      onClick={handleCancelEditMinOrder}
+                      disabled={minOrderSaving}
+                      title={t('common.cancel', 'Cancel')}
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <path d="M18 6L6 18M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                ) : (
+                  <div className="min-order-display" onClick={handleStartEditMinOrder}>
+                    <span className="min-order-value">{formatCurrency(minOrderAmount)}</span>
+                    <button
+                      className="min-order-btn min-order-btn--edit"
+                      title={t('common.edit', 'Edit')}
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+              </div>
+              {minOrderFeedback && (
+                <div className={`min-order-feedback min-order-feedback--${minOrderFeedback.type}`}>
+                  {minOrderFeedback.message}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 

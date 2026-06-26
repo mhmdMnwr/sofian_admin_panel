@@ -79,8 +79,8 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete 
         </thead>
         <tbody>
           {products.map((product, index) => (
-            <tr key={product._id} className={index % 2 === 0 ? 'row-even' : 'row-odd'}>
-              <td className="product-id">#{product._id.slice(-8)}</td>
+            <tr key={product._id || index} className={index % 2 === 0 ? 'row-even' : 'row-odd'}>
+              <td className="product-id">#{(product._id || '').slice(-8)}</td>
               <td className="product-name">{product.title}</td>
               <td className="product-image-cell">
                 {product.image ? (
@@ -105,7 +105,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete 
               <td className="product-units">{product.units ?? 0}</td>
               <td className="product-category">{getDisplayValue(product.category)}</td>
               <td className="product-brand">{getDisplayValue(product.brand)}</td>
-              <td className="product-price">{product.price.toFixed(2)} DA</td>
+              <td className="product-price">{Number(product.price).toFixed(2)} DA</td>
               <td>
                 <span className={`product-state ${getStateClass(product.state)}`}>
                   {getStateText(product.state)}

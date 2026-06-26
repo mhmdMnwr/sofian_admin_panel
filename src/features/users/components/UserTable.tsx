@@ -26,7 +26,7 @@ const UserTable: React.FC<UserTableProps> = ({
   };
 
   const formatCurrency = (amount: number): string => {
-    return `${amount.toFixed(2)} DA`;
+    return `${Number(amount).toFixed(2)} DA`;
   };
 
   return (
@@ -39,6 +39,7 @@ const UserTable: React.FC<UserTableProps> = ({
             <th className="th-separator">{t('users.orders', 'Orders')}</th>
             <th className="th-separator">{t('users.totalSpent', 'Total Spent')}</th>
             <th className="th-separator">{t('users.status', 'Status')}</th>
+            <th className="th-separator">{t('users.position', 'Position')}</th>
             <th className="th-separator">{t('users.actions', 'Actions')}</th>
           </tr>
         </thead>
@@ -63,6 +64,25 @@ const UserTable: React.FC<UserTableProps> = ({
                       getStatusText(user.status)
                     )}
                   </button>
+                </td>
+                <td className="user-position">
+                  {user.latitude && user.longitude ? (
+                    <a 
+                      href={`https://www.google.com/maps/search/?api=1&query=${user.latitude},${user.longitude}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="action-btn action-btn--info"
+                      title={t('users.viewOnMap', 'View on Map')}
+                      style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                      </svg>
+                    </a>
+                  ) : (
+                    <span style={{ color: '#888' }}>-</span>
+                  )}
                 </td>
                 <td className="user-actions">
                   {/* View Info Button */}
@@ -110,7 +130,7 @@ const UserTable: React.FC<UserTableProps> = ({
             ))
           ) : (
             <tr>
-              <td colSpan={6} className="users-table__empty">
+              <td colSpan={7} className="users-table__empty">
                 <p>{t('users.noUsers', 'No customers found')}</p>
               </td>
             </tr>

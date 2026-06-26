@@ -62,7 +62,8 @@ const BrandsPage: React.FC = () => {
       const response = await apiClient.get<BrandsResponse>('/brands', { params });
       
       if (response.data.status === 'success') {
-        const fetchedBrands = response.data.data || [];
+        const rawData: any = response.data.data;
+        const fetchedBrands = Array.isArray(rawData) ? rawData : (rawData?.brands || []);
         setBrands(fetchedBrands);
         setTotalBrands(response.data.meta?.totalItems || fetchedBrands.length);
         setTotalPages(response.data.meta?.totalPages || 1);
@@ -369,8 +370,8 @@ const BrandsPage: React.FC = () => {
                   <tbody>
                     {brands.length > 0 ? (
                       brands.map((brand, index) => (
-                        <tr key={brand._id} className={index % 2 === 0 ? 'row-even' : 'row-odd'}>
-                          <td className="brand-id" style={{width: '25%'}}>#{brand._id.slice(-8)}</td>
+                        <tr key={brand._id || index} className={index % 2 === 0 ? 'row-even' : 'row-odd'}>
+                          <td className="brand-id" style={{width: '25%'}}>#{(brand._id || '').slice(-8)}</td>
                           <td className="brand-title" style={{width: '25%'}}>{brand.title}</td>
                           <td className="brand-image-cell" style={{width: '25%'}}>
                             {brand.image ? (
@@ -401,7 +402,7 @@ const BrandsPage: React.FC = () => {
                             </button>
                             <button
                               className="action-btn action-btn--delete"
-                              onClick={() => handleDeleteBrand(brand._id)}
+                              onClick={() => brand._id && handleDeleteBrand(brand._id)}
                               title={t('common.delete', 'Delete')}
                             >
                               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

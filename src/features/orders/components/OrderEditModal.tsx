@@ -163,7 +163,7 @@ const orderItemsToEditable = (items: OrderItem[], productCache: ProductCache = {
       units: item.units || productUnits,
       price: item.price,
       quantityInput: formatQuantityInput(item.quantity, productUnits),
-      priceInput: item.price.toFixed(2),
+      priceInput: Number(item.price).toFixed(2),
     };
   });
 };
@@ -282,7 +282,7 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
 
   // Calculate total
   const calculateTotal = useCallback((): number => {
-    return editableItems.reduce((sum, item) => sum + (item.quantity * item.price), 0);
+    return editableItems.reduce((sum, item) => sum + (Number(item.quantity) * Number(item.price)), 0);
   }, [editableItems]);
 
   // Handle clicking on quantity text to start editing
@@ -372,7 +372,7 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
       const parsedPrice = parseFloat(item.priceInput);
       
       if (isNaN(parsedPrice) || parsedPrice < 0) {
-        updated[index] = { ...item, priceInput: item.price.toFixed(2) };
+        updated[index] = { ...item, priceInput: Number(item.price).toFixed(2) };
         return updated;
       }
       
@@ -430,7 +430,7 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
         units: product.units || 1,
         price: product.price,
         quantityInput: '1',
-        priceInput: product.price.toFixed(2),
+        priceInput: Number(product.price).toFixed(2),
         isNew: true,
       };
       setEditableItems((prev) => [...prev, newItem]);
@@ -607,7 +607,7 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
                       >
                         <span className="product-search-name">{product.title}</span>
                         <span className="product-search-info">
-                          {product.units} {t('orders.unitsPerPack', 'units/pack')} • {product.price.toFixed(2)} DA
+                          {product.units} {t('orders.unitsPerPack', 'units/pack')} • {Number(product.price).toFixed(2)} DA
                         </span>
                       </div>
                     ))
@@ -639,7 +639,7 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
                     </thead>
                     <tbody>
                       {editableItems.map((item, index) => {
-                        const subtotal = item.quantity * item.price;
+                        const subtotal = Number(item.quantity) * Number(item.price);
                         const hasError = !!itemErrors[index];
                         const isEditingThis = editingQuantityIndex === index;
                         
@@ -682,7 +682,7 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
                                 <span className="price-currency">DA</span>
                               </div>
                             </td>
-                            <td className="item-subtotal">{subtotal.toFixed(2)} DA</td>
+                            <td className="item-subtotal">{Number(subtotal).toFixed(2)} DA</td>
                             <td className="item-actions">
                               <button 
                                 type="button" 
@@ -707,7 +707,7 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
               {/* Total Row */}
               <div className="order-total-row">
                 <span className="order-total-label">{t('orders.total', 'Total')}:</span>
-                <span className="order-total-value">{totalAmount.toFixed(2)} DA</span>
+                <span className="order-total-value">{Number(totalAmount).toFixed(2)} DA</span>
               </div>
             </div>
           </div>

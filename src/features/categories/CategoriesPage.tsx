@@ -62,7 +62,8 @@ const CategoriesPage: React.FC = () => {
       const response = await apiClient.get<CategoriesResponse>('/categories', { params });
       
       if (response.data.status === 'success') {
-        const fetchedCategories = response.data.data || [];
+        const rawData: any = response.data.data;
+        const fetchedCategories = Array.isArray(rawData) ? rawData : (rawData?.categories || []);
         setCategories(fetchedCategories);
         setTotalCategories(response.data.meta?.totalItems || fetchedCategories.length);
         setTotalPages(response.data.meta?.totalPages || 1);
@@ -369,8 +370,8 @@ const CategoriesPage: React.FC = () => {
                   <tbody>
                     {categories.length > 0 ? (
                       categories.map((category, index) => (
-                        <tr key={category._id} className={index % 2 === 0 ? 'row-even' : 'row-odd'}>
-                          <td className="category-id" style={{width: '25%'}}>#{category._id.slice(-8)}</td>
+                        <tr key={category._id || index} className={index % 2 === 0 ? 'row-even' : 'row-odd'}>
+                          <td className="category-id" style={{width: '25%'}}>#{(category._id || '').slice(-8)}</td>
                           <td className="category-title" style={{width: '25%'}}>{category.title}</td>
                           <td className="category-image-cell" style={{width: '25%'}}>
                             {category.image ? (
@@ -403,7 +404,7 @@ const CategoriesPage: React.FC = () => {
                             </button>
                             <button
                               className="action-btn action-btn--delete"
-                              onClick={() => handleDeleteCategory(category._id)}
+                              onClick={() => category._id && handleDeleteCategory(category._id)}
                               title={t('common.delete', 'Delete')}
                             >
                               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

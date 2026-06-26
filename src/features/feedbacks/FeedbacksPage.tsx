@@ -35,7 +35,7 @@ const FeedbacksPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [totalFeedbacks, setTotalFeedbacks] = useState(0);
-  
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -45,14 +45,15 @@ const FeedbacksPage: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const params: Record<string, string | number> = {
         page,
         limit: itemsPerPage,
+        sort: '-createdAt',
       };
-      
+
       const response = await apiClient.get<FeedbacksResponse>('/feedbacks', { params });
-      
+
       if (response.data.status === 'success') {
         const fetchedFeedbacks = response.data.data || [];
         setFeedbacks(fetchedFeedbacks);

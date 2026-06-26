@@ -216,7 +216,7 @@ const OrderViewModal: React.FC<OrderViewModalProps> = ({ isOpen, order, onClose 
                   <div className="info-row">
                     <span className="info-label">{t('orders.totalPrice', 'Total Price')}</span>
                     <span className="info-value info-value--price">
-                      {(order.totalAmount ?? 0).toFixed(2)} DA
+                      {Number(order.totalAmount ?? 0).toFixed(2)} DA
                     </span>
                   </div>
                   {order.comment && (
@@ -250,7 +250,7 @@ const OrderViewModal: React.FC<OrderViewModalProps> = ({ isOpen, order, onClose 
                   <tbody>
                     {order.items.map((item, index) => {
                       const { title, productUnits } = getProductInfo(item, productCache);
-                      const subtotal = item.quantity * item.price;
+                      const subtotal = Number(item.quantity) * Number(item.price);
                       
                       return (
                         <tr key={index}>
@@ -258,8 +258,8 @@ const OrderViewModal: React.FC<OrderViewModalProps> = ({ isOpen, order, onClose 
                           <td className="item-quantity">
                             {formatQuantityFull(item.quantity, productUnits)}
                           </td>
-                          <td className="item-price">{item.price.toFixed(2)} DA</td>
-                          <td className="item-subtotal">{subtotal.toFixed(2)} DA</td>
+                          <td className="item-price">{Number(item.price).toFixed(2)} DA</td>
+                          <td className="item-subtotal">{Number(subtotal).toFixed(2)} DA</td>
                         </tr>
                       );
                     })}

@@ -59,10 +59,10 @@ const OrderTable: React.FC<OrderTableProps> = ({ orders, onView, onEdit }) => {
         <tbody>
           {orders.length > 0 ? (
             orders.map((order, index) => (
-              <tr key={order._id} className={index % 2 === 0 ? 'row-even' : 'row-odd'}>
-                <td className="order-id">#{order._id.slice(-8)}</td>
+              <tr key={order._id || index} className={index % 2 === 0 ? 'row-even' : 'row-odd'}>
+                <td className="order-id">#{(order._id || '').slice(-8)}</td>
                 <td className="order-username">{getUsername(order)}</td>
-                <td className="order-total">{(order.totalAmount ?? 0).toFixed(2)} DA</td>
+                <td className="order-total">{Number(order.totalAmount ?? 0).toFixed(2)} DA</td>
                 <td>
                   <span className={`order-status ${getStatusClass(order.status)}`}>
                     {getStatusText(order.status)}

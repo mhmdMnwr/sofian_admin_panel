@@ -154,7 +154,11 @@
     "ordersCount": "الطلبات",
     "ordersLabel": "طلب",
     "noData": "لا توجد بيانات متاحة",
-    "thanLastWeek": "من الأسبوع الماضي"
+    "thanLastWeek": "من الأسبوع الماضي",
+    "minOrderAmount": "الحد الأدنى للطلب",
+    "minOrderUpdated": "تم التحديث بنجاح",
+    "minOrderError": "فشل التحديث",
+    "minOrderInvalid": "يرجى إدخال رقم صحيح موجب"
   },
   "products": {
     "title": "المنتجات",
@@ -334,7 +338,9 @@
     "address": "العنوان",
     "memberSince": "عضو منذ",
     "ordersFor": "طلبات {{name}}",
-    "noOrders": "لم يتم العثور على طلبات لهذا العميل"
+    "noOrders": "لم يتم العثور على طلبات لهذا العميل",
+    "position": "الموقع",
+    "viewOnMap": "عرض على الخريطة"
   },
   "managers": {
     "title": "المديرون",
