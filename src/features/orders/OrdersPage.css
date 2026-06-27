@@ -424,6 +424,16 @@
   color: #fff;
 }
 
+.action-btn--print {
+  background-color: var(--orders-header-bg);
+  color: var(--orders-text-secondary);
+}
+
+.action-btn--print:hover {
+  background-color: var(--orders-text-secondary);
+  color: #fff;
+}
+
 .action-btn--delete {
   background-color: var(--orders-danger-bg);
   color: var(--orders-danger-text);

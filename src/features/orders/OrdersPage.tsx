@@ -5,6 +5,7 @@ import { Pagination, ConfirmModal } from '../../components/common';
 import { OrderFilters, OrderTable, OrderViewModal, OrderEditModal, EditableOrderItem } from './components';
 import apiClient from '../../core/api/apiClient';
 import { Order, OrdersResponse, OrderStatus } from '../../core/types';
+import { printOrder } from './utils/printOrder';
 import './OrdersPage.css';
 
 // Constants
@@ -125,6 +126,11 @@ const OrdersPage: React.FC = () => {
   const closeViewModal = () => {
     setIsViewModalOpen(false);
     setViewingOrder(null);
+  };
+
+  // Print handler
+  const handlePrintOrder = (order: Order) => {
+    printOrder(order);
   };
 
   // Edit modal handlers
@@ -321,6 +327,7 @@ const OrdersPage: React.FC = () => {
                 orders={orders}
                 onView={handleViewOrder}
                 onEdit={handleEditOrder}
+                onPrint={handlePrintOrder}
               />
 
               <div className="orders-page__footer">

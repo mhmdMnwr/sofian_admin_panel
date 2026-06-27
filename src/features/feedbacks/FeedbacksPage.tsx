@@ -71,7 +71,7 @@ const FeedbacksPage: React.FC = () => {
 
   useEffect(() => {
     fetchFeedbacks(1);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handlePageChange = (page: number) => {
