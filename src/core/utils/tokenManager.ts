@@ -119,9 +119,10 @@ const refreshAccessToken = async (): Promise<string | null> => {
         { refreshToken: tokenData.refreshToken }
       );
       
-      const { accessToken, refreshToken } = response.data.data;
+      const accessToken = response.data.data.accessToken;
+      const newRefreshToken = response.data.data.refreshToken || tokenData.refreshToken;
       
-      saveTokens(accessToken, refreshToken);
+      saveTokens(accessToken, newRefreshToken);
       
       return accessToken;
     } catch (error) {
