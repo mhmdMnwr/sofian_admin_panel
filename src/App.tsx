@@ -57,7 +57,7 @@ const AppRoutes: React.FC = () => (
     <Route path="/information" element={<AdminRoute><InformationPage /></AdminRoute>} />
     
     <Route path="*" element={<Navigate to="/" replace />} />
-    <Route path="/" element={<PublicRoute><div/></PublicRoute>} />
+    <Route path="/" element={<Navigate to="/login" replace />} />
   </Routes>
 );
 
