@@ -1,4 +1,4 @@
-import { Order, OrderItem, CustomerInfo, Product } from '../../../core/types';
+import { Order, CustomerInfo, Product } from '../../../core/types';
 import { formatDate } from '../../../core/utils/helpers';
 import apiClient from '../../../core/api/apiClient';
 
