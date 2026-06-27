@@ -116,7 +116,19 @@
     "orders": "Commandes",
     "clients": "Clients",
     "managers": "Gestionnaires",
-    "feedbacks": "Commentaires"
+    "feedbacks": "Commentaires",
+    "information": "Informations"
+  },
+  "information": {
+    "title": "Informations sur la Boutique",
+    "subtitle": "Mettez à jour les coordonnées et l'emplacement de la boutique.",
+    "phone": "Numéro de téléphone de la boutique",
+    "latitude": "Latitude de la carte",
+    "longitude": "Longitude de la carte",
+    "location": "Emplacement sur la carte (Cliquez pour placer le marqueur)",
+    "loadError": "Échec du chargement des informations.",
+    "saveSuccess": "Les informations de la boutique ont été mises à jour !",
+    "saveError": "Une erreur est survenue lors de l'enregistrement."
   },
   "dashboard": {
     "title": "Tableau de bord",
@@ -258,7 +270,10 @@
     "totalPrice": "Prix total",
     "status": "Statut",
     "date": "Date",
+    "edited": "Modifié :",
     "actions": "Actions",
+    "restoreOrder": "Restaurer la commande",
+    "restoreConfirmation": "Cette commande est actuellement annulée. Êtes-vous sûr de vouloir modifier son statut ?",
     "noOrders": "Aucune commande trouvée",
     "items": "articles",
     "searchByUsername": "Rechercher par nom d'utilisateur...",

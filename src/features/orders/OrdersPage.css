@@ -339,6 +339,17 @@
   font-weight: 500;
 }
 
+.order-date-primary {
+  color: var(--orders-text-secondary);
+}
+
+.order-date-secondary {
+  font-size: 12px;
+  color: var(--orders-text-muted);
+  font-style: italic;
+  margin-top: 4px;
+}
+
 /* ===== Status Badges ===== */
 .order-status {
   display: inline-flex;

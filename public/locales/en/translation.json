@@ -116,7 +116,19 @@
     "orders": "Orders",
     "clients": "Clients",
     "managers": "Managers",
-    "feedbacks": "Feedbacks"
+    "feedbacks": "Feedbacks",
+    "information": "Information"
+  },
+  "information": {
+    "title": "Shop Information",
+    "subtitle": "Update the shop public contact and location details.",
+    "phone": "Shop Phone Number",
+    "latitude": "Map Latitude",
+    "longitude": "Map Longitude",
+    "location": "Map Location (Click to set marker)",
+    "loadError": "Failed to load shop information.",
+    "saveSuccess": "Shop information updated successfully!",
+    "saveError": "An error occurred while saving."
   },
   "dashboard": {
     "title": "Dashboard Overview",
@@ -258,7 +270,10 @@
     "totalPrice": "Total Price",
     "status": "Status",
     "date": "Date",
+    "edited": "Edited:",
     "actions": "Actions",
+    "restoreOrder": "Restore Order",
+    "restoreConfirmation": "This order is currently cancelled. Are you sure you want to change its status?",
     "noOrders": "No orders found",
     "items": "items",
     "searchByUsername": "Search by username...",

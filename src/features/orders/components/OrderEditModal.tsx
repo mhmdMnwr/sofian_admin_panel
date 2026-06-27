@@ -177,7 +177,6 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
   onSubmit,
 }) => {
   const { t } = useTranslation();
-  
   const [editStatus, setEditStatus] = useState<OrderStatus>('Pending');
   const [editableItems, setEditableItems] = useState<EditableOrderItem[]>([]);
   const [itemErrors, setItemErrors] = useState<Record<number, string>>({});

@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../../core/hooks/reduxHooks';
+import { selectCurrentUser } from '../../../core/store/slices/authSlice';
 import './Sidebar.css';
 
 // Import assets
@@ -13,22 +15,25 @@ import ordersIcon from '../../../assets/icons/orders.svg';
 import clientsIcon from '../../../assets/icons/clients.svg';
 import managersIcon from '../../../assets/icons/managers.svg';
 import feedbacksIcon from '../../../assets/icons/feedbacks.svg';
+import informationIcon from '../../../assets/icons/information.svg';
 
 interface NavItem {
   path: string;
   labelKey: string;
   icon: string;
+  adminOnly?: boolean;
 }
 
 const navItems: NavItem[] = [
-  { path: '/dashboard', labelKey: 'sidebar.dashboard', icon: dashboardIcon },
+  { path: '/dashboard', labelKey: 'sidebar.dashboard', icon: dashboardIcon, adminOnly: true },
   { path: '/categories', labelKey: 'sidebar.categories', icon: categoriesIcon },
   { path: '/products', labelKey: 'sidebar.products', icon: productsIcon },
   { path: '/brands', labelKey: 'sidebar.brands', icon: brandsIcon },
   { path: '/orders', labelKey: 'sidebar.orders', icon: ordersIcon },
   { path: '/clients', labelKey: 'sidebar.clients', icon: clientsIcon },
-  { path: '/managers', labelKey: 'sidebar.managers', icon: managersIcon },
-  { path: '/feedbacks', labelKey: 'sidebar.feedbacks', icon: feedbacksIcon },
+  { path: '/managers', labelKey: 'sidebar.managers', icon: managersIcon, adminOnly: true },
+  { path: '/feedbacks', labelKey: 'sidebar.feedbacks', icon: feedbacksIcon, adminOnly: true },
+  { path: '/information', labelKey: 'sidebar.information', icon: informationIcon, adminOnly: true },
 ];
 
 interface SidebarProps {
@@ -44,6 +49,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   onMobileClose 
 }) => {
   const { t } = useTranslation();
+  const user = useAppSelector(selectCurrentUser);
+  const isAdmin = user?.role === 'admin' || user?.role === 'super_admin';
 
   const handleNavClick = () => {
     // Close mobile drawer when navigating
@@ -68,7 +75,9 @@ const Sidebar: React.FC<SidebarProps> = ({
         {/* Navigation */}
         <nav className="sidebar__nav">
           <ul className="sidebar__nav-list">
-            {navItems.map((item) => (
+            {navItems
+              .filter((item) => !item.adminOnly || isAdmin)
+              .map((item) => (
               <li key={item.path} className="sidebar__nav-item">
                 <NavLink
                   to={item.path}

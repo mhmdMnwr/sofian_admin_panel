@@ -68,7 +68,14 @@ const OrderTable: React.FC<OrderTableProps> = ({ orders, onView, onEdit }) => {
                     {getStatusText(order.status)}
                   </span>
                 </td>
-                <td className="order-date">{formatDate(order.createdAt)}</td>
+                <td className="order-date">
+                  <div className="order-date-primary">{formatDate(order.createdAt)}</div>
+                  {order.updatedAt && order.updatedAt !== order.createdAt && (
+                    <div className="order-date-secondary">
+                      {t('orders.edited', 'Edited:')} {formatDate(order.updatedAt)}
+                    </div>
+                  )}
+                </td>
                 <td className="order-actions">
                   <button
                     className="action-btn action-btn--view"

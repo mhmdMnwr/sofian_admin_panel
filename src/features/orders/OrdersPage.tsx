@@ -41,6 +41,10 @@ const OrdersPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editError, setEditError] = useState<string | null>(null);
 
+  // Restore confirm state
+  const [isRestoreConfirmOpen, setIsRestoreConfirmOpen] = useState(false);
+  const [pendingUpdateData, setPendingUpdateData] = useState<{ status: OrderStatus, items: EditableOrderItem[] } | null>(null);
+
   // Delete modal state
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deletingOrderId, setDeletingOrderId] = useState<string | null>(null);
@@ -136,7 +140,7 @@ const OrdersPage: React.FC = () => {
     setEditError(null);
   };
 
-  const handleUpdateOrder = async (status: OrderStatus, items: EditableOrderItem[]) => {
+  const handleUpdateOrder = async (status: OrderStatus, items: EditableOrderItem[], confirmRestore: boolean = false) => {
     if (!editingOrder) return;
 
     setIsSubmitting(true);
@@ -147,6 +151,7 @@ const OrdersPage: React.FC = () => {
       if (status !== editingOrder.status) {
         const statusResponse = await apiClient.patch(`/orders/updateStatus/${editingOrder._id}`, {
           status,
+          confirmRestore
         });
 
         if (statusResponse.data.status !== 'success') {
@@ -194,10 +199,19 @@ const OrdersPage: React.FC = () => {
 
       closeEditModal();
       fetchOrders(currentPage);
-    } catch (err: unknown) {
+    } catch (err: any) {
       console.error('Error updating order:', err);
+
+      const errResponse = err.response?.data;
+      if (errResponse?.status === 'CONFIRM_RESTORE') {
+        setIsSubmitting(false);
+        setPendingUpdateData({ status, items });
+        setIsRestoreConfirmOpen(true);
+        return;
+      }
+
       setEditError(
-        (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
+        errResponse?.message ||
         t('errors.unknownError', 'An error occurred')
       );
     } finally {
@@ -205,7 +219,20 @@ const OrdersPage: React.FC = () => {
     }
   };
 
+  const handleConfirmRestore = () => {
+    setIsRestoreConfirmOpen(false);
+    if (pendingUpdateData) {
+      handleUpdateOrder(pendingUpdateData.status, pendingUpdateData.items, true);
+    }
+  };
+
+  const cancelRestore = () => {
+    setIsRestoreConfirmOpen(false);
+    setPendingUpdateData(null);
+  };
+
   // Delete modal handlers
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleDeleteOrder = (orderId: string) => {
     setDeletingOrderId(orderId);
     setDeleteError(null);
@@ -341,6 +368,21 @@ const OrdersPage: React.FC = () => {
         loadingText={t('common.deleting', 'Deleting...')}
         error={deleteError}
         variant="danger"
+      />
+
+      {/* Restore Confirmation Modal */}
+      <ConfirmModal
+        isOpen={isRestoreConfirmOpen}
+        onClose={cancelRestore}
+        onConfirm={handleConfirmRestore}
+        title={t('orders.restoreOrder', 'Restore Order')}
+        message={t(
+          'orders.restoreConfirmation',
+          'This order is currently cancelled. Are you sure you want to change its status?'
+        )}
+        confirmText={t('common.confirm', 'Confirm')}
+        cancelText={t('common.cancel', 'Cancel')}
+        variant="warning"
       />
     </MainLayout>
   );
