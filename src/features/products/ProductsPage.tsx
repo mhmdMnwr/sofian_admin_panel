@@ -5,7 +5,7 @@ import { Pagination, ConfirmModal } from '../../components/common';
 import { ProductFilters, ProductTable, ProductFormModal, ProductFormData } from './components';
 import apiClient from '../../core/api/apiClient';
 import { Product, ProductsResponse } from '../../core/types';
-import { uploadToCloudinary, getOptimizedImageUrl, deleteFromCloudinary } from '../../core/services/cloudinaryService';
+import { uploadToCloudinary, deleteFromCloudinary } from '../../core/services/cloudinaryService';
 import './ProductsPage.css';
 
 // Types

@@ -79,6 +79,7 @@ const CategoriesPage: React.FC = () => {
 
   useEffect(() => {
     fetchCategories(1);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSearch = () => {

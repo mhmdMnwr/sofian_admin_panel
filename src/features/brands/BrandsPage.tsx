@@ -79,6 +79,7 @@ const BrandsPage: React.FC = () => {
 
   useEffect(() => {
     fetchBrands(1);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSearch = () => {

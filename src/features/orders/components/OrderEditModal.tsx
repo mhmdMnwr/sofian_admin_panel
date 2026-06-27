@@ -241,6 +241,7 @@ const OrderEditModal: React.FC<OrderEditModalProps> = ({
     };
     
     fetchMissingProducts();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, order]);
 
   // Initialize state when order changes

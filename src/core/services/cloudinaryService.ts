@@ -184,7 +184,10 @@ export const getOptimizedImageUrl = (
   return `${beforeUpload}${transformString}/${afterUpload}`;
 };
 
-export default {
+const cloudinaryService = {
   uploadToCloudinary,
   getOptimizedImageUrl,
+  deleteFromCloudinary,
 };
+
+export default cloudinaryService;
