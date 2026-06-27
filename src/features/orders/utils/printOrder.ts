@@ -20,20 +20,6 @@ const getCustomerInfo = (order: Order): CustomerInfo => {
   };
 };
 
-const getProductInfo = (item: OrderItem): { title: string, units: number } => {
-  if (item.productId && typeof item.productId === 'object') {
-    const product = item.productId as { title?: string, units?: number };
-    return {
-      title: product.title || '-',
-      units: product.units || item.units || 1
-    };
-  }
-  return {
-    title: String(item.productId),
-    units: item.units || 1
-  };
-};
-
 const formatQuantityFull = (quantity: number, units: number): string => {
   if (units <= 1) return String(quantity);
 
