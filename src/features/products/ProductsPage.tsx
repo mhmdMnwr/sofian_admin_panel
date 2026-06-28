@@ -6,6 +6,7 @@ import { ProductFilters, ProductTable, ProductFormModal, ProductFormData } from 
 import apiClient from '../../core/api/apiClient';
 import { Product, ProductsResponse } from '../../core/types';
 import { uploadToCloudinary, deleteFromCloudinary } from '../../core/services/cloudinaryService';
+import { getLocalizedTranslation } from '../../core/utils/helpers';
 import './ProductsPage.css';
 
 // Types
@@ -28,7 +29,7 @@ const INITIAL_FORM_STATE: ProductFormData = {
 };
 
 const ProductsPage: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   // Data state
   const [products, setProducts] = useState<Product[]>([]);
@@ -76,7 +77,11 @@ const ProductsPage: React.FC = () => {
         ]);
 
         if (categoriesRes.data.status === 'success') {
-          setCategories(categoriesRes.data.data.categories || categoriesRes.data.data || []);
+          const fetchedCategories = categoriesRes.data.data.categories || categoriesRes.data.data || [];
+          setCategories(fetchedCategories.map((c: any) => ({
+            _id: c._id,
+            title: c.translation ? getLocalizedTranslation(c.translation, i18n.language, '') : (c.title || '')
+          })));
         }
         if (brandsRes.data.status === 'success') {
           setBrands(brandsRes.data.data.brands || brandsRes.data.data || []);
@@ -87,7 +92,7 @@ const ProductsPage: React.FC = () => {
     };
 
     fetchFilters();
-  }, []);
+  }, [i18n.language]);
 
   // Fetch products
   const fetchProducts = useCallback(

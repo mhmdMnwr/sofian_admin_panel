@@ -4,20 +4,25 @@ import { MainLayout } from '../../components/layout';
 import apiClient from '../../core/api/apiClient';
 import { Category, CategoriesResponse } from '../../core/types';
 import { uploadToCloudinary, getOptimizedImageUrl, deleteFromCloudinary } from '../../core/services/cloudinaryService';
+import { getLocalizedTranslation } from '../../core/utils/helpers';
 import './CategoriesPage.css';
 
 interface CategoryForm {
-  title: string;
+  translation: {
+    en: string;
+    fr: string;
+    ar: string;
+  };
   image: File | null;
 }
 
 const initialFormState: CategoryForm = {
-  title: '',
+  translation: { en: '', fr: '', ar: '' },
   image: null,
 };
 
 const CategoriesPage: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -36,10 +41,11 @@ const CategoriesPage: React.FC = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
   const [formData, setFormData] = useState<CategoryForm>(initialFormState);
-  const [formErrors, setFormErrors] = useState<Partial<Record<keyof CategoryForm, string>>>({});
+  const [formErrors, setFormErrors] = useState<any>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isTranslating, setIsTranslating] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Delete confirmation state
@@ -115,7 +121,11 @@ const CategoriesPage: React.FC = () => {
     setIsEditMode(true);
     setEditingCategoryId(category._id);
     setFormData({
-      title: category.title,
+      translation: {
+        en: category.translation?.en || '',
+        fr: category.translation?.fr || '',
+        ar: category.translation?.ar || '',
+      },
       image: null,
     });
     setImagePreview(category.image || null);
@@ -174,27 +184,63 @@ const CategoriesPage: React.FC = () => {
     setDeleteError(null);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTranslationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    if (formErrors[name as keyof CategoryForm]) {
-      setFormErrors(prev => ({ ...prev, [name]: undefined }));
+    setFormData(prev => ({ 
+      ...prev, 
+      translation: { ...prev.translation, [name]: value } 
+    }));
+    if (formErrors.translation || formErrors[name]) {
+      setFormErrors((prev: any) => ({ ...prev, [name]: undefined, translation: undefined }));
+    }
+  };
+
+  const handleTranslate = async (targetLang: keyof typeof formData.translation) => {
+    const sourceLang = ['en', 'fr', 'ar'].find(l => 
+      l !== targetLang && formData.translation[l as keyof typeof formData.translation].trim() !== ''
+    ) as keyof typeof formData.translation | undefined;
+
+    if (!sourceLang) return;
+
+    const word = formData.translation[sourceLang];
+    
+    setIsTranslating(targetLang);
+    try {
+      const response = await apiClient.post('/categories/translate', {
+        word,
+        currentLang: sourceLang,
+        targetLang
+      });
+
+      if (response.data.status === 'success' && response.data.data.translation) {
+        setFormData(prev => ({
+          ...prev,
+          translation: {
+            ...prev.translation,
+            [targetLang]: response.data.data.translation
+          }
+        }));
+      }
+    } catch (err) {
+      console.error('Translation error:', err);
+    } finally {
+      setIsTranslating(null);
     }
   };
 
   const handleImageChange = (file: File | null) => {
     if (file) {
       if (!file.type.startsWith('image/')) {
-        setFormErrors(prev => ({ ...prev, image: t('categories.invalidImageType', 'Please select a valid image file') }));
+        setFormErrors((prev: any) => ({ ...prev, image: t('categories.invalidImageType', 'Please select a valid image file') }));
         return;
       }
       if (file.size > 2 * 1024 * 1024) {
-        setFormErrors(prev => ({ ...prev, image: t('categories.imageTooLarge', 'Image must be less than 2MB') }));
+        setFormErrors((prev: any) => ({ ...prev, image: t('categories.imageTooLarge', 'Image must be less than 2MB') }));
         return;
       }
       
       setFormData(prev => ({ ...prev, image: file }));
-      setFormErrors(prev => ({ ...prev, image: undefined }));
+      setFormErrors((prev: any) => ({ ...prev, image: undefined }));
       
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -235,10 +281,10 @@ const CategoriesPage: React.FC = () => {
   };
 
   const validateForm = (): boolean => {
-    const errors: Partial<Record<keyof CategoryForm, string>> = {};
+    const errors: any = {};
     
-    if (!formData.title.trim()) {
-      errors.title = t('categories.titleRequired', 'Category title is required');
+    if (!formData.translation.en.trim() && !formData.translation.fr.trim() && !formData.translation.ar.trim()) {
+      errors.translation = t('categories.titleRequired', 'At least one category title is required');
     }
     
     setFormErrors(errors);
@@ -258,8 +304,8 @@ const CategoriesPage: React.FC = () => {
       const method = isEdit ? 'patch' : 'post';
       
       // Prepare submit data
-      const submitData: { title: string; image?: string } = {
-        title: formData.title.trim(),
+      const submitData: { translation: any; image?: string } = {
+        translation: formData.translation,
       };
       
       // Upload image to Cloudinary if a new image is selected
@@ -272,7 +318,7 @@ const CategoriesPage: React.FC = () => {
         const uploadResult = await uploadToCloudinary(formData.image, 'categories');
         
         if (!uploadResult.success) {
-          setFormErrors(prev => ({
+          setFormErrors((prev: any) => ({
             ...prev,
             image: uploadResult.error || t('errors.imageUploadFailed', 'Failed to upload image'),
           }));
@@ -291,9 +337,9 @@ const CategoriesPage: React.FC = () => {
       }
     } catch (err: any) {
       console.error('Error saving category:', err);
-      setFormErrors(prev => ({ 
+      setFormErrors((prev: any) => ({ 
         ...prev, 
-        title: err.response?.data?.message || t('errors.unknownError', 'An error occurred') 
+        translation: err.response?.data?.message || t('errors.unknownError', 'An error occurred') 
       }));
     } finally {
       setIsSubmitting(false);
@@ -373,12 +419,14 @@ const CategoriesPage: React.FC = () => {
                       categories.map((category, index) => (
                         <tr key={category._id || index} className={index % 2 === 0 ? 'row-even' : 'row-odd'}>
                           <td className="category-id" style={{width: '25%'}}>#{(category._id || '').slice(-8)}</td>
-                          <td className="category-title" style={{width: '25%'}}>{category.title}</td>
+                          <td className="category-title" style={{width: '25%'}}>
+                            {getLocalizedTranslation(category.translation, i18n.language)}
+                          </td>
                           <td className="category-image-cell" style={{width: '25%'}}>
                             {category.image ? (
                               <img 
                                 src={getOptimizedImageUrl(category.image, { width: 96, height: 96, crop: 'fill' })} 
-                                alt={category.title} 
+                                alt={getLocalizedTranslation(category.translation, i18n.language)} 
                                 className="category-image"
                               />
                             ) : (
@@ -505,21 +553,52 @@ const CategoriesPage: React.FC = () => {
             </div>
             
             <form onSubmit={handleSubmit} className="modal-form">
-              {/* Name Field */}
+              {/* Name Fields */}
               <div className="form-group">
-                <label htmlFor="title">
-                  {t('categories.title', 'Title')} <span className="required">*</span>
+                <label>
+                  {t('categories.titles', 'Category Titles')} <span className="required">*</span>
                 </label>
-                <input
-                  type="text"
-                  id="title"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleInputChange}
-                  placeholder={t('categories.enterTitle', 'Enter category title')}
-                  className={formErrors.title ? 'error' : ''}
-                />
-                {formErrors.title && <span className="error-message">{formErrors.title}</span>}
+                <div className="translation-fields">
+                  {['en', 'fr', 'ar'].map((lang) => (
+                    <div key={lang} className="translation-input-row">
+                      <div className="translation-input-wrapper">
+                        <span className="lang-badge">{lang.toUpperCase()}</span>
+                        <input
+                          type="text"
+                          name={lang}
+                          value={formData.translation[lang as keyof typeof formData.translation]}
+                          onChange={handleTranslationChange}
+                          placeholder={t(`categories.enterTitle_${lang}`, `Enter title in ${lang.toUpperCase()}`)}
+                          className={formErrors[lang] ? 'error' : ''}
+                        />
+                      </div>
+                      {!formData.translation[lang as keyof typeof formData.translation] && 
+                        (formData.translation.en || formData.translation.fr || formData.translation.ar) && (
+                        <button
+                          type="button"
+                          className="btn-translate"
+                          onClick={() => handleTranslate(lang as keyof typeof formData.translation)}
+                          disabled={isTranslating === lang}
+                          title={t('categories.translate', 'Translate to ' + lang.toUpperCase())}
+                        >
+                          {isTranslating === lang ? (
+                            <div className="loading-spinner loading-spinner--tiny"></div>
+                          ) : (
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="m5 8 6 6"></path>
+                              <path d="m4 14 6-6 2-3"></path>
+                              <path d="M2 5h12"></path>
+                              <path d="M7 2h1"></path>
+                              <path d="m22 22-5-10-5 10"></path>
+                              <path d="M14 18h6"></path>
+                            </svg>
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                {formErrors.translation && <span className="error-message">{formErrors.translation}</span>}
               </div>
 
               {/* Image Upload Field */}

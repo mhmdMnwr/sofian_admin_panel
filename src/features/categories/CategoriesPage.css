@@ -837,3 +837,70 @@
     font-size: 13px;
   }
 }
+
+/* Translation Fields Styles */
+.translation-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.translation-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.translation-input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.translation-input-wrapper .lang-badge {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--categories-accent);
+  background-color: var(--categories-accent-light);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.translation-input-wrapper input {
+  padding-left: 44px !important;
+}
+
+.btn-translate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--categories-border);
+  border-radius: 10px;
+  background-color: var(--categories-bg);
+  color: var(--categories-text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-translate:hover:not(:disabled) {
+  color: var(--categories-accent);
+  border-color: var(--categories-accent);
+  background-color: var(--categories-accent-light);
+}
+
+.btn-translate:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.loading-spinner--tiny {
+  width: 14px;
+  height: 14px;
+  border-width: 2px;
+  margin: 0;
+}

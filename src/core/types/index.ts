@@ -74,7 +74,7 @@ export interface Product {
   price: number;
   image?: string;
   brand?: { _id: string; title: string; image?: string } | string;
-  category?: { _id: string; title: string; image?: string } | string;
+  category?: { _id: string; translation?: { en: string; fr: string; ar: string }; title?: string; image?: string } | string;
   units: number;
   totalSold?: number;
   totalRevenue?: number;
@@ -103,7 +103,11 @@ export interface Pagination {
 // Category type
 export interface Category {
   _id: string;
-  title: string;
+  translation: {
+    en: string;
+    fr: string;
+    ar: string;
+  };
   image: string;
   createdAt?: string;
   updatedAt?: string;

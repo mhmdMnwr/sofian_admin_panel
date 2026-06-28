@@ -28,3 +28,21 @@ export const formatDate = (
 
   return new Date(dateString).toLocaleDateString('en-US', options || defaultOptions);
 };
+
+// Helper for extracting a translated string
+export const getLocalizedTranslation = (
+  translation: { en?: string; fr?: string; ar?: string } | any,
+  currentLang: string,
+  fallback = '-'
+): string => {
+  if (!translation) return fallback;
+  if (typeof translation === 'string') return translation; // fallback for old data
+
+  const lang = currentLang?.toLowerCase().substring(0, 2) || 'en';
+  
+  if (lang === 'en' && translation.en) return translation.en;
+  if (lang === 'fr' && translation.fr) return translation.fr;
+  if (lang === 'ar' && translation.ar) return translation.ar;
+  
+  return translation.en || translation.fr || translation.ar || fallback;
+};

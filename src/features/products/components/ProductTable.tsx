@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Product } from '../../../core/types';
 import { getOptimizedImageUrl } from '../../../core/services/cloudinaryService';
+import { getLocalizedTranslation } from '../../../core/utils/helpers';
 
 interface ProductTableProps {
   products: Product[];
@@ -15,16 +16,22 @@ const getStateClass = (state: string): string => {
 };
 
 const getDisplayValue = (
-  field: { _id?: string; title?: string } | string | null | undefined,
+  field: { _id?: string; title?: string; translation?: { en?: string; fr?: string; ar?: string } } | string | null | undefined,
+  currentLang: string,
   fallback: string = '-'
 ): string => {
   if (!field) return fallback;
-  if (typeof field === 'object' && field.title) return field.title;
+  if (typeof field === 'object') {
+    if (field.translation) {
+      return getLocalizedTranslation(field.translation, currentLang, fallback);
+    }
+    if (field.title) return field.title;
+  }
   return String(field);
 };
 
 const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const getStateText = (state: string): string => {
     return state === 'available'
@@ -103,8 +110,8 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete 
                 )}
               </td>
               <td className="product-units">{product.units ?? 0}</td>
-              <td className="product-category">{getDisplayValue(product.category)}</td>
-              <td className="product-brand">{getDisplayValue(product.brand)}</td>
+              <td className="product-category">{getDisplayValue(product.category, i18n.language)}</td>
+              <td className="product-brand">{getDisplayValue(product.brand, i18n.language)}</td>
               <td className="product-price">{Number(product.price).toFixed(2)} DA</td>
               <td>
                 <span className={`product-state ${getStateClass(product.state)}`}>
